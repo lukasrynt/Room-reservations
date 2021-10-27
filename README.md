@@ -16,3 +16,5 @@ Setup píšu pro ubuntu distribuci, ale funguje i pro WSL. Prerekvizitou je mít
 6) `\password` v konzoli postgre a změňte heslo na `postgres` - tedy aby odpovídalo nastavení v [.env](https://gitlab.fit.cvut.cz/BI-TWA/B211/team-hmsr/blob/master/.env), v DATABASE_URL se skrývá jak heslo tak username
 7) `php bin/console doctrine:database:create`
 8) (optional) tohle snad nebude potřeba, ale kdyby vám databáze odmítala připojení, tak možná bude potřeba jít zpátky do postgre konzole a zadat: `GRANT ALL PRIVILEGES ON DATABASE hmsr_db TO postgres;`
+9) `php bin/console doctrine:migrations:migrate`
+10) ve složce seeds přidat skriptu práva pro spuštění a pustit seedy
