@@ -20,6 +20,7 @@ class AppController extends AbstractController
 
     /**
      * @param UserRepository $userRepository
+     * @param RoomRepository $roomRepository
      * @param BuildingRepository $buildingRepository
      */
     public function __construct(UserRepository $userRepository,
