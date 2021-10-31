@@ -14,10 +14,11 @@ Projekt se zabývá vytvořením rezervačního systému budov a místností. Vi
 na postu 8080 běží adminer
 
 ### Symfony projekt
+- Linux : `sudo apt-get install php-pgsql`
+- Windows : php.init (nachází se v místě, kde máte nainstalované PHP) musí mít odzakomentovaný driver `extension=pdo_pgsql`
 1) `composer install`
-2) (asi jen Windows thing) php.init (nachází se v místě, kde máte nainstalované PHP) musí mít odzakomentovaný driver `extension=pdo_pgsql`
-3) `php bin/console doctrine:migrations:migrate`
-4) `symfony server:start -d`
+2) `php bin/console doctrine:migrations:migrate`
+3) `symfony server:start -d`
 
 ### Naplnění databáze
 - ve složce seeds přidat skriptu práva pro spuštění a pustit seedy
