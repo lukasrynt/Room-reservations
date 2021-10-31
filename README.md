@@ -11,11 +11,13 @@ Projekt se zabývá vytvořením rezervačního systému budov a místností. Vi
 1) `docker volume create db_data`
 2) `docker-compose up -d`
 
-na postu 8080 běží adminer
+(na postu 8080 běží adminer)
 
 ### Symfony projekt
-- Linux : `sudo apt-get install php-pgsql`
-- Windows : php.init (nachází se v místě, kde máte nainstalované PHP) musí mít odzakomentovaný driver `extension=pdo_pgsql`
+PostgreSQL driver
+  - Linux : `sudo apt-get install php-pgsql`
+  - Windows : php.init (nachází se v místě, kde máte nainstalované PHP) musí mít odzakomentovaný driver `extension=pdo_pgsql`
+  
 1) `composer install`
 2) `php bin/console doctrine:migrations:migrate`
 3) `symfony server:start -d`
