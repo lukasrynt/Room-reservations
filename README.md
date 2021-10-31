@@ -6,15 +6,22 @@ Projekt se zabývá vytvořením rezervačního systému budov a místností. Vi
 * Martin Šír
 * Daniel Honys
 
-## Rozchození projektu
-Setup píšu pro ubuntu distribuci, ale funguje i pro WSL. Prerekvizitou je mít nainstalovaný [postgres](https://phoenixnap.com/kb/how-to-install-postgresql-on-ubuntu). Dále pak postupujte postupně takhle:
+## Rozchození
+### Databáze
+1) `docker volume create db_data`
+2) `docker-compose up -d`
+
+(na postu 8080 běží adminer)
+
+### Symfony projekt
+PostgreSQL driver
+  - Linux : `sudo apt-get install php-pgsql`
+  - Windows : php.init (nachází se v místě, kde máte nainstalované PHP) musí mít odzakomentovaný driver `extension=pdo_pgsql`
+  
 1) `composer install`
-2) `sudo apt-get install php-pgsql`
-3) `sudo service postgresql start`
-4) `sudo su postgres` - tento a následující krok slouží k přístupu k postgre databázi pod userem postgres
-5) `psql`
-6) `\password` v konzoli postgre a změňte heslo na `postgres` - tedy aby odpovídalo nastavení v [.env](https://gitlab.fit.cvut.cz/BI-TWA/B211/team-hmsr/blob/master/.env), v DATABASE_URL se skrývá jak heslo tak username
-7) `php bin/console doctrine:database:create`
-8) (optional) tohle snad nebude potřeba, ale kdyby vám databáze odmítala připojení, tak možná bude potřeba jít zpátky do postgre konzole a zadat: `GRANT ALL PRIVILEGES ON DATABASE hmsr_db TO postgres;`
-9) `php bin/console doctrine:migrations:migrate`
-10) ve složce seeds přidat skriptu práva pro spuštění a pustit seedy
+2) `php bin/console doctrine:migrations:migrate`
+3) `symfony server:start -d`
+
+### Naplnění databáze
+- (pokud máte PostgreSQL nainstalovaný) ve složce seeds přidat skriptu práva pro spuštění a pustit seedy
+- jinak je nejjednodušší napojit PhpStorm na databázi a spustit je postupně
