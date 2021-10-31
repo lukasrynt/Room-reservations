@@ -23,4 +23,5 @@ PostgreSQL driver
 3) `symfony server:start -d`
 
 ### Naplnění databáze
-- ve složce seeds přidat skriptu práva pro spuštění a pustit seedy
+- (pokud máte PostgreSQL nainstalovaný) ve složce seeds přidat skriptu práva pro spuštění a pustit seedy
+- jinak je nejjednodušší napojit PhpStorm na databázi a spustit je postupně
