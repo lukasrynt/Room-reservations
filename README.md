@@ -11,8 +11,6 @@ Projekt se zabývá vytvořením rezervačního systému budov a místností. Vi
 1) `docker volume create db_data`
 2) `docker-compose up -d`
 
-(na postu 8080 běží adminer)
-
 ### Symfony projekt
 PostgreSQL driver
   - Linux : `sudo apt-get install php-pgsql`
