@@ -1,0 +1,30 @@
+{% extends '../base.html.twig' %}
+
+{% block title %} Dashboard {% endblock %}
+
+{% block header %}
+    <header>
+        <nav>
+            <a href="#">HMS(t)R</a>
+
+            <ul>
+                <li>User name</li>
+                <li><a href="#">Profile</a></li>
+                <li><a href="#">Log out</a></li>
+            </ul>
+        </nav>
+    </header>
+{% endblock %}
+
+{% block body %}
+    <section>
+        <h1>DASHBOARD</h1>
+
+        <ul>
+            <li><a href="#">Classrooms</a></li>
+            <li><a href="#">Reservations</a></li>
+            <li><a href="#">Groups</a></li>
+            <li><a href="#">Users</a></li>
+        </ul>
+    </section>
+{% endblock %}
