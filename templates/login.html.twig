@@ -1,0 +1,36 @@
+{% extends 'base.html.twig' %}
+
+{% block title %} Login {% endblock %}
+
+{% block stylesheets %} {% endblock %}
+
+{% block javascripts %} {% endblock %}
+
+{% block body %}
+    <form action="" method="get">
+        <h1>HSM(t)R</h1>
+        <section>
+            <h2>Log in</h2>
+            <p>
+                <label for="username">User name</label>
+                <input type="text" id="username" name="username" placeholder="User name">
+            </p>
+
+            <p>
+                <label for="pwd">Password</label>
+                <input type="password" id="pwd" name="password" placeholder="Password">
+            </p>
+
+            <p>
+                <button type="submit">Log in</button>
+            </p>
+        </section>
+
+        <nav>
+            <a href="signup.html.twig">Don't have an account?</a>
+            <a href="#">Forget your password?</a>
+        </nav>
+
+
+    </form>
+{% endblock %}

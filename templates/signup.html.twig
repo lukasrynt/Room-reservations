@@ -1,0 +1,34 @@
+{% extends 'base.html.twig' %}
+
+{% block title %} Sign up {% endblock %}
+
+{% block stylesheets %} {% endblock %}
+
+{% block javascripts %} {% endblock %}
+
+{% block body %}
+    <form action="" method="get">
+        <h1>HSM(t)R</h1>
+
+        <section>
+            <h2>Sign up</h2>
+
+                <label for="username">Username</label>
+                <input type="text" id="username" name="username" placeholder="User name">
+
+                <label for="pwd">Password</label>
+                <input type="password" id="pwd" name="password" placeholder="Password">
+
+                <button type="submit">Register</button>
+        </section>
+
+        <nav>
+            # dat p nebo div?
+            <div>
+                Already have an account?<a href="login.html.twig">Login</a>
+            </div>
+            <a href="login.html.twig">Already have an account?</a>
+        </nav>
+
+    </form>
+{% endblock %}
