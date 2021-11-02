@@ -1,4 +1,4 @@
-{% extends '../header.html.twig' %}
+{% extends 'header.html.twig' %}
 
 {% block title %} Classroom list {% endblock %}
 
@@ -41,7 +41,7 @@
                 {% for room in rooms %}
                 <tr>
                     <td>{{ room.name }}</td>
-                    <td>{{ room.building }}</td>
+                    {#<td>{{ room.building }}</td>#}
                     <td>{{ room.floor }}</td>
                     <td>{{ room.capacity }}</td>
                     <td>{{ room.opened_from }} - {{ room.opened_to }}</td>
