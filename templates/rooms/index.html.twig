@@ -1,5 +1,54 @@
-<h1>Rooms</h1>
-{% for room in rooms %}
-    Name: {{ room.name }}, Capacity: {{ room.capacity }}
-    <br>
-{% endfor %}
+{% extends '../header.html.twig' %}
+
+{% block title %} Classroom list {% endblock %}
+
+{% block body %}
+
+    <section>
+        <form>
+            <label for="access"></label>
+            <select name="access" id="access">
+                <option value="public">Public</option>
+                <option value="private">Private</option>
+            </select>
+
+            <button type="submit">Filter</button>
+        </form>
+
+
+        <form action="#">
+            <label for="search"></label>
+                <input type="text" id="search" placeholder="Search by name" name="search">
+            <button type="submit">Ikonka</button>
+        </form>
+    </section>
+
+
+    <section>
+        <table>
+            <thead>
+                <tr>
+                    <th>Room name</th>
+                    <th>Building</th>
+                    <th>Floor</th>
+                    <th>Capacity</th>
+                    <th>Opened from - to</th>
+                    <th>Buttons</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                {% for room in rooms %}
+                <tr>
+                    <td>{{ room.name }}</td>
+                    <td>{{ room.building }}</td>
+                    <td>{{ room.floor }}</td>
+                    <td>{{ room.capacity }}</td>
+                    <td>{{ room.opened_from }} - {{ room.opened_to }}</td>
+                    <td><a href="{{ room.id }}">Detail</a></td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </section>
+{% endblock %}
