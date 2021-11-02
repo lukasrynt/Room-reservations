@@ -1,0 +1,25 @@
+{% extends 'header.html.twig' %}
+
+{% block title %} Classroom detail {% endblock %}
+
+{% block body %}
+
+    <section>
+
+        <h1>{{ room.name }}</h1>
+        <p>DETAIL</p>
+        <ul>
+            <li>BUILDING:</li>
+            <li>{{ room.building }}</li>
+            <li>FLOOR:</li>
+            <li>{{ room.floor }}</li>
+            <li>CAPACITY:</li>
+            <li>{{ room.capacity }}</li>
+            <li>OPENED FROM - TO:</li>
+            <li>{{ room.opened_from }} - {{ room.opened_to }}</li>
+        </ul>
+
+        <button type="submit">Reserve</button>
+        <button>Edit</button>
+    </section>
+{% endblock %}
