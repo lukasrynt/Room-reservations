@@ -31,7 +31,7 @@ class RoomController extends AbstractController
     }
 
     /**
-     * @Route("/rooms/{id}/detail", name="detail_room")
+     * @Route("/rooms/{id}", name="detail_room")
      * @param int $id
      * @return Response
      */
