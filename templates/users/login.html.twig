@@ -7,25 +7,23 @@
 {% block javascripts %} {% endblock %}
 
 {% block body %}
-    <form action="" method="get">
-        <h1>HSM(t)R</h1>
-        <section>
-            <h2>Log in</h2>
+    <section>
+        {% if error %}
+            <div>{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+        {% endif %}
 
-                <label for="username">User name</label>
-                <input type="text" id="username" name="username" placeholder="User name">
+        <form action="{{ path('login') }}" method="post">
+            <label for="username">Username:</label>
+            <input type="text" id="username" name="_username" value="{{ last_username }}"/>
 
-                <label for="pwd">Password</label>
-                <input type="password" id="pwd" name="password" placeholder="Password">
+            <label for="password">Password:</label>
+            <input type="password" id="password" name="_password"/>
 
-                <button type="submit">Log in</button>
-        </section>
+            <input type="hidden" name="_target_path" value="dashboard"/>
 
-        <nav>
-            <a href="signup.html.twig">Don't have an account?</a>
-            <a href="#">Forget your password?</a>
-        </nav>
+            <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
 
-
-    </form>
+            <button type="submit">login</button>
+        </form>
+    </section>
 {% endblock %}
