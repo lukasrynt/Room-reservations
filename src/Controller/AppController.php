@@ -39,7 +39,7 @@ class AppController extends AbstractController
     public function usersIndex(): Response
     {
         $users = $this->userRepository->findAll();
-        return $this->render('users/index.html.twig', ['users' => $users]);
+        return $this->render('landingPage.html.twig');
     }
 
     /**

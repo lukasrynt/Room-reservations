@@ -1,5 +1,6 @@
 <?php
 
+namespace App\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
@@ -19,3 +20,4 @@ class RoomType extends AbstractType
             ->add('opened_to', DateTimeType::class);
     }
 }
+
