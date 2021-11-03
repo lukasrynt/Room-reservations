@@ -31,22 +31,34 @@ class RoomController extends AbstractController
     }
 
     /**
-     * @Route("/rooms/{id}", name="detail_room")
+     * @Route("/rooms", name="rooms_index")
+     * @return Response
+     */
+    public function index(): Response
+    {
+        $rooms = $this->roomRepository->findAll();
+        return $this->render('rooms/index.html.twig', ['rooms' => $rooms]);
+    }
+
+    /**
+     * @Route("/rooms/{id}", name="room_detail")
      * @param int $id
      * @return Response
      */
-    public function detailRoom(int $id): Response{
+    public function detail(int $id): Response{
         $room = $this->roomRepository->find($id);
+        if (!$room)
+            return $this->render('errors/404.html.twig');
         return $this->render('rooms/detail.html.twig', ['room' => $room]);
     }
 
     /**
-     * @Route("/rooms/{id}/edit", name="edit_room")
+     * @Route("/rooms/{id}/edit", name="room_edit")
      * @param Request $request
      * @param int $id
      * @return Response
      */
-    public function editRoom(Request $request, int $id): Response{
+    public function edit(Request $request, int $id): Response{
         $room = $this->roomRepository->find($id);
 
         $form = $this->createForm(RoomType::class, $room)
@@ -56,7 +68,7 @@ class RoomController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()){
             $this->entityManager->persist($form->getData());
             $this->entityManager->flush();
-            return $this->redirectToRoute('detail_room', ['id' => $room->getId()]);
+            return $this->redirectToRoute('room_detail', ['id' => $room->getId()]);
         }
 
         return $this->render('rooms/edit.html.twig', [

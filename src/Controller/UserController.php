@@ -31,25 +31,8 @@ class UserController extends AbstractController
         $this->entityManager = $entityManager;
     }
 
-
     /**
-     * @Route("/login")
-     * @return Response
-     */
-    public function loginUser() : Response
-    {
-        $form = $this->createForm(LoginType::class);
-
-        // last username entered by the user
-
-        return $this->render('users/login.html.twig', [
-            'form' => $form
-        ]);
-    }
-
-
-    /**
-     * @Route("/profile/{id}/edit", name="edit_user")
+     * @Route("/users/{id}/edit", name="edit_user")
      * @param Request $request
      * @param int $id
      * @return Response
@@ -71,6 +54,16 @@ class UserController extends AbstractController
         return $this->render('users/edit.html.twig', [
             'form' => $form->createView()
         ]);
+    }
+
+    /**
+     * @Route("/users", name="users_index")
+     * @return Response
+     */
+    public function index(): Response
+    {
+        $users = $this->userRepository->findAll();
+        return $this->render('users/index.html.twig', ['users' => $users]);
     }
 
 }
