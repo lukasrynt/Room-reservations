@@ -1,0 +1,5 @@
+@import "colors.css";
+
+h1.center-title {
+    color: var(--main);
+}

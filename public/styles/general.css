@@ -1,18 +1,19 @@
-:root {
-    --main: #5E62C4;
-    --main-darker: #332A9C;
-    --white: #FFFFFF;
-    --gray-lightest: #B4B4B4;
-    --gray-light: #939393;
-    --gray: #555555;
-    --gray-dark: #424242;
-    --black: #353535;
-    --green: #5EC47B;
-    --green-dark: #278E50;
-    --red: #CA4C4C;
-    --red-dark: #9C2A2A;
+@import 'colors.css';
+
+html {
+    height: 100%;
+    font-family: Martel Sans, serif;
+    font-style: normal;
 }
 
-h1 {
+body {
+    height: 100%;
+}
 
+.basic-button {
+    background-color: var(--main);
+    color: var(--white);
+    text-decoration: none;
+    border-radius: 0.1em;
+    padding: 0.3em 0.6em;
 }
