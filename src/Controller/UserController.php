@@ -32,6 +32,18 @@ class UserController extends AbstractController
     }
 
     /**
+     * @Route("/users/{id}", name="user_detail")
+     * @param int $id
+     * @return Response
+     */
+    public function detail(int $id): Response{
+        $user = $this->userRepository->find($id);
+        if (!$user)
+            return $this->render('errors/404.html.twig');
+        return $this->render('users/detail.html.twig', ['user' => $user]);
+    }
+
+    /**
      * @Route("/users/{id}/edit", name="edit_user")
      * @param Request $request
      * @param int $id
@@ -48,7 +60,7 @@ class UserController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()){
             $this->entityManager->persist($form->getData());
             $this->entityManager->flush();
-            return $this->redirectToRoute('users/detail.html.twig', ['id' => $user->getId()]);
+            return $this->redirectToRoute('user_detail', ['id' => $user->getId()]);
         }
 
         return $this->render('users/edit.html.twig', [

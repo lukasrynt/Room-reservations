@@ -1,0 +1,19 @@
+{% extends 'header.html.twig' %}
+
+{% block title %} User detail {% endblock %}
+
+{% block body %}
+    <section>
+        <h1>{{ user.firstName }} {{ user.lastName }}</h1>
+        <h2>Detail</h2>
+        <dl>
+            <dd>First name</dd>
+            <dt>{{ user.firstName }}</dt>
+            <dd>Last name</dd>
+            <dt>{{ user.lastName }}</dt>
+            <dd>Username</dd>
+            <dt>{{ user.username }}</dt>
+        </dl>
+        <a href={{ path('edit_user', {'id': user.id}) }}>Edit</a>
+    </section>
+{% endblock %}

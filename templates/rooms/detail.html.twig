@@ -3,23 +3,20 @@
 {% block title %} Classroom detail {% endblock %}
 
 {% block body %}
-
     <section>
-
         <h1>{{ room.name }}</h1>
-        <p>DETAIL</p>
-        <ul>
-            {#<li>BUILDING:</li>
-            <li>{{ room.building }}</li>#}
-            <li>FLOOR:</li>
-            <li>{{ room.floor }}</li>
-            <li>CAPACITY:</li>
-            <li>{{ room.capacity }}</li>
-            <li>OPENED FROM - TO:</li>
-            <li>{{ room.opened_from }} - {{ room.opened_to }}</li>
-        </ul>
-
-        <button type="submit">Reserve</button>
-        <button>Edit</button>
+        <h2>Detail</h2>
+        <dl>
+            <dd>Building</dd>
+            <dt>{# { room.building } #}</dt>
+            <dd>Floor</dd>
+            <dt>{{ room.floor }}</dt>
+            <dd>Capacity</dd>
+            <dt>{{ room.capacity }}</dt>
+            <dd>Opened from - to</dd>
+            <dt>{{ room.opened_from }} - {{ room.opened_to }}</dt>
+        </dl>
+        <a href="#">Reserve</a>
+        <a href={{ path('room_edit', {'id': room.id}) }}>Edit</a>
     </section>
 {% endblock %}

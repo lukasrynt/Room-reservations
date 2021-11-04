@@ -3,16 +3,13 @@
 {% block title %} Building detail {% endblock %}
 
 {% block body %}
-
     <section>
-
         <h1>{{ building.name }}</h1>
-        <p>DETAIL</p>
-        <ul>
-            <li>ADDRESS:</li>
-            <li>{{ building.address }}</li>
-        </ul>
-
-        <button>Edit</button>
+        <h2>Detail</h2>
+        <dl>
+            <dd>Address</dd>
+            <dt>{{ building.address }}</dt>
+        </dl>
+        <a href={{ path('building_edit', {'id': 'x'}) }}>Edit</a>
     </section>
 {% endblock %}
