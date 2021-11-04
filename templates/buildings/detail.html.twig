@@ -1,0 +1,18 @@
+{% extends 'header.html.twig' %}
+
+{% block title %} Building detail {% endblock %}
+
+{% block body %}
+
+    <section>
+
+        <h1>{{ building.name }}</h1>
+        <p>DETAIL</p>
+        <ul>
+            <li>ADDRESS:</li>
+            <li>{{ building.address }}</li>
+        </ul>
+
+        <button>Edit</button>
+    </section>
+{% endblock %}
