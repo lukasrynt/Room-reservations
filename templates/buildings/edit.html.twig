@@ -1,10 +1,7 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Edit Building</title>
-</head>
-<body>
-{{ form(form) }}
-</body>
-</html>
+{% extends 'base.html.twig' %}
+
+{% block title %} Edit Building {% endblock %}
+
+{% block body %}
+    {{ form(form) }}
+{% endblock %}

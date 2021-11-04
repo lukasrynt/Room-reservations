@@ -1,32 +1,18 @@
 <!DOCTYPE html>
-<html>
+<html lang="cs">
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>{% block title %}Welcome page{% endblock %}</title>
-        {% block stylesheets %}
-
-        {% endblock %}
-
-        {% block javascripts %}
-
-        {% endblock %}
+        {% block stylesheets %}{% endblock %}
+        {% block javascripts %}{% endblock %}
     </head>
 
     <body>
-
-        {% block header %}
-
-        {% endblock %}
-
+        {% include 'header.html.twig' %}
         <main>
-            {% block body %}
-
-            {% endblock %}
+            {% block body %}{% endblock %}
         </main>
-
-        {% block footer %}
-
-        {% endblock %}
+        {% block footer %}{% endblock %}
     </body>
 </html>
