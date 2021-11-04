@@ -1,4 +1,12 @@
-<h1>Buildings</h1>
-{% for building in buildings %}
-    Name: {{ building.name }}, Address: {{ building.address }}
-{% endfor %}
+{% extends 'header.html.twig' %}
+
+{% block title %} Buildings {% endblock %}
+
+{% block body %}
+    <h1>Buildings</h1>
+    {% for building in buildings %}
+        Name: {{ building.name }}, Address: {{ building.address }}
+        <a href={{ path('building_detail', {id: building.id }) }}>Detail</a>
+        <p></p>
+    {% endfor %}
+{% endblock %}

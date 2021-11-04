@@ -1,4 +1,30 @@
-<h1>Hello World</h1>
-{% for user in users %}
-    {{ user.firstName }}
-{% endfor %}
+{% extends '/base.html.twig' %}
+
+{% block title %} Users {% endblock %}
+
+{% block body %}
+    <section>
+        <table>
+            <thead>
+            <tr>
+                <th>Name</th>
+                <th>Role</th>
+                <th>Phone number</th>
+                <th>Buttons</th>
+            </tr>
+            </thead>
+
+            <tbody>
+            {% for user in users %}
+                <tr>
+                    <td>{{ user.firstName }} {{ user.lastName }}</td>
+                    <td>{{ user.email }}</td>
+                    <td>{{ user.role }}</td>
+                    <td>{{ user.phoneNumber }}</td>
+                    <td><a href={{ path('user_detail', {id: user.id }) }}>Detail</a></td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </section>
+{% endblock %}

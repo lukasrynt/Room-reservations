@@ -1,0 +1,22 @@
+{% extends 'base.html.twig' %}
+
+{% block title %} Classroom detail {% endblock %}
+
+{% block body %}
+    <section>
+        <h1>{{ room.name }}</h1>
+        <h2>Detail</h2>
+        <dl>
+            <dd>Building</dd>
+            <dt>{# { room.building } #}</dt>
+            <dd>Floor</dd>
+            <dt>{{ room.floor }}</dt>
+            <dd>Capacity</dd>
+            <dt>{{ room.capacity }}</dt>
+            <dd>Opened from - to</dd>
+            <dt>{{ room.opened_from }} - {{ room.opened_to }}</dt>
+        </dl>
+        <a href="#">Reserve</a>
+        <a href={{ path('room_edit', {'id': room.id}) }}>Edit</a>
+    </section>
+{% endblock %}

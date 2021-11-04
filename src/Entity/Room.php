@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Repository\RoomRepository;
+use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -35,12 +36,12 @@ class Room
     /**
      * @ORM\Column(type="time")
      */
-    private \DateTimeInterface $opened_from;
+    private \DateTime $opened_from;
 
     /**
      * @ORM\Column(type="time")
      */
-    private \DateTimeInterface $opened_to;
+    private \DateTime $opened_to;
 
     public function getId(): ?int
     {
@@ -83,24 +84,33 @@ class Room
         return $this;
     }
 
-    public function getOpenedFrom(): ?\DateTimeInterface
+    public function getOpened_from():string
+    {
+        return $this->opened_from->format("H:i");
+    }
+
+    public function getOpenedFrom(): \DateTime
     {
         return $this->opened_from;
     }
 
-    public function setOpenedFrom(\DateTimeInterface $opened_from): self
+    public function setOpenedFrom(\DateTime $opened_from): self
     {
         $this->opened_from = $opened_from;
-
         return $this;
     }
 
-    public function getOpenedTo(): ?\DateTimeInterface
+    public function getOpened_to(): string
+    {
+        return $this->opened_to->format("H:i");
+    }
+
+    public function getOpenedTo(): \DateTime
     {
         return $this->opened_to;
     }
 
-    public function setOpenedTo(\DateTimeInterface $opened_to): self
+    public function setOpenedTo(\DateTime $opened_to): self
     {
         $this->opened_to = $opened_to;
 

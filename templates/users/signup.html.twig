@@ -1,0 +1,21 @@
+{% extends 'base.html.twig' %}
+
+{% block title %} Sign up {% endblock %}
+
+{% block body %}
+    <section>
+        {{ form_start(form) }}
+        {{ form_row(form.first_name) }}
+        {{ form_row(form.last_name) }}
+        {{ form_row(form.username) }}
+        {{ form_row(form.email) }}
+        {{ form_row(form.plain_password.first) }}
+        {{ form_row(form.plain_password.second) }}
+        {{ form_row(form.role) }}
+        {{ form_row(form.phone_number) }}
+        {{ form_row(form.note) }}
+
+        <button type="submit">Register!</button>
+        {{ form_end(form) }}
+    </section>
+{% endblock %}
