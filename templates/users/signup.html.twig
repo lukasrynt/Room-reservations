@@ -1,4 +1,4 @@
-{% extends '../base.html.twig' %}
+{% extends 'base.html.twig' %}
 
 {% block title %} Sign up {% endblock %}
 
@@ -7,28 +7,20 @@
 {% block javascripts %} {% endblock %}
 
 {% block body %}
-    <form action="" method="get">
-        <h1>HSM(t)R</h1>
 
-        <section>
-            <h2>Sign up</h2>
+    <section>
+        {{ form_start(form) }}
+        {{ form_row(form.first_name) }}
+        {{ form_row(form.last_name) }}
+        {{ form_row(form.username) }}
+        {{ form_row(form.email) }}
+        {{ form_row(form.plain_password.first) }}
+        {{ form_row(form.plain_password.second) }}
+        {{ form_row(form.role) }}
+        {{ form_row(form.phone_number) }}
+        {{ form_row(form.note) }}
 
-                <label for="username">Username</label>
-                <input type="text" id="username" name="username" placeholder="User name">
-
-                <label for="pwd">Password</label>
-                <input type="password" id="pwd" name="password" placeholder="Password">
-
-                <button type="submit">Register</button>
-        </section>
-
-        <nav>
-            # dat p nebo div?
-            <div>
-                Already have an account?<a href="login.html.twig">Login</a>
-            </div>
-            <a href="login.html.twig">Already have an account?</a>
-        </nav>
-
-    </form>
+        <button type="submit">Register!</button>
+        {{ form_end(form) }}
+    </section>
 {% endblock %}
