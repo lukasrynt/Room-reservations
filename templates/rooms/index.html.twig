@@ -29,7 +29,7 @@
             <thead>
                 <tr>
                     <th>Room name</th>
-                    <th>Building</th>
+                    {#<th>Building</th>#}
                     <th>Floor</th>
                     <th>Capacity</th>
                     <th>Opened from - to</th>
@@ -44,7 +44,7 @@
                     {#<td>{{ room.building }}</td>#}
                     <td>{{ room.floor }}</td>
                     <td>{{ room.capacity }}</td>
-                    {#<td>{{ room.opened_from }} - {{ room.opened_to }}</td>#}
+                    <td>{{ room.opened_from }} - {{ room.opened_to }}</td>
                     <td><a href="{{ room.id }}">Detail</a></td>
                 </tr>
                 {% endfor %}
