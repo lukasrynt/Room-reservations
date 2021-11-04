@@ -7,7 +7,7 @@ namespace App\Controller;
 
 use App\Repository\RoomRepository;
 use Doctrine\ORM\EntityManagerInterface;
-use RoomType;
+use App\Form\Type\RoomType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\Request;
@@ -60,6 +60,9 @@ class RoomController extends AbstractController
      */
     public function edit(Request $request, int $id): Response{
         $room = $this->roomRepository->find($id);
+
+        if (!$room)
+            return $this->render('errors/404.html.twig');
 
         $form = $this->createForm(RoomType::class, $room)
             ->add('edit', SubmitType::class);
