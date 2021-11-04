@@ -6,14 +6,6 @@ use App\Repository\RoomRepository;
 use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 
-class MyDateTime extends \DateTime
-{
-    public function __toString()
-    {
-        return $this->format("H:i");
-    }
-}
-
 /**
  * @ORM\Entity(repositoryClass=RoomRepository::class)
  */
