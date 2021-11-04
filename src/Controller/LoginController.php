@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use Exception;
 use \Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
@@ -11,7 +12,9 @@ class LoginController extends AbstractController
 {
 
     /**
-     * @Route('/login', name: 'user_login')
+     * @Route("/login", name="login")
+     * @param AuthenticationUtils $authenticationUtils
+     * @return Response
      */
      public function login(AuthenticationUtils $authenticationUtils): Response
 {
@@ -30,10 +33,10 @@ class LoginController extends AbstractController
 
     /**
      * @Route("/logout", name="app_logout")
-     * @throws \Exception
+     * @throws Exception
      */
     public function logout()
     {
-        throw new \Exception('This method can be blank - it will be intercepted by the logout key on your firewall');
+        throw new Exception('This method can be blank - it will be intercepted by the logout key on your firewall');
     }
 }
