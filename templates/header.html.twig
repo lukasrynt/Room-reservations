@@ -1,19 +1,19 @@
 {% block header %}
     <header>
-        <nav>
-            <a href={{ path('landing_page') }}>HMS(t)R</a>
+        <nav class="navigation">
+            <a class="nav-brand" href={{ path('landing_page') }}>HMS(t)R</a>
             {# TODO: Add condition for hide when no user is logged in #}
-            <section>
+            <section class="main-links">
                 <ul>
-                    <li><a href="{{ path('rooms_index') }}">Classrooms</a></li>
+                    <li><a class="active" href="{{ path('rooms_index') }}">Classrooms</a></li>
                     <li><a href="#">Reservation</a></li>
                     <li><a href="#">Groups</a></li>
                     <li><a href="{{ path('users_index') }}">Users</a></li>
                 </ul>
             </section>
-            <section>
+            <section class="secondary-links">
                 <ul>
-                    <li>User name</li>
+                    User name
                     <li><a href="#">Profile</a></li>
                     <li><a href="#">Log out</a></li>
                 </ul>
