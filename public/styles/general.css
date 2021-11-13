@@ -88,10 +88,20 @@ header h1 a:hover {
 
 /* buttons */
 .button-base {
-    padding: 0.625rem 1.875rem 0.625rem 1.875rem;
+    padding: .625rem 1.875rem .625rem 1.875rem;
     font-size: 1.125rem;
-    border-radius: .2rem;
+    border-radius: .438rem;
     display: block;
+}
+
+.button-with-icon {
+    display: flex;
+    align-items: center;
+}
+
+.button-icon {
+    height: 1.125rem;
+    margin-right: .5rem;
 }
 
 .button-main {
