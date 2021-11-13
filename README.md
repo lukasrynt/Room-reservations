@@ -8,8 +8,7 @@ Projekt se zabývá vytvořením rezervačního systému budov a místností. Vi
 
 ## Rozchození
 ### Databáze
-1) `docker volume create db_data`
-2) `docker-compose up -d`
+1) `docker-compose up -d`
 
 ### Symfony projekt
 PostgreSQL driver

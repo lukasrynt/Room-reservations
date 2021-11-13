@@ -1,7 +1,56 @@
-@import "colors.css";
+/* main content */
+article {
+    display: flex;
+    flex-grow: 1;
+    flex-flow: column;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+}
 
-h1.center-title {
-    color: var(--main);
+article h1 {
     font-weight: 900;
-    font-size: 3em;
+    font-family: 'Martel Sans', sans-serif;
+    font-size: 9rem;
+    color: var(--main);
+    margin-left: -0.6rem;
+}
+
+article p {
+    color: var(--gray-dark);
+    font-size: 2.25rem;
+    margin: -0.5rem 0 1rem 0;
+}
+
+article p span {
+    color: var(--black);
+}
+
+article p span:first-child {
+    font-style: italic;
+    font-weight: 600;
+}
+
+article p span:last-child {
+    font-weight: 900;
+}
+
+article a:last-child {
+    margin-top: 1rem;
+}
+
+/* footer */
+footer {
+    display: flex;
+    flex-flow: column;
+    align-items: center;
+}
+
+footer img {
+    max-height: 6rem;
+}
+
+footer p {
+    margin: .5rem 0 1rem 0;
+    color: var(--gray-light)
 }

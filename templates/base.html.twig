@@ -4,17 +4,27 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>{% block title %}Welcome page{% endblock %}</title>
+
+        {% block stylesheets %}
         <link rel="stylesheet" href="{{ asset('styles/reset.css') }}" type="text/css">
         <link rel="stylesheet" href="{{ asset('styles/general.css') }}" type="text/css">
-        {% block stylesheets %}{% endblock %}
+        {% endblock %}
+
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Martel+Sans:wght@900&family=Source+Sans+Pro:ital,wght@0,400;0,700;1,600&display=swap" rel="stylesheet">
+
         {% block javascripts %}{% endblock %}
     </head>
 
     <body>
+        {# TODO : header is not needed on landing page #}
         {% include 'header.html.twig' %}
+
         <main>
-            {% block body %}{% endblock %}
+            {% block main %}{% endblock %}
         </main>
+
         {% block footer %}{% endblock %}
     </body>
 </html>

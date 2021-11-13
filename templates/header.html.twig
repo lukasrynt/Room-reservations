@@ -1,23 +1,28 @@
 {% block header %}
     <header>
-        <nav class="navigation">
-            <a class="nav-brand" href={{ path('landing_page') }}>HMS(t)R</a>
-            {# TODO: Add condition for hide when no user is logged in #}
-            <section class="main-links">
-                <ul>
-                    <li><a class="active" href="{{ path('rooms_index') }}">Classrooms</a></li>
-                    <li><a href="#">Reservation</a></li>
-                    <li><a href="#">Groups</a></li>
-                    <li><a href="{{ path('users_index') }}">Users</a></li>
-                </ul>
-            </section>
-            <section class="secondary-links">
-                <ul>
-                    User name
-                    <li><a href="#">Profile</a></li>
-                    <li><a href="#">Log out</a></li>
-                </ul>
-            </section>
+        {# TODO : if user is logged href to dashboard #}
+        <h1><a href="{{ path('landing_page') }}">HMS(t)R</a></h1>
+
+        {# TODO: Add condition for hide when no user is logged in #}
+        <nav>
+            <ul>
+                <li><a class="button-base button-main" href="{{ path('rooms_index') }}">Classrooms</a></li>
+                <li><a class="button-base button-secondary-outline" href="#">Reservation</a></li>
+                <li><a class="button-base button-secondary-outline" href="#">Groups</a></li>
+                <li><a class="button-base button-secondary-outline" href="{{ path('users_index') }}">Users</a></li>
+            </ul>
         </nav>
+
+        <section class="secondary-links">
+            <a class="button-base button-main" href="#">User name</a>
+            {#
+            TODO : once we have JS make it work :]
+            <ul>
+                User name
+                <li><a href="#">Profile</a></li>
+                <li><a href="#">Log out</a></li>
+            </ul>
+            #}
+        </section>
     </header>
 {% endblock %}
