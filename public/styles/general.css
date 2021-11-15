@@ -1,0 +1,189 @@
+:root {
+    --main: #5E62C4;
+    --main-darker: #332A9C;
+    --white: #FFFFFF;
+    --gray-lightest: #B4B4B4;
+    --gray-light: #939393;
+    --gray: #555555;
+    --gray-dark: #424242;
+    --black: #353535;
+    --green: #5EC47B;
+    --green-dark: #278E50;
+    --red: #CA4C4C;
+    --red-dark: #9C2A2A;
+}
+
+/* a reset */
+a, a:hover, a:active {
+    text-decoration: none;
+    color: var(--black);
+}
+
+/* layout */
+body {
+    height: 100vh;
+    background: url("../img/background.png");
+    font-family: 'Source Sans Pro', sans-serif;
+    font-weight: 400;
+    color: var(--black);
+    display: flex;
+    flex-direction: column;
+}
+
+header {
+    flex: 0 1 auto;
+}
+
+main {
+    flex: 1 1 auto;
+}
+
+footer {
+    flex: 0 1 auto;
+}
+
+/* header */
+header {
+    background-color: var(--white);
+    padding: 0.625rem 0 0.625rem 0;
+    display: flex;
+    box-shadow: 0 0.125rem 0.625rem 0 rgba(0,0,0,0.15)
+}
+
+header h1, header nav, header section {
+    flex: 1;
+}
+
+header h1 {
+    margin-left: 2rem;
+    height: 2.6rem;
+    overflow: hidden;
+}
+
+header h1 a {
+    font-weight: 900;
+    font-family: 'Martel Sans', sans-serif;
+    font-size: 3rem;
+    color: var(--main);
+}
+
+header nav, header nav ul, header section {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+header nav ul li:not(:last-child) {
+    margin-right: 0.625rem;
+}
+
+header section {
+    justify-content: flex-end;
+    margin-right: 2rem;
+}
+
+header h1 a:hover {
+    color: var(--main-darker)
+}
+
+/* buttons */
+.button-base {
+    padding: .625rem 1.875rem .625rem 1.875rem;
+    font-size: 1.125rem;
+    border-radius: .438rem;
+    display: block;
+}
+
+.button-with-icon {
+    display: flex;
+    align-items: center;
+}
+
+.button-icon {
+    height: 1.125rem;
+    margin-right: .5rem;
+}
+
+.button-main {
+    background-color: var(--main);
+    color: var(--white);
+}
+
+.button-main:hover {
+    background-color: var(--main-darker);
+    color: var(--white);
+}
+
+.button-secondary {
+    background-color: var(--gray-light);
+    color: var(--white);
+}
+
+.button-secondary:hover {
+    background-color: var(--gray-dark);
+    color: var(--white);
+}
+
+.button-success {
+    background-color: var(--green);
+    color: var(--white);
+}
+
+.button-success:hover {
+    background-color: var(--green-dark);
+    color: var(--white);
+}
+
+.button-danger {
+    background-color: var(--red);
+    color: var(--white);
+}
+
+.button-danger:hover {
+    background-color: var(--red-dark);
+    color: var(--white);
+}
+
+.button-main-outline {
+    box-shadow: inset 0 0 0 .078rem var(--main);
+    color: var(--main);
+}
+
+.button-main-outline:hover {
+    box-shadow: unset;
+    background-color: var(--main-darker);
+    color: var(--white);
+}
+
+.button-secondary-outline {
+    box-shadow: inset 0 0 0 .078rem var(--gray-light);
+    color: var(--gray-light);
+}
+
+.button-secondary-outline:hover {
+    box-shadow: unset;
+    background-color: var(--gray-light);
+    color: var(--white)
+}
+
+.button-success-outline {
+    box-shadow: inset 0 0 0 .078rem var(--green);
+    color: var(--green);
+}
+
+.button-success-outline:hover {
+    box-shadow: unset;
+    background-color: var(--green-dark);
+    color: var(--white)
+}
+
+.button-danger-outline {
+    box-shadow: inset 0 0 0 .078rem var(--red);
+    color: var(--red);
+}
+
+.button-danger-outline:hover {
+    box-shadow: unset;
+    background-color: var(--red-dark);
+    color: var(--white)
+}

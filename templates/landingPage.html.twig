@@ -1,18 +1,38 @@
 {% extends 'base.html.twig' %}
 
-{% block title %} Landing page {% endblock %}
+{% block title %}
+    Landing page
+{% endblock %}
 
-{% block body %}
-    <section>
-        <h1>HSM(t)R</h1>
-        <p>Booking of classrooms was never easier</p>
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('styles/landing_page.css') }}" type="text/css">
+{% endblock %}
 
-        <a href={{ path('rooms_index') }}>Browse classrooms</a>
-        <a href={{ path('login') }}>Log in</a>
-    </section>
+{% block main %}
+    <article>
+        <h1 class="center-title">HMS(t)R</h1>
+        <p>Booking of <span>classrooms</span> was never <span>easier</span>.</p>
+
+        <a class="button-base button-with-icon button-main" href={{ path('rooms_index') }}>
+            <svg class="button-icon" aria-hidden="true" role="img" viewBox="2 2 16 16" xmlns="http://www.w3.org/2000/svg">
+                <g fill="currentColor">
+                    <path d="M9.184 2.112a.5.5 0 0 1 .419-.1l7 1.499a.5.5 0 0 1 .394.489v12a.5.5 0 0 1-.395.489l-7 1.5a.5.5 0 0 1-.604-.488v-15a.5.5 0 0 1 .186-.389zM12.5 10a.75.75 0 1 0-1.5 0a.75.75 0 0 0 1.5 0z"/>
+                    <path d="M8 3.002H3.498a.5.5 0 0 0-.5.5v12.995a.5.5 0 0 0 .5.5H8V3.002z"/>
+                </g>
+            </svg>
+            Browse classrooms</a>
+        <a class="button-base button-with-icon button-main" href={{ path('login') }}>
+            <svg class="button-icon" aria-hidden="true" role="img" viewBox="3 3 18 18" xmlns="http://www.w3.org/2000/svg">
+                <path d="M3 5v14a2 2 0 0 0 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2H5a2 2 0 0 0-2 2zm12 4c0 1.66-1.34 3-3 3s-3-1.34-3-3s1.34-3 3-3s3 1.34 3 3zm-9 8c0-2 4-3.1 6-3.1s6 1.1 6 3.1v1H6v-1z" fill="currentColor"/>
+            </svg>
+            Log in</a>
+    </article>
 {% endblock %}
 
 {% block footer %}
-    <img src="#" alt="Hamster in a wheel">
-    <p>Powered by hamster in spinning wheel.</p>
+    <footer>
+        <img src="{{ asset('img/hamster.png') }}" alt="Hamster in a wheel">
+        <p>Powered by hamster in spinning wheel.</p>
+    </footer>
 {% endblock %}
