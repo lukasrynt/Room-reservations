@@ -4,7 +4,7 @@ main {
     align-items: center;
 }
 
-article {
+#login-form {
     width: 90%;
     max-width: 35rem;
     display: flex;
@@ -16,13 +16,13 @@ article {
     padding: 3rem 0 3rem 0;
 }
 
-section {
+#login-form section {
     display: flex;
     flex-flow: column;
     align-items: center;
 }
 
-section h1 {
+#login-form h1 {
     font-weight: 900;
     font-family: 'Martel Sans', sans-serif;
     font-size: 4.5rem;
@@ -30,7 +30,7 @@ section h1 {
     margin-bottom: 2rem;
 }
 
-section h2 {
+#login-form h2 {
     font-weight: 400;
     font-family: 'Martel Sans', sans-serif;
     font-size: 1.5rem;
@@ -38,7 +38,7 @@ section h2 {
     margin-bottom: .5rem;
 }
 
-section form {
+#login-form form {
     margin-bottom: 4rem;
     display: flex;
     flex-flow: column;

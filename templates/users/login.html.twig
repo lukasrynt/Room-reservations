@@ -13,7 +13,7 @@
         <div>{{ error.messageKey|trans(error.messageData, 'security') }}</div>
     {% endif %}
 
-    <article>
+    <article id="login-form">
         <section>
             <h1>
                 HMS(t)R
@@ -37,6 +37,7 @@
                 <button class="button-base button-main" type="submit">Continue</button>
             </form>
 
+            {# TODO : add signup href #}
             <a class="button-base button-main-outline" href="#">Sign Up</a>
         </section>
     </article>
