@@ -1,0 +1,47 @@
+main {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+article {
+    width: 90%;
+    max-width: 35rem;
+    display: flex;
+    align-items: center;
+    flex-flow: column;
+    background-color: var(--white);
+    border-radius: .438rem;
+    box-shadow: 0 2px 8px 0 rgba(0,0,0,0.1);
+    padding: 3rem 0 3rem 0;
+}
+
+section {
+    display: flex;
+    flex-flow: column;
+    align-items: center;
+}
+
+section h1 {
+    font-weight: 900;
+    font-family: 'Martel Sans', sans-serif;
+    font-size: 4.5rem;
+    color: var(--main);
+    margin-bottom: 2rem;
+}
+
+section h2 {
+    font-weight: 400;
+    font-family: 'Martel Sans', sans-serif;
+    font-size: 1.5rem;
+    color: var(--black);
+    margin-bottom: .5rem;
+}
+
+section form {
+    margin-bottom: 4rem;
+    display: flex;
+    justify-content: center;
+    flex-flow: column;
+    width: 100%;
+}
