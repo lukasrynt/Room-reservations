@@ -4,6 +4,8 @@ namespace App\Entity;
 
 use App\Repository\RoomRepository;
 use DateTime;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -42,6 +44,22 @@ class Room
      * @ORM\Column(type="time")
      */
     private \DateTime $opened_to;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=Building::class, inversedBy="rooms")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private Building $building;
+
+    /**
+     * @ORM\ManyToMany(targetEntity=User::class, inversedBy="rooms")
+     */
+    private ?Collection $users;
+
+    public function __construct()
+    {
+        $this->users = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -113,6 +131,42 @@ class Room
     public function setOpenedTo(\DateTime $opened_to): self
     {
         $this->opened_to = $opened_to;
+
+        return $this;
+    }
+
+    public function getBuilding(): Building
+    {
+        return $this->building;
+    }
+
+    public function setBuilding(Building $building): self
+    {
+        $this->building = $building;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|User[]
+     */
+    public function getUsers(): Collection
+    {
+        return $this->users;
+    }
+
+    public function addUser(User $user): self
+    {
+        if (!$this->users->contains($user)) {
+            $this->users[] = $user;
+        }
+
+        return $this;
+    }
+
+    public function removeUser(User $user): self
+    {
+        $this->users->removeElement($user);
 
         return $this;
     }

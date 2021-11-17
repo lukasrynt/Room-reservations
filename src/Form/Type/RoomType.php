@@ -2,6 +2,8 @@
 
 namespace App\Form\Type;
 
+use App\Entity\Building;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\TimeType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
@@ -17,7 +19,10 @@ class RoomType extends AbstractType
             ->add('name', TextType::class)
             ->add('floor', IntegerType::class)
             ->add('opened_from', TimeType::class)
-            ->add('opened_to', TimeType::class);
+            ->add('opened_to', TimeType::class)
+            ->add('building', EntityType::class, [
+                "class" => Building::class
+            ]);
     }
 }
 
