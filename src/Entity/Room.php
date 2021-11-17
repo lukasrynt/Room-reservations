@@ -38,12 +38,12 @@ class Room
     /**
      * @ORM\Column(type="time")
      */
-    private \DateTime $opened_from;
+    private \DateTime $openedFrom;
 
     /**
      * @ORM\Column(type="time")
      */
-    private \DateTime $opened_to;
+    private \DateTime $openedTo;
 
     /**
      * @ORM\ManyToOne(targetEntity=Building::class, inversedBy="rooms")
@@ -54,11 +54,17 @@ class Room
     /**
      * @ORM\ManyToMany(targetEntity=User::class, inversedBy="rooms")
      */
-    private ?Collection $users;
+    private Collection $users;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Request::class, mappedBy="room")
+     */
+    private Collection $requests;
 
     public function __construct()
     {
         $this->users = new ArrayCollection();
+        $this->requests = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -104,33 +110,33 @@ class Room
 
     public function getOpened_from():string
     {
-        return $this->opened_from->format("H:i");
+        return $this->openedFrom->format("H:i");
     }
 
     public function getOpenedFrom(): \DateTime
     {
-        return $this->opened_from;
+        return $this->openedFrom;
     }
 
-    public function setOpenedFrom(\DateTime $opened_from): self
+    public function setOpenedFrom(\DateTime $openedFrom): self
     {
-        $this->opened_from = $opened_from;
+        $this->openedFrom = $openedFrom;
         return $this;
     }
 
     public function getOpened_to(): string
     {
-        return $this->opened_to->format("H:i");
+        return $this->openedTo->format("H:i");
     }
 
     public function getOpenedTo(): \DateTime
     {
-        return $this->opened_to;
+        return $this->openedTo;
     }
 
-    public function setOpenedTo(\DateTime $opened_to): self
+    public function setOpenedTo(\DateTime $openedTo): self
     {
-        $this->opened_to = $opened_to;
+        $this->openedTo = $openedTo;
 
         return $this;
     }
@@ -170,4 +176,41 @@ class Room
 
         return $this;
     }
+
+    /**
+     * @return Collection|Request[]
+     */
+    public function getRequests(): Collection
+    {
+        return $this->requests;
+    }
+
+    public function addRequest(Request $request): self
+    {
+        if (!$this->requests->contains($request)) {
+            $this->requests[] = $request;
+            $request->setRoom($this);
+        }
+
+        return $this;
+    }
+
+    public function removeRequest(Request $request): self
+    {
+        if ($this->requests->removeElement($request)) {
+            // set the owning side to null (unless already changed)
+            if ($request->getRoom() === $this) {
+                $request->setRoom(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function __toString()
+    {
+        return $this->name;
+    }
+
+
 }

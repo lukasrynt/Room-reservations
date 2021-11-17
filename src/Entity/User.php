@@ -26,12 +26,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private string $first_name;
+    private string $firstName;
 
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private string $last_name;
+    private string $lastName;
 
     /**
      * @ORM\Column(type="string", length=255)
@@ -41,7 +41,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     /**
      * @ORM\Column(type="integer", nullable=true)
      */
-    private int $phone_number;
+    private int $phoneNumber;
 
     /**
      * @ORM\Column(type="json")
@@ -63,7 +63,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
-    private string $plain_password;
+    private string $plainPassword;
 
     /**
      * @ORM\Column(type="string", length=100, nullable=false)
@@ -78,11 +78,24 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     /**
      * @ORM\ManyToMany(targetEntity=Room::class, mappedBy="users")
      */
-    private ?Collection $rooms;
+    private Collection $rooms;
+
+    /**
+     * @ORM\ManyToMany(targetEntity=Request::class, mappedBy="attendees")
+     */
+    private Collection $requestsToAttend;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Request::class, mappedBy="requestor")
+     */
+    private Collection $requests;
+
 
     public function __construct()
     {
         $this->rooms = new ArrayCollection();
+        $this->requestsToAttend = new ArrayCollection();
+        $this->requests = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -92,24 +105,24 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     public function getFirstName(): ?string
     {
-        return $this->first_name;
+        return $this->firstName;
     }
 
-    public function setFirstName(string $first_name): self
+    public function setFirstName(string $firstName): self
     {
-        $this->first_name = $first_name;
+        $this->firstName = $firstName;
 
         return $this;
     }
 
     public function getLastName(): ?string
     {
-        return $this->last_name;
+        return $this->lastName;
     }
 
-    public function setLastName(string $last_name): self
+    public function setLastName(string $lastName): self
     {
-        $this->last_name = $last_name;
+        $this->lastName = $lastName;
 
         return $this;
     }
@@ -128,12 +141,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     public function getPhoneNumber(): ?int
     {
-        return $this->phone_number;
+        return $this->phoneNumber;
     }
 
-    public function setPhoneNumber(?int $phone_number): self
+    public function setPhoneNumber(?int $phoneNumber): self
     {
-        $this->phone_number = $phone_number;
+        $this->phoneNumber = $phoneNumber;
 
         return $this;
     }
@@ -145,7 +158,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->role;
     }
 
-    public function setRole(?string $role): self
+    public function setRole(string $role): self
     {
         $this->role = $role;
 
@@ -157,7 +170,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->note;
     }
 
-    public function setNote(?string $note): self
+    public function setNote(string $note): self
     {
         $this->note = $note;
 
@@ -181,15 +194,15 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     public function getPlainPassword(): ?string
     {
-        return $this->plain_password;
+        return $this->plainPassword;
     }
 
     /**
-     * @param string|null $plain_password
+     * @param string $plainPassword
      */
-    public function setPlainPassword(?string $plain_password): void
+    public function setPlainPassword(string $plainPassword): void
     {
-        $this->plain_password = $plain_password;
+        $this->plainPassword = $plainPassword;
     }
 
 
@@ -210,7 +223,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function eraseCredentials()
     {
         // If you store any temporary, sensitive data on the user, clear it here
-        $this->plain_password = "";
+        $this->plainPassword = "";
     }
 
     public function getUsername(): string
@@ -271,4 +284,68 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
         return $this;
     }
+
+    /**
+     * @return Collection|Request[]
+     */
+    public function getRequestsToAttend(): Collection
+    {
+        return $this->requestsToAttend;
+    }
+
+    public function addRequestsToAttend(Request $request): self
+    {
+        if (!$this->requestsToAttend->contains($request)) {
+            $this->requestsToAttend[] = $request;
+            $request->addAttendee($this);
+        }
+
+        return $this;
+    }
+
+    public function removeRequestsToAttend(Request $request): self
+    {
+        if ($this->requestsToAttend->removeElement($request)) {
+            $request->removeAttendee($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Request[]
+     */
+    public function getRequests(): Collection
+    {
+        return $this->requests;
+    }
+
+    public function addRequest(Request $request): self
+    {
+        if (!$this->requests->contains($request)) {
+            $this->requests[] = $request;
+            $request->setRequestor($this);
+        }
+
+        return $this;
+    }
+
+    public function removeRequest(Request $request): self
+    {
+        if ($this->requests->removeElement($request)) {
+            // set the owning side to null (unless already changed)
+            if ($request->getRequestor() === $this) {
+                $request->setRequestor(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function __toString()
+    {
+        return $this->firstName . " " . $this->lastName;
+    }
+
+
 }
