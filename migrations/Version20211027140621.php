@@ -28,7 +28,6 @@ final class Version20211027140621 extends AbstractMigration
 
     public function down(Schema $schema): void
     {
-        $this->addSql('CREATE SCHEMA public');
         $this->addSql('DROP SEQUENCE room_id_seq CASCADE');
         $this->addSql('DROP TABLE room');
     }
