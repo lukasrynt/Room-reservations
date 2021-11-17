@@ -1,0 +1,7 @@
+{% extends 'base.html.twig' %}
+
+{% block title %} Classroom detail {% endblock %}
+
+{% block main %}
+    Requestor: {{ request.requestor }}, Room: {{ request.room }}, Valid: {{ request.valid }}
+{% endblock %}
