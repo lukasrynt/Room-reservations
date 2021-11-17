@@ -1,0 +1,1 @@
+TRUNCATE "user", room, building, room_user, request_user, request
