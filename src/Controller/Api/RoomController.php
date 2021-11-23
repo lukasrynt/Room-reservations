@@ -13,7 +13,7 @@ use Symfony\Component\Routing\Annotation\Route;
 /**
  * @package App\Controller\Api
  *
- * @Route("/api/rooms")
+ * @Route("/api/rooms", name="_api_rooms")
  */
 class RoomController extends AbstractFOSRestController
 {
@@ -27,15 +27,26 @@ class RoomController extends AbstractFOSRestController
         $this->roomRepository = $roomRepository;
     }
 
-
     /**
-     * @Route("/", methods={"GET"})
+     * @Route("/", methods={"GET"}, name="list")
      * @return Response
      */
     public function all(): Response
     {
         $rooms = $this->roomRepository->findAll();
         $view = $this->view($rooms, 200);
+        return $this->handleView($view);
+    }
+
+    /**
+     * @Route("/{id}", name="detail")
+     * @param int $id
+     * @return Response
+     */
+    public function detail(int $id): Response
+    {
+        $request = $this->roomRepository->find($id);
+        $view = $this->view($request, 200);
         return $this->handleView($view);
     }
 }

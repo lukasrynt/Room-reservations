@@ -13,7 +13,7 @@ use Symfony\Component\Routing\Annotation\Route;
 /**
  * @package App\Controller\Api
  *
- * @Route("/api/users")
+ * @Route("/api/users", name="api_users_")
  */
 class UserController extends AbstractFOSRestController
 {
@@ -27,15 +27,26 @@ class UserController extends AbstractFOSRestController
         $this->userRepository = $userRepository;
     }
 
-
     /**
-     * @Route("/", methods={"GET"})
+     * @Route("/", methods={"GET"}, name="list")
      * @return Response
      */
     public function all(): Response
     {
         $users = $this->userRepository->findAll();
         $view = $this->view($users, 200);
+        return $this->handleView($view);
+    }
+
+    /**
+     * @Route("/{id}", name="detail")
+     * @param int $id
+     * @return Response
+     */
+    public function detail(int $id): Response
+    {
+        $request = $this->userRepository->find($id);
+        $view = $this->view($request, 200);
         return $this->handleView($view);
     }
 }
