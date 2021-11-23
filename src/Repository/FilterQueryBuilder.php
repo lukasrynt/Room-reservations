@@ -37,13 +37,14 @@ class FilterQueryBuilder
     {
         foreach ($attributes as $key => $val) {
             $this->parseAttribute($val, $name, $type);
-            if ($val['type'] === 'LIKE') {
+            if ($type === 'LIKE') {
                 $this->addCondition("e.$key LIKE :$key");
-                $this->builder->setParameter($key, '%' . $val['name'] . '%');
+                $this->builder->setParameter($key, "%$name%");
             }
-            else if ($val['type'] === 'EXACT')
+            else if ($type === 'EXACT') {
                 $this->addCondition("e.$key = :$key");
-                $this->builder->setParameter($key, $val['name']);
+                $this->builder->setParameter($key, $name);
+            }
         }
         return $this->builder->getQuery();
     }
@@ -56,7 +57,7 @@ class FilterQueryBuilder
             $this->builder->orWhere($query);
     }
 
-    private function parseAttribute(string $attribute, string &$name, &$type): void
+    private function parseAttribute(string $attribute, ?string &$name, ?string &$type): void
     {
         $split = explode(':', $attribute);
         if (count($split) == 1) {

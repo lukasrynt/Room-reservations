@@ -70,11 +70,16 @@ class UserController extends AbstractController
 
     /**
      * @Route("/users", name="users_index")
+     * @param Request $request
      * @return Response
      */
-    public function index(): Response
+    public function index(Request $request): Response
     {
-        $users = $this->userRepository->findAll();
+        $queryParams = $request->query->all();
+        if (empty($queryParams))
+            $users = $this->userRepository->findAll();
+        else
+            $users = $this->userRepository->filter($queryParams);
         return $this->render('users/index.html.twig', ['users' => $users]);
     }
 
