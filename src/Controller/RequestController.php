@@ -31,12 +31,12 @@ class RequestController extends AbstractController
      * @param int $id
      * @return Response
      */
-    public function detail(int $id){
+    public function detail(int $id): Response
+    {
         $request = $this->requestRepository->find($id);
         if (!$request)
             return $this->render('errors/404.html.twig');
         return $this->render('requests/detail.html.twig', ['request' => $request]);
 
     }
-
 }
