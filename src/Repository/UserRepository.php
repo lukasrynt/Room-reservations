@@ -3,7 +3,8 @@
 namespace App\Repository;
 
 use App\Entity\User;
-use App\Services\FilterQueryBuilder;
+use App\Services\Filter;
+use App\Services\Paginator;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\LazyCriteriaCollection;
@@ -27,7 +28,8 @@ class UserRepository extends ServiceEntityRepository
      */
     public function filter(array $filters): Collection
     {
-        $criteria = (new FilterQueryBuilder())->createQuery($filters);
+        $criteria = (new Filter())->createQuery($filters);
+        $criteria = (new Paginator($criteria, 2))->getCriteriaForPage(1);
         return $this->matching($criteria);
     }
 }
