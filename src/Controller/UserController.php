@@ -4,30 +4,29 @@ namespace App\Controller;
 
 use App\Form\Type\LoginType;
 use App\Form\Type\UserType;
-use App\Repository\UserRepository;
+use App\Services\UserService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 use Symfony\Component\Routing\Annotation\Route;
 
 
 class UserController extends AbstractController
 {
 
-    private UserRepository $userRepository;
+    private UserService $userService;
     private EntityManagerInterface $entityManager;
 
     /**
      * RoomController constructor.
-     * @param UserRepository $userRepository
+     * @param UserService $userService
      * @param EntityManagerInterface $entityManager
      */
-    public function __construct(UserRepository $userRepository, EntityManagerInterface $entityManager)
+    public function __construct(UserService $userService, EntityManagerInterface $entityManager)
     {
-        $this->userRepository = $userRepository;
+        $this->userService = $userService;
         $this->entityManager = $entityManager;
     }
 
@@ -37,7 +36,7 @@ class UserController extends AbstractController
      * @return Response
      */
     public function detail(int $id): Response{
-        $user = $this->userRepository->find($id);
+        $user = $this->userService->find($id);
         if (!$user)
             return $this->render('errors/404.html.twig');
         return $this->render('users/detail.html.twig', ['user' => $user]);
@@ -51,7 +50,7 @@ class UserController extends AbstractController
      */
     public function editUser(Request $request, int $id) :Response
     {
-        $user = $this->userRepository->find($id);
+        $user = $this->userService->find($id);
 
         $form = $this->createForm(UserType::class, $user)
             ->add('edit', SubmitType::class);
@@ -77,9 +76,9 @@ class UserController extends AbstractController
     {
         $queryParams = $request->query->all();
         if (empty($queryParams))
-            $users = $this->userRepository->findAll();
+            $users = $this->userService->findAll();
         else
-            $users = $this->userRepository->filter($queryParams);
+            $users = $this->userService->filter($queryParams);
         return $this->render('users/index.html.twig', ['users' => $users]);
     }
 
