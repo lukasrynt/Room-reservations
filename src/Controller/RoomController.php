@@ -5,8 +5,7 @@ namespace App\Controller;
 
 
 
-use App\Repository\RoomRepository;
-use Doctrine\ORM\EntityManagerInterface;
+use App\Services\RoomService;
 use App\Form\Type\RoomType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
@@ -16,19 +15,17 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class RoomController extends AbstractController
 {
-    private RoomRepository $roomRepository;
-    private EntityManagerInterface $entityManager;
+    private RoomService $roomService;
 
     /**
      * RoomController constructor.
-     * @param RoomRepository $roomRepository
-     * @param EntityManagerInterface $entityManager
+     * @param RoomService $roomService
      */
-    public function __construct(RoomRepository $roomRepository, EntityManagerInterface $entityManager)
+    public function __construct(RoomService $roomService)
     {
-        $this->roomRepository = $roomRepository;
-        $this->entityManager = $entityManager;
+        $this->roomService = $roomService;
     }
+
 
     /**
      * @Route("/rooms", name="rooms_index")
@@ -36,7 +33,7 @@ class RoomController extends AbstractController
      */
     public function index(): Response
     {
-        $rooms = $this->roomRepository->findAll();
+        $rooms = $this->roomService->findAll();
         return $this->render('rooms/index.html.twig', ['rooms' => $rooms]);
     }
 
@@ -46,7 +43,7 @@ class RoomController extends AbstractController
      * @return Response
      */
     public function detail(int $id): Response{
-        $room = $this->roomRepository->find($id);
+        $room = $this->roomService->find($id);
         if (!$room)
             return $this->render('errors/404.html.twig');
         return $this->render('rooms/detail.html.twig', ['room' => $room]);
@@ -59,7 +56,7 @@ class RoomController extends AbstractController
      * @return Response
      */
     public function edit(Request $request, int $id): Response{
-        $room = $this->roomRepository->find($id);
+        $room = $this->roomService->find($id);
 
         if (!$room)
             return $this->render('errors/404.html.twig');
@@ -69,8 +66,7 @@ class RoomController extends AbstractController
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()){
-            $this->entityManager->persist($form->getData());
-            $this->entityManager->flush();
+            $this->roomService->save($form->getData());
             return $this->redirectToRoute('room_detail', ['id' => $room->getId()]);
         }
 
