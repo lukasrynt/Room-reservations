@@ -16,17 +16,18 @@ use FOS\RestBundle\Exception\InvalidParameterException;
  * Where LIKE type generates a like query to db and EXACT generates exact queries.
  * Default is EXACT type.
  */
-class FilterQueryBuilder
+class Filter
 {
     private Criteria $criteria;
     private bool $andMode;
 
     /**
+     * @param Criteria|null $criteria
      * @param bool $andMode
      */
-    public function __construct(bool $andMode = true)
+    public function __construct(Criteria $criteria = null, bool $andMode = true)
     {
-        $this->criteria = Criteria::create();
+        $this->criteria = $criteria ?? Criteria::create();
         $this->andMode = $andMode;
     }
 
