@@ -9,11 +9,11 @@ use Doctrine\Common\Collections\Criteria;
 use FOS\RestBundle\Exception\InvalidParameterException;
 
 /**
- * Class for creating queries from filters in the following format:
+ * Class for creating criteria from filters in the following format:
  *      ['name' => 'value:EXACT']
  *      ['name' => 'value:LIKE']
  *      ['name' => 'value']
- * Where LIKE type generates a like query to db and EXACT generates exact queries.
+ * Where LIKE type generates a contains query and EXACT generates exact matches.
  * Default is EXACT type.
  */
 class Filter

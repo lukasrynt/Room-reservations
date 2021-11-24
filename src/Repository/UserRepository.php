@@ -4,6 +4,7 @@ namespace App\Repository;
 
 use App\Entity\User;
 use App\Services\Filter;
+use App\Services\Orderer;
 use App\Services\Paginator;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Collections\Collection;
@@ -29,7 +30,8 @@ class UserRepository extends ServiceEntityRepository
     public function filter(array $filters): Collection
     {
         $criteria = (new Filter())->createQuery($filters);
-        $criteria = (new Paginator($criteria, 2))->getCriteriaForPage(1);
+//        $criteria = (new Paginator($criteria, 2))->getCriteriaForPage(1);
+        $criteria = (new Orderer($criteria))->getOrderCriteria(['lastName' => 'DESC']);
         return $this->matching($criteria);
     }
 }
