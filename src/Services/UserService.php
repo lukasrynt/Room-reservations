@@ -44,6 +44,15 @@ class UserService
     }
 
     /**
+     * @param User $user
+     */
+    public function save(User $user)
+    {
+        $this->entityManager->persist($user);
+        $this->entityManager->flush();
+    }
+
+    /**
      * @param array $filters
      * @return Collection|LazyCriteriaCollection
      */

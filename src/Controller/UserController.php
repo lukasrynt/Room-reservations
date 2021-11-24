@@ -2,36 +2,33 @@
 
 namespace App\Controller;
 
-use App\Form\Type\LoginType;
 use App\Form\Type\UserType;
 use App\Services\UserService;
-use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
-
+/**
+ * @Route("/users", name="users_")
+ */
 class UserController extends AbstractController
 {
 
     private UserService $userService;
-    private EntityManagerInterface $entityManager;
 
     /**
-     * RoomController constructor.
+     * UserController constructor.
      * @param UserService $userService
-     * @param EntityManagerInterface $entityManager
      */
-    public function __construct(UserService $userService, EntityManagerInterface $entityManager)
+    public function __construct(UserService $userService)
     {
         $this->userService = $userService;
-        $this->entityManager = $entityManager;
     }
 
     /**
-     * @Route("/users/{id}", name="user_detail")
+     * @Route("/{id}", name="detail")
      * @param int $id
      * @return Response
      */
@@ -43,7 +40,7 @@ class UserController extends AbstractController
     }
 
     /**
-     * @Route("/users/{id}/edit", name="edit_user")
+     * @Route("/{id}/edit", name="edit")
      * @param Request $request
      * @param int $id
      * @return Response
@@ -57,9 +54,8 @@ class UserController extends AbstractController
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()){
-            $this->entityManager->persist($form->getData());
-            $this->entityManager->flush();
-            return $this->redirectToRoute('user_detail', ['id' => $user->getId()]);
+            $this->userService->save($form->getData());
+            return $this->redirectToRoute('users_detail', ['id' => $user->getId()]);
         }
 
         return $this->render('users/edit.html.twig', [
@@ -68,7 +64,7 @@ class UserController extends AbstractController
     }
 
     /**
-     * @Route("/users", name="users_index")
+     * @Route("/", name="index")
      * @param Request $request
      * @return Response
      */
@@ -81,5 +77,4 @@ class UserController extends AbstractController
             $users = $this->userService->filter($queryParams);
         return $this->render('users/index.html.twig', ['users' => $users]);
     }
-
 }

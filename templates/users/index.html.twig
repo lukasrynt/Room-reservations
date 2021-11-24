@@ -21,7 +21,7 @@
                     <td>{{ user.email }}</td>
                     <td>{{ user.role }}</td>
                     <td>{{ user.phoneNumber }}</td>
-                    <td><a href={{ path('user_detail', {id: user.id }) }}>Detail</a></td>
+                    <td><a href={{ path('users_detail', {id: user.id }) }}>Detail</a></td>
                 </tr>
             {% endfor %}
             </tbody>

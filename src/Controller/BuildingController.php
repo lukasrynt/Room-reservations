@@ -1,9 +1,6 @@
 <?php
 
-
 namespace App\Controller;
-
-
 
 use App\Form\Type\BuildingType;
 use App\Services\BuildingService;
@@ -13,6 +10,9 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
+/**
+ * @Route("/buildings", name="buildings_")
+ */
 class BuildingController extends AbstractController
 {
     private BuildingService $buildingService;
@@ -27,7 +27,7 @@ class BuildingController extends AbstractController
     }
 
     /**
-     * @Route("/buildings", name="buildings_index")
+     * @Route("/", name="index")
      * @return Response
      */
     public function index(): Response
@@ -37,11 +37,12 @@ class BuildingController extends AbstractController
     }
 
     /**
-     * @Route("/buildings/{id}", name="building_detail")
+     * @Route("/{id}", name="detail")
      * @param int $id
      * @return Response
      */
-    public function detail(int $id): Response{
+    public function detail(int $id): Response
+    {
         $building = $this->buildingService->find($id);
         if (!$building)
             return $this->render('errors/404.html.twig');
@@ -49,12 +50,13 @@ class BuildingController extends AbstractController
     }
 
     /**
-     * @Route("/buildings/{id}/edit", name="building_edit")
+     * @Route("/{id}/edit", name="edit")
      * @param Request $request
      * @param int $id
      * @return Response
      */
-    public function edit(Request $request, int $id): Response{
+    public function edit(Request $request, int $id): Response
+    {
         $building = $this->buildingService->find($id);
 
         if (!$building)
@@ -66,7 +68,7 @@ class BuildingController extends AbstractController
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()){
             $this->buildingService->save($form->getData());
-            return $this->redirectToRoute('building_detail', ['id' => $building->getId()]);
+            return $this->redirectToRoute('buildings_detail', ['id' => $building->getId()]);
         }
 
         return $this->render('buildings/edit.html.twig', [

@@ -1,9 +1,6 @@
 <?php
 
-
 namespace App\Controller;
-
-
 
 use App\Services\RoomService;
 use App\Form\Type\RoomType;
@@ -13,6 +10,9 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
+/**
+ * @Route("/rooms", name="rooms_")
+ */
 class RoomController extends AbstractController
 {
     private RoomService $roomService;
@@ -26,9 +26,8 @@ class RoomController extends AbstractController
         $this->roomService = $roomService;
     }
 
-
     /**
-     * @Route("/rooms", name="rooms_index")
+     * @Route("/", name="index")
      * @return Response
      */
     public function index(): Response
@@ -38,7 +37,7 @@ class RoomController extends AbstractController
     }
 
     /**
-     * @Route("/rooms/{id}", name="room_detail")
+     * @Route("/{id}", name="detail")
      * @param int $id
      * @return Response
      */
@@ -50,7 +49,7 @@ class RoomController extends AbstractController
     }
 
     /**
-     * @Route("/rooms/{id}/edit", name="room_edit")
+     * @Route("/{id}/edit", name="edit")
      * @param Request $request
      * @param int $id
      * @return Response
@@ -67,7 +66,7 @@ class RoomController extends AbstractController
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()){
             $this->roomService->save($form->getData());
-            return $this->redirectToRoute('room_detail', ['id' => $room->getId()]);
+            return $this->redirectToRoute('rooms_detail', ['id' => $room->getId()]);
         }
 
         return $this->render('rooms/edit.html.twig', [
