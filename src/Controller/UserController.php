@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Controller\Helpers\ParamsParser;
 use App\Form\Type\UserType;
 use App\Services\UserService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -71,10 +72,10 @@ class UserController extends AbstractController
     public function index(Request $request): Response
     {
         $queryParams = $request->query->all();
-        if (empty($queryParams))
-            $users = $this->userService->findAll();
-        else
-            $users = $this->userService->filter($queryParams);
+        $parser = new ParamsParser($queryParams);
+        $users = $this->userService->filter(
+            $parser->getFilters('filter_by'), $parser->getFilters('order_by'), $parser->getFilters('paginate')
+        );
         return $this->render('users/index.html.twig', ['users' => $users]);
     }
 }

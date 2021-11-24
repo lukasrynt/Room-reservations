@@ -53,11 +53,13 @@ class UserService
     }
 
     /**
-     * @param array $filters
+     * @param array|null $findFilters
+     * @param array|null $orderByFilters
+     * @param array|null $paginationFilters
      * @return Collection|LazyCriteriaCollection
      */
-    public function filter(array $filters): Collection
+    public function filter(?array $findFilters, ?array $orderByFilters, ?array $paginationFilters): Collection
     {
-        return $this->userRepository->filter($filters);
+        return $this->userRepository->filter($findFilters, $orderByFilters, $paginationFilters);
     }
 }

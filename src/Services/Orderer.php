@@ -25,8 +25,10 @@ class Orderer
         $this->criteria = $criteria ?? Criteria::create();
     }
 
-    public function getOrderCriteria(array $orders): Criteria
+    public function getOrderCriteria(?array $orders): Criteria
     {
+        if (!$orders)
+            return $this->criteria;
         $this->criteria->orderBy($orders);
         return $this->criteria;
     }

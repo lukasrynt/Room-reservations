@@ -10,8 +10,6 @@ use FOS\RestBundle\Exception\InvalidParameterException;
 
 /**
  * Class for creating criteria from filters in the following format:
- *      ['name' => 'value:EXACT']
- *      ['name' => 'value:LIKE']
  *      ['name' => 'value']
  * Where LIKE type generates a contains query and EXACT generates exact matches.
  * Default is EXACT type.
@@ -31,34 +29,20 @@ class Filter
         $this->andMode = $andMode;
     }
 
-    public function createQuery(array $attributes): Criteria
+    public function createQuery(?array $attributes): Criteria
     {
-        foreach ($attributes as $key => $attr) {
-            $this->parseAttribute($attr, $value, $type);
-            if ($type === 'LIKE' && !is_numeric($value))
-                $expression = Criteria::expr()->contains($key, $value);
-            else
+        if (!$attributes)
+            return $this->criteria;
+        foreach ($attributes as $key => $value) {
+            if (is_numeric($value))
                 $expression = Criteria::expr()->eq($key, $value);
+            else
+                $expression = Criteria::expr()->contains($key, $value);
             if ($this->andMode)
                 $this->criteria->andWhere($expression);
             else
                 $this->criteria->orWhere($expression);
         }
         return $this->criteria;
-    }
-
-    private function parseAttribute(string $attribute, ?string &$value, ?string &$type): void
-    {
-        $split = explode(':', $attribute);
-        if (count($split) == 1) {
-            $value = $split[0];
-            $type = 'EXACT';
-        }
-        else if (count($split) == 2) {
-            $value = $split[0];
-            $type = $split[1];
-        }
-        else
-            throw new InvalidParameterException();
     }
 }

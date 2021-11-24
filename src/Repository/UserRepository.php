@@ -27,11 +27,12 @@ class UserRepository extends ServiceEntityRepository
     /**
      * @return Collection|LazyCriteriaCollection
      */
-    public function filter(array $filters): Collection
+    public function filter(?array $findFilters, ?array $orderByFilters, ?array $paginationFilters): Collection
     {
-        $criteria = (new Filter())->createQuery($filters);
-//        $criteria = (new Paginator($criteria, 2))->getCriteriaForPage(1);
-        $criteria = (new Orderer($criteria))->getOrderCriteria(['lastName' => 'DESC']);
+        $criteria = (new Filter())->createQuery($findFilters);
+        $criteria = (new Orderer($criteria))->getOrderCriteria($orderByFilters);
+        $criteria = (new Paginator($criteria, $paginationFilters['page_size'] ?? null))
+                        ->getCriteriaForPage($paginationFilters['page'] ?? null);
         return $this->matching($criteria);
     }
 }
