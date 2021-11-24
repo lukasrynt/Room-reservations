@@ -7,7 +7,9 @@ namespace App\Services;
 
 use App\Entity\User;
 use App\Repository\UserRepository;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\LazyCriteriaCollection;
 
 class UserService
 {
@@ -41,7 +43,11 @@ class UserService
         return $this->userRepository->findAll();
     }
 
-    public function filter(array $filters): array
+    /**
+     * @param array $filters
+     * @return Collection|LazyCriteriaCollection
+     */
+    public function filter(array $filters): Collection
     {
         return $this->userRepository->filter($filters);
     }

@@ -3,7 +3,10 @@
 namespace App\Repository;
 
 use App\Entity\User;
+use App\Services\FilterQueryBuilder;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\ORM\LazyCriteriaCollection;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -20,11 +23,11 @@ class UserRepository extends ServiceEntityRepository
     }
 
     /**
-     * @return User[]
+     * @return Collection|LazyCriteriaCollection
      */
-    public function filter(array $filters): array
+    public function filter(array $filters): Collection
     {
-        $builder = new FilterQueryBuilder($this);
-        return $builder->createQuery($filters)->getResult();
+        $criteria = (new FilterQueryBuilder())->createQuery($filters);
+        return $this->matching($criteria);
     }
 }
