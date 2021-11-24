@@ -6,8 +6,7 @@ namespace App\Controller;
 
 
 use App\Form\Type\BuildingType;
-use App\Repository\BuildingRepository;
-use Doctrine\ORM\EntityManagerInterface;
+use App\Services\BuildingService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\Request;
@@ -16,18 +15,15 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class BuildingController extends AbstractController
 {
-    private BuildingRepository $buildingRepository;
-    private EntityManagerInterface $entityManager;
+    private BuildingService $buildingService;
 
     /**
      * BuildingController constructor.
-     * @param BuildingRepository $buildingRepository
-     * @param EntityManagerInterface $entityManager
+     * @param BuildingService $buildingService
      */
-    public function __construct(BuildingRepository $buildingRepository, EntityManagerInterface $entityManager)
+    public function __construct(BuildingService $buildingService)
     {
-        $this->buildingRepository = $buildingRepository;
-        $this->entityManager = $entityManager;
+        $this->buildingService = $buildingService;
     }
 
     /**
@@ -36,7 +32,7 @@ class BuildingController extends AbstractController
      */
     public function index(): Response
     {
-        $buildings = $this->buildingRepository->findAll();
+        $buildings = $this->buildingService->findAll();
         return $this->render('buildings/index.html.twig', ['buildings' => $buildings]);
     }
 
@@ -46,7 +42,7 @@ class BuildingController extends AbstractController
      * @return Response
      */
     public function detail(int $id): Response{
-        $building = $this->buildingRepository->find($id);
+        $building = $this->buildingService->find($id);
         if (!$building)
             return $this->render('errors/404.html.twig');
         return $this->render('buildings/detail.html.twig', ['building' => $building]);
@@ -59,7 +55,7 @@ class BuildingController extends AbstractController
      * @return Response
      */
     public function edit(Request $request, int $id): Response{
-        $building = $this->buildingRepository->find($id);
+        $building = $this->buildingService->find($id);
 
         if (!$building)
             return $this->render('errors/404.html.twig');
@@ -69,8 +65,7 @@ class BuildingController extends AbstractController
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()){
-            $this->entityManager->persist($form->getData());
-            $this->entityManager->flush();
+            $this->buildingService->save($form->getData());
             return $this->redirectToRoute('building_detail', ['id' => $building->getId()]);
         }
 
