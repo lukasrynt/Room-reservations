@@ -1,8 +1,6 @@
 <?php
 
-
 namespace App\Services;
-
 
 use App\Entity\Room;
 use App\Repository\RoomRepository;
@@ -42,6 +40,4 @@ class RoomService
         $this->entityManager->persist($room);
         $this->entityManager->flush();
     }
-
-
 }
