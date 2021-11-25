@@ -6,7 +6,6 @@
 namespace App\Services;
 
 use Doctrine\Common\Collections\Criteria;
-use FOS\RestBundle\Exception\InvalidParameterException;
 
 /**
  * Class for creating criteria from filters in the following format:
