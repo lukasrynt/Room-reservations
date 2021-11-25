@@ -32,7 +32,8 @@ class ParamsParser
         $mapped = [];
         foreach ($filters as $filter) {
             $expl = explode(':', $filter);
-            $mapped[$expl[0]] = $expl[1];
+            if (count($expl) == 2)
+                $mapped[$expl[0]] = $expl[1];
         }
 
         return $mapped;
