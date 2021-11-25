@@ -38,4 +38,17 @@ class ParamsParser
 
         return $mapped;
     }
+
+    public static function mapArrayToParams(array $array): ?string
+    {
+        $res = '';
+        $keys = array_keys($array);
+        $last = end($keys);
+        foreach ($array as $key => $val) {
+            $res .= $key . ':' . $val;
+            if ($key != $last)
+                $res .= ',';
+        }
+        return $res;
+    }
 }

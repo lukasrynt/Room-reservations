@@ -21,10 +21,11 @@
                     <td>{{ user.email }}</td>
                     <td>{{ user.role }}</td>
                     <td>{{ user.phoneNumber }}</td>
-                    <td><a href={{ path('users_detail', {id: user.id }) }}>Detail</a></td>
+                    <td><a href={{ path('users_detail', {id: user.id}) }}>Detail</a></td>
                 </tr>
             {% endfor %}
             </tbody>
         </table>
+        <a href={{ path('users_index', prevPageParams(app.request.query.all)) }}>&lt;</a><a href={{ path('users_index', nextPageParams(app.request.query.all)) }}>&gt;</a>
     </section>
 {% endblock %}
