@@ -1,0 +1,10 @@
+{% extends 'base.html.twig' %}
+
+{% block title %} Approve reservation {% endblock %}
+
+{% block main %}
+    {% for request in requests %}
+        {{ request.valid }} - {{ request.requestor }}
+        <br>
+    {% endfor %}
+{% endblock %}
