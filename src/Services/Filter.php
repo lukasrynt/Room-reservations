@@ -28,7 +28,7 @@ class Filter
         $this->andMode = $andMode;
     }
 
-    public function createQuery(?array $attributes): Criteria
+    public function getFilterCriteria(?array $attributes): Criteria
     {
         if (!$attributes)
             return $this->criteria;

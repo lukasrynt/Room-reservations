@@ -29,7 +29,7 @@ class UserRepository extends ServiceEntityRepository
      */
     public function filter(?array $findFilters, ?array $orderByFilters, ?array $paginationFilters): Collection
     {
-        $criteria = (new Filter())->createQuery($findFilters);
+        $criteria = (new Filter())->getFilterCriteria($findFilters);
         $criteria = (new Orderer($criteria))->getOrderCriteria($orderByFilters);
         $criteria = (new Paginator($criteria, $paginationFilters['page_size'] ?? null))
                         ->getCriteriaForPage($paginationFilters['page'] ?? null);
