@@ -3,7 +3,10 @@
 namespace App\Repository;
 
 use App\Entity\Room;
+use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\Criteria;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -47,4 +50,13 @@ class RoomRepository extends ServiceEntityRepository
         ;
     }
     */
+
+    public function findRoomsByRoomManager(User $user): Collection
+    {
+        // todo jiný rooms, ty který spravuju
+        $rooms = $user->getRooms();
+        $criteria = Criteria::create()
+            ->andWhere(Criteria::expr()->in('id', array_column((array)$rooms, 'id')));
+        return $this->matching($criteria);
+    }
 }
