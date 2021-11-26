@@ -352,27 +352,27 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->firstName . " " . $this->lastName;
     }
 
-    public function isAdmin(): Boolean
+    public function isAdmin(): Bool
     {
         return $this->role == Roles::ADMIN;
     }
 
-    public function isRoomMember(): Boolean
+    public function isRoomMember(): Bool
     {
         return $this->role == Roles::ROOM_MEMBER;
     }
 
-    public function isRoomAdmin(): Boolean
+    public function isRoomAdmin(): Bool
     {
         return $this->role == Roles::ROOM_ADMIN;
     }
 
-    public function isGroupMember(): Boolean
+    public function isGroupMember(): Bool
     {
         return $this->role == Roles::GROUP_MEMBER;
     }
 
-    public function isGroupAdmin(): Boolean
+    public function isGroupAdmin(): Bool
     {
         return $this->role == Roles::GROUP_ADMIN;
     }
