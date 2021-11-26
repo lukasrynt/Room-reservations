@@ -4,6 +4,9 @@ namespace App\Repository;
 
 use App\Entity\Request;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\Criteria;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -47,4 +50,11 @@ class RequestRepository extends ServiceEntityRepository
         ;
     }
     */
+
+    public function findNotApprovedRequests(): Collection
+    {
+        $criteria = Criteria::create()
+            ->andWhere(Criteria::expr()->eq('valid', false));
+        return $this->matching($criteria);
+    }
 }
