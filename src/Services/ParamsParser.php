@@ -3,7 +3,7 @@
  * @author Lukas Rynt
  */
 
-namespace App\Controller\Helpers;
+namespace App\Services;
 
 /**
  * Parses query params, e.g.:

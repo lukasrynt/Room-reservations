@@ -2,7 +2,6 @@
 
 namespace App\Controller;
 
-use App\Controller\Helpers\ParamsParser;
 use App\Form\Type\UserType;
 use App\Services\UserService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;

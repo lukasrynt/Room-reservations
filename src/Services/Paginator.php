@@ -5,7 +5,6 @@
 
 namespace App\Services;
 
-use App\Controller\Helpers\ParamsParser;
 use Doctrine\Common\Collections\Criteria;
 
 class Paginator

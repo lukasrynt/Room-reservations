@@ -5,7 +5,6 @@
 
 namespace App\Services;
 
-use App\Controller\Helpers\ParamsParser;
 use App\Entity\User;
 use App\Repository\UserRepository;
 use Doctrine\Common\Collections\Collection;
