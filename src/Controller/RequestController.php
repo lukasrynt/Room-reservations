@@ -18,9 +18,8 @@ class RequestController extends AbstractController
     /**
      * RequestController constructor.
      * @param RequestService $requestService
-     * @param EntityManagerInterface $entityManager
      */
-    public function __construct(RequestService $requestService, EntityManagerInterface $entityManager)
+    public function __construct(RequestService $requestService)
     {
         $this->requestService = $requestService;
     }
