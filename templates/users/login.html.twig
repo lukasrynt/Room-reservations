@@ -1,25 +1,44 @@
 {% extends '/base.html.twig' %}
 
-{% block title %} Login {% endblock %}
+{% block title %} Log in {% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('styles/login.css') }}" type="text/css">
+{% endblock %}
 
 {% block main %}
-    <section>
-        {% if error %}
-            <div>{{ error.messageKey|trans(error.messageData, 'security') }}</div>
-        {% endif %}
+    {# TODO : style error message - give it an class so it can be styled? #}
+    {% if error %}
+        <div>{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+    {% endif %}
 
-        <form action="{{ path('login') }}" method="post">
-            <label for="username">Username:</label>
-            <input type="text" id="username" name="_username" value="{{ last_username }}"/>
+    <article id="login-form">
+        <section>
+            <h1>
+                HMS(t)R
+            </h1>
 
-            <label for="password">Password:</label>
-            <input type="password" id="password" name="_password"/>
+            <h2>
+                Log in
+            </h2>
+            <form action="{{ path('login') }}" method="post">
+                <label for="username">Username:</label>
+                {# TODO : ask if value needed? - its blocking placeholder #}
+                <input placeholder="Username" type="text" id="username" name="_username" {# value="{{ last_username }}" #}/>
 
-            <input type="hidden" name="_target_path" value="dashboard"/>
+                <label for="password">Password:</label>
+                <input type="password" id="password" name="_password" placeholder="Password"/>
 
-            <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+                <input type="hidden" name="_target_path" value="dashboard"/>
 
-            <button type="submit">login</button>
-        </form>
-    </section>
+                <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+
+                <button class="button-base button-main" type="submit">Continue</button>
+            </form>
+
+            {# TODO : add signup href #}
+            <a class="button-base button-main-outline" href="#">Sign Up</a>
+        </section>
+    </article>
 {% endblock %}
