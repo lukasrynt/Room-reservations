@@ -1,8 +1,6 @@
 <?php
 
-
 namespace App\Form\Type;
-
 
 use Doctrine\DBAL\Types\DateType;
 use Doctrine\DBAL\Types\IntegerType;
