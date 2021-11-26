@@ -1,0 +1,9 @@
+{% extends 'base.html.twig' %}
+
+{% block title %} Book a room {% endblock %}
+
+{% block main %}
+    {{ user }}
+    {{ user.role }}
+    {{ form(form) }}
+{% endblock %}
