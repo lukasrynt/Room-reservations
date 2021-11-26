@@ -8,6 +8,8 @@ use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type\TelType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -26,15 +28,13 @@ class UserType extends AbstractType
             ->add("email", TextType::class, [
                 'attr' => ['placeholder' => 'Email']
             ])
-            // TODO should be TelType
-            ->add("phone_number", IntegerType::class, [
+            ->add("phone_number", TelType::class, [
                 'attr' => ['placeholder' => 'Phone number']
             ])
             ->add("role", TextType::class, [
                 'attr' => ['placeholder' => 'Role']
             ])
-            // TODO should be TextareaType
-            ->add("note", TextType::class, [
+            ->add("note", TextareaType::class, [
                 'attr' => ['placeholder' => 'Note']
             ])
             ->add("username", TextType::class, [
