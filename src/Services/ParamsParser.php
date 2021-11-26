@@ -13,6 +13,9 @@ class ParamsParser
 {
     /**
      * Parse params in format ?order_by=first_order:ASC,second_order:DESC or for any other
+     * @param array $params
+     * @param string $type
+     * @return array|null
      */
     public static function getFilters(array $params, string $type): ?array
     {
