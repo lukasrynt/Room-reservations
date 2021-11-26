@@ -2,7 +2,9 @@
 
 namespace App\Form\Type;
 
+use App\Entity\EnumRolesType;
 use App\Entity\User;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
@@ -20,7 +22,9 @@ class UserType extends AbstractType
             ->add("last_name", TextType::class)
             ->add("email", TextType::class)
             ->add("phone_number", IntegerType::class)
-            ->add("role", TextType::class)
+            ->add("role", EntityType::class, [
+                "class" => EnumRolesType::class
+            ])
             ->add("note", TextType::class)
             ->add("username", TextType::class)
             ->add("plain_password", RepeatedType::class, [
