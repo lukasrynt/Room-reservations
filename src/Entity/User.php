@@ -74,7 +74,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     /**
      * @ORM\Column(type="enum_roles_type", length=255, nullable=true)
      */
-    private EnumRolesType $role;
+    private Roles $role;
 
     /**
      * @ORM\ManyToMany(targetEntity=Room::class, mappedBy="users")
@@ -99,10 +99,15 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->requests = new ArrayCollection();
     }
 
-    public function getId(): ?int
+    /**
+     * @return int
+     */
+    public function getId(): int
     {
         return $this->id;
     }
+
+
 
     public function getFirstName(): ?string
     {
@@ -153,12 +158,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     }
 
 
-    public function getRole(): EnumRolesType
+    public function getRole(): Roles
     {
         return $this->role;
     }
 
-    public function setRole(EnumRolesType $role): self
+    public function setRole(Roles $role): self
     {
         $this->role = $role;
 
@@ -349,27 +354,27 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     public function isAdmin(): Boolean
     {
-        return $this->role == EnumRolesType::ADMIN;
+        return $this->role == Roles::ADMIN;
     }
 
     public function isRoomMember(): Boolean
     {
-        return $this->role == EnumRolesType::ROOM_MEMBER;
+        return $this->role == Roles::ROOM_MEMBER;
     }
 
     public function isRoomAdmin(): Boolean
     {
-        return $this->role == EnumRolesType::ROOM_ADMIN;
+        return $this->role == Roles::ROOM_ADMIN;
     }
 
     public function isGroupMember(): Boolean
     {
-        return $this->role == EnumRolesType::GROUP_MEMBER;
+        return $this->role == Roles::GROUP_MEMBER;
     }
 
     public function isGroupAdmin(): Boolean
     {
-        return $this->role == EnumRolesType::GROUP_ADMIN;
+        return $this->role == Roles::GROUP_ADMIN;
     }
 
 }
