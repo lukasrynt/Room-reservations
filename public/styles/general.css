@@ -36,6 +36,7 @@ header {
 
 main {
     flex: 1 1 auto;
+    padding: 2rem 0 2rem 0;
 }
 
 footer {
@@ -190,4 +191,12 @@ header h1 a:hover {
     box-shadow: unset;
     background-color: var(--red-dark);
     color: var(--white)
+}
+
+.button-skeleton {
+    color: var(--main);
+}
+
+.button-skeleton:hover {
+    color: var(--main-darker);
 }
