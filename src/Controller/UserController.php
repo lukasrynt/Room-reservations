@@ -71,11 +71,7 @@ class UserController extends AbstractController
      */
     public function index(Request $request): Response
     {
-        $queryParams = $request->query->all();
-        $parser = new ParamsParser($queryParams);
-        $users = $this->userService->filter(
-            $parser->getFilters('filter_by'), $parser->getFilters('order_by'), $parser->getFilters('paginate')
-        );
+        $users = $this->userService->filter($request->query->all());
         return $this->render('users/index.html.twig', ['users' => $users]);
     }
 }

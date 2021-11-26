@@ -11,31 +11,20 @@ namespace App\Controller\Helpers;
  */
 class ParamsParser
 {
-    private array $params;
-
-    /**
-     * @param array $params
-     */
-    public function __construct(array $params)
-    {
-        $this->params = $params;
-    }
-
     /**
      * Parse params in format ?order_by=first_order:ASC,second_order:DESC or for any other
      */
-    public function getFilters(string $type): ?array
+    public static function getFilters(array $params, string $type): ?array
     {
-        if (!array_key_exists($type, $this->params))
+        if (!array_key_exists($type, $params))
             return null;
-        $filters = explode(',', $this->params[$type]);
+        $filters = explode(',', $params[$type]);
         $mapped = [];
         foreach ($filters as $filter) {
             $expl = explode(':', $filter);
             if (count($expl) == 2)
                 $mapped[$expl[0]] = $expl[1];
         }
-
         return $mapped;
     }
 

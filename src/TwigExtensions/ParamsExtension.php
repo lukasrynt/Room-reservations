@@ -5,7 +5,8 @@
 
 namespace App\TwigExtensions;
 
-use App\Controller\Helpers\ParamsParser;
+use App\Services\Paginator;
+use Symfony\Component\HttpFoundation\Request;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFunction;
 
@@ -15,30 +16,24 @@ class ParamsExtension extends AbstractExtension
     {
         return [
             new TwigFunction('nextPageParams', array($this, 'nextPageParams')),
-            new TwigFunction('prevPageParams', array($this, 'prevPageParams'))
+            new TwigFunction('prevPageParams', array($this, 'prevPageParams')),
+            new TwigFunction('currentPage', array($this, 'currentPage'))
         ];
     }
 
-    public function nextPageParams($queries): array
+    public function nextPageParams(Request $request): array
     {
-        return $this->pageParams($queries, +1, 1);
+        return Paginator::updateQueryParams($request->query->all(), 1);
     }
 
-    public function prevPageParams($queries): array
+    public function prevPageParams(Request $request): array
     {
-        return $this->pageParams($queries, -1, 0);
+        return Paginator::updateQueryParams($request->query->all(), -1);
 
     }
 
-    private function pageParams($queries, $offset, $origPage): array
+    public function currentPage(Request $request): int
     {
-        if ($queries) {
-            $paginateQueries = (new ParamsParser($queries))->getFilters('paginate');
-            if (array_key_exists('page', $paginateQueries))
-                $paginateQueries['page'] += $offset;
-            $queries['paginate'] = ParamsParser::mapArrayToParams($paginateQueries);
-        } else
-            $queries['paginate'] = 'page:' . $origPage;
-        return $queries;
+        return Paginator::getCurrentPageFromParams($request->query->all());
     }
 }

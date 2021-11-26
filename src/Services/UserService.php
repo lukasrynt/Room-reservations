@@ -5,6 +5,7 @@
 
 namespace App\Services;
 
+use App\Controller\Helpers\ParamsParser;
 use App\Entity\User;
 use App\Repository\UserRepository;
 use Doctrine\Common\Collections\Collection;
@@ -53,13 +54,15 @@ class UserService
     }
 
     /**
-     * @param array|null $findFilters
-     * @param array|null $orderByFilters
-     * @param array|null $paginationFilters
+     * @param array $queryParams
      * @return Collection|LazyCriteriaCollection
      */
-    public function filter(?array $findFilters, ?array $orderByFilters, ?array $paginationFilters): Collection
+    public function filter(array $queryParams): Collection
     {
-        return $this->userRepository->filter($findFilters, $orderByFilters, $paginationFilters);
+        return $this->userRepository->filter(
+            ParamsParser::getFilters($queryParams, 'filter_by'),
+            ParamsParser::getFilters($queryParams, 'order_by'),
+            ParamsParser::getFilters($queryParams, 'paginate')
+        );
     }
 }
