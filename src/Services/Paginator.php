@@ -14,18 +14,18 @@ class Paginator
 
     /**
      * @param Criteria|null $criteria
-     * @param int|null $pageSize
      */
-    public function __construct(Criteria $criteria = null, int $pageSize = null)
+    public function __construct(Criteria $criteria = null)
     {
         $this->criteria = $criteria ?? Criteria::create();
-        $this->pageSize = $pageSize ?? 20;
     }
 
-    public function getCriteriaForPage(?int $id = 0): Criteria
+    public function getCriteriaForPage(?array $attributes): Criteria
     {
-        $this->criteria->setMaxResults($this->pageSize);
-        $this->criteria->setFirstResult($id * $this->pageSize);
+        $pageSize = $attributes['$pageSize'] ?? 20;
+        $page = $attributes['page'] ?? 0;
+        $this->criteria->setMaxResults($pageSize);
+        $this->criteria->setFirstResult($page * $pageSize);
         return $this->criteria;
     }
 }
