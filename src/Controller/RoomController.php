@@ -9,7 +9,6 @@ use App\Repository\RoomRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use App\Form\Type\RoomType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -64,8 +63,7 @@ class RoomController extends AbstractController
         if (!$room)
             return $this->render('errors/404.html.twig');
 
-        $form = $this->createForm(RoomType::class, $room)
-            ->add('edit', SubmitType::class);
+        $form = $this->createForm(RoomType::class, $room);
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()){

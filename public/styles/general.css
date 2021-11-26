@@ -93,6 +93,10 @@ header h1 a:hover {
     font-size: 1.125rem;
     border-radius: .438rem;
     display: block;
+    border: unset;
+    cursor: pointer;
+    font-family: 'Source Sans Pro', sans-serif;
+    font-weight: 400;
 }
 
 .button-with-icon {
