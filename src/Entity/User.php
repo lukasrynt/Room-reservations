@@ -6,6 +6,7 @@ use App\Repository\UserRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use phpDocumentor\Reflection\Types\Boolean;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
@@ -71,9 +72,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private string $username;
 
     /**
-     * @ORM\Column(type="string", length=255, nullable=true)
+     * @ORM\Column(type="enum_roles_type", length=255, nullable=true)
      */
-    private string $role;
+    private EnumRolesType $role;
 
     /**
      * @ORM\ManyToMany(targetEntity=Room::class, mappedBy="users")
@@ -152,13 +153,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     }
 
 
-
-    public function getRole(): ?string
+    public function getRole(): EnumRolesType
     {
         return $this->role;
     }
 
-    public function setRole(string $role): self
+    public function setRole(EnumRolesType $role): self
     {
         $this->role = $role;
 
@@ -190,7 +190,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     }
 
     /**
-     * @return string
+     * @return string|null
      */
     public function getPlainPassword(): ?string
     {
@@ -259,7 +259,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     }
 
     /**
-     * @return Collection|Room[]
+     * @return Collection
      */
     public function getRooms(): Collection
     {
@@ -286,7 +286,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     }
 
     /**
-     * @return Collection|Request[]
+     * @return Collection
      */
     public function getRequestsToAttend(): Collection
     {
@@ -313,7 +313,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     }
 
     /**
-     * @return Collection|Request[]
+     * @return Collection
      */
     public function getRequests(): Collection
     {
@@ -347,5 +347,29 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->firstName . " " . $this->lastName;
     }
 
+    public function isAdmin(): Boolean
+    {
+        return $this->role == EnumRolesType::ADMIN;
+    }
+
+    public function isRoomMember(): Boolean
+    {
+        return $this->role == EnumRolesType::ROOM_MEMBER;
+    }
+
+    public function isRoomAdmin(): Boolean
+    {
+        return $this->role == EnumRolesType::ROOM_ADMIN;
+    }
+
+    public function isGroupMember(): Boolean
+    {
+        return $this->role == EnumRolesType::GROUP_MEMBER;
+    }
+
+    public function isGroupAdmin(): Boolean
+    {
+        return $this->role == EnumRolesType::GROUP_ADMIN;
+    }
 
 }
