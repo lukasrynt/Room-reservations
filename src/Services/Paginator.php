@@ -22,7 +22,7 @@ class Paginator
     public function getCriteriaForPage(?array $attributes): Criteria
     {
         $pageSize = $attributes['page_size'] ?? 20;
-        $page = $attributes['page'] ?? 0;
+        $page = (isset($attributes['page']) && $attributes['page'] >= 0) ? $attributes['page'] : 0;
         $this->criteria->setMaxResults($pageSize);
         $this->criteria->setFirstResult($page * $pageSize);
         return $this->criteria;
@@ -31,7 +31,7 @@ class Paginator
     public static function getCurrentPageFromParams(array $queries): int
     {
         $attributes = ParamsParser::getFilters($queries, 'paginate');
-        return $attributes['page'] ?? 0;
+        return (isset($attributes['page']) && $attributes['page'] >= 0) ? $attributes['page'] : 0;
     }
 
     public static function updateQueryParams(?array $queries, int $offset): array
