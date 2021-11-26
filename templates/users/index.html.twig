@@ -26,6 +26,10 @@
             {% endfor %}
             </tbody>
         </table>
-        <a href={{ path('users_index', prevPageParams(app.request)) }}>&lt;</a>{{ currentPage(app.request) }}<a href={{ path('users_index', nextPageParams(app.request)) }}>&gt;</a>
+        {% if currentPage(app.request) > 0 %}
+            <a href={{ path('users_index', prevPageParams(app.request)) }}>&lt;</a>
+        {% endif %}
+        {{ currentPage(app.request) + 1 }}
+        <a href={{ path('users_index', nextPageParams(app.request)) }}>&gt;</a>
     </section>
 {% endblock %}
