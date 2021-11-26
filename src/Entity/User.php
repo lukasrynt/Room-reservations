@@ -12,15 +12,11 @@ use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * @ORM\Entity(repositoryClass=UserRepository::class)
- * @ORM\Table(name="user")
+ * @ORM\Table(name="`user`")
  * @method string getUserIdentifier()
- * @ORM\InheritanceType("JOINED")
- * @ORM\DiscriminatorColumn(name="type", type="string")
- * @ORM\DiscriminatorMap({"user" = "User", "admin" = "Admin"})
  */
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
-
     /**
      * @ORM\Id
      * @ORM\GeneratedValue
