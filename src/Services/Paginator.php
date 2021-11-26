@@ -38,8 +38,10 @@ class Paginator
     {
         if ($queries) {
             $paginateQueries = ParamsParser::getFilters($queries, 'paginate');
-            if (array_key_exists('page', $paginateQueries))
+            if (array_key_exists('page', $paginateQueries)){
+                $paginateQueries['page'] = $paginateQueries['page'] >= 0 ? $paginateQueries['page'] : 0;
                 $paginateQueries['page'] += $offset;
+            }
             $queries['paginate'] = ParamsParser::mapArrayToParams($paginateQueries);
         } else
             $queries['paginate'] = 'page:' . ($offset > 0 ? $offset : 0);
