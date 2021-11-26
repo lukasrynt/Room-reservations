@@ -2,7 +2,8 @@
 
 namespace App\Entity;
 
-enum Roles {
+enum Roles
+{
     case ROOM_MEMBER;
     case ROOM_ADMIN;
     case GROUP_MEMBER;
