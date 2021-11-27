@@ -23,6 +23,11 @@ class Group
      */
     private ?string $name;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=GroupManager::class, inversedBy="groups")
+     */
+    private ?GroupManager $groupManager;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -36,6 +41,18 @@ class Group
     public function setName(?string $name): self
     {
         $this->name = $name;
+
+        return $this;
+    }
+
+    public function getGroupManager(): ?GroupManager
+    {
+        return $this->groupManager;
+    }
+
+    public function setGroupManager(?GroupManager $groupManager): self
+    {
+        $this->groupManager = $groupManager;
 
         return $this;
     }
