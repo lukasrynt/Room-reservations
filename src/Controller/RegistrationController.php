@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\User;
 use App\Form\Type\UserType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use \Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -18,7 +19,11 @@ class RegistrationController extends AbstractController
     {
         // 1) build the form
         $user = new User();
-        $form = $this->createForm(UserType::class, $user);
+        $form = $this->createForm(UserType::class, $user)
+            ->add('save', SubmitType::class, [
+                'attr' => ['class' => 'button-base button-main'],
+                'label' => 'Register'
+            ]);
 
         // 2) handle the submit (will only happen on POST)
         $form->handleRequest($request);

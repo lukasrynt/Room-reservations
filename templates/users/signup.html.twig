@@ -2,20 +2,26 @@
 
 {% block title %} Sign up {% endblock %}
 
-{% block main %}
-    <section>
-        {{ form_start(form) }}
-        {{ form_row(form.first_name) }}
-        {{ form_row(form.last_name) }}
-        {{ form_row(form.username) }}
-        {{ form_row(form.email) }}
-        {{ form_row(form.plain_password.first) }}
-        {{ form_row(form.plain_password.second) }}
-        {{ form_row(form.role) }}
-        {{ form_row(form.phone_number) }}
-        {{ form_row(form.note) }}
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('styles/login.css') }}" type="text/css">
+{% endblock %}
 
-        <button type="submit">Register!</button>
-        {{ form_end(form) }}
-    </section>
+{% block main %}
+    <article id="login-form">
+        <section>
+            <h1>
+                HMS(t)R
+            </h1>
+
+            <h2>
+                Sign Up
+            </h2>
+            {{ form(form) }}
+
+            <a class="button-base button-with-icon button-skeleton" href="{{ path('login') }}">
+                {{ source('@icons/arrow-left.svg') }}
+                Go back to log in</a>
+        </section>
+    </article>
 {% endblock %}
