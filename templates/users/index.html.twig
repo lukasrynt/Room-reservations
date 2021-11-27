@@ -27,10 +27,13 @@
             {% endfor %}
             </tbody>
         </table>
-        {% if currentPage(app.request) > 0 %}
+        {% if currentPage(app.request) > 1 %}
             <a href={{ path('users_index', prevPageParams(app.request)) }}>&lt;</a>
         {% endif %}
-        {{ currentPage(app.request) + 1 }}
-        <a href={{ path('users_index', nextPageParams(app.request)) }}>&gt;</a>
+        {{ currentPage(app.request) }}
+        {% set pageCnt = pagesCount(app.request, usersCount)  %}
+        {% if currentPage(app.request) < pageCnt %}
+            <a href={{ path('users_index', nextPageParams(app.request, pageCnt)) }}>&gt;</a>
+        {% endif %}
     </section>
 {% endblock %}

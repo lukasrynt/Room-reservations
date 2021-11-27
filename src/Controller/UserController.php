@@ -72,10 +72,12 @@ class UserController extends AbstractController
     public function index(Request $request): Response
     {
         $searchForm = $this->createForm(UserSearchType::class);
+        $count = count($this->userService->findAll());
         $users = $this->userService->filter($request->query->all());
         return $this->render('users/index.html.twig', [
             'users' => $users,
-            'searchForm' => $searchForm->createView()
+            'searchForm' => $searchForm->createView(),
+            'usersCount' => $count
         ]);
     }
 
@@ -91,7 +93,8 @@ class UserController extends AbstractController
             $users = $this->userService->search($searchForm->getData());
         return $this->render('users/index.html.twig', [
             'users' => $users ?? [],
-            'searchForm' => $searchForm->createView()
+            'searchForm' => $searchForm->createView(),
+            'usersCount' => $users ? count($users) : 0
         ]);
     }
 }
