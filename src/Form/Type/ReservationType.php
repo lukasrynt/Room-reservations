@@ -5,6 +5,7 @@ namespace App\Form\Type;
 
 
 use App\Entity\Room;
+use App\Entity\User;
 use App\Repository\RoomRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
@@ -18,8 +19,20 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class ReservationType extends AbstractType
 {
-
     public function buildForm(FormBuilderInterface $builder, array $options)
+    {
+        $builder
+            ->add('date_from', DateType::class)
+            ->add('date_to', DateType::class)
+            ->add('user_id', EntityType::class, [
+                "class" => User::class
+            ])
+            ->add('room_id', EntityType::class, [
+                "class" => Room::class
+            ]);
+    }
+
+    /*public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $rooms = $options['rooms'];
 
@@ -38,5 +51,5 @@ class ReservationType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setRequired(['rooms']);
-    }
+    }*/
 }
