@@ -17,7 +17,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
  * @ORM\InheritanceType("SINGLE_TABLE")
  * @ORM\DiscriminatorColumn(name="discr", type="string")
  * @ORM\DiscriminatorMap({"user" = "User", "admin" = "Admin", "roomManager" = "RoomManager",
- *                          "groupManager" = "GroupManager"})
+ *                          "groupManager" = "GroupManager", "groupMember" = "GroupMember"})
  */
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
