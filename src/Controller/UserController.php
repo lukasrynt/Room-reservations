@@ -3,9 +3,12 @@
 namespace App\Controller;
 
 use App\Form\Type\LoginType;
+use App\Form\Type\RequestType;
+use App\Form\Type\UserSearchType;
 use App\Form\Type\UserType;
-use App\Repository\UserRepository;
-use Doctrine\ORM\EntityManagerInterface;
+use App\Services\RequestService;
+use App\Services\RoomService;
+use App\Services\UserService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\ButtonType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
@@ -21,15 +24,20 @@ class UserController extends AbstractController
 {
 
     private UserService $userService;
+    private RoomService $roomService;
+    private RequestService $requestService;
 
     /**
      * UserController constructor.
      * @param UserService $userService
+     * @param RoomService $roomService
      */
-    public function __construct(UserService $userService)
+    public function __construct(UserService $userService, RoomService $roomService)
     {
         $this->userService = $userService;
+        $this->roomService = $roomService;
     }
+
 
     /**
      * @Route("/{id}", name="detail", requirements={"id": "\d+"})
@@ -101,8 +109,8 @@ class UserController extends AbstractController
      */
     public function bookRoomAsMember(Request $request, int $user_id, int $room_id): Response
     {
-        $user = $this->userRepository->find($user_id);
-        $room = $this->roomRepository->find($room_id);
+        $user = $this->userService->find($user_id);
+        $room = $this->roomService->find($room_id);
 
         //todo roomAdmin + groupADmin + jiné uživatele tam dělat rovnou reservation
 
@@ -125,8 +133,7 @@ class UserController extends AbstractController
 
             $form->handleRequest($request);
             if ($form->isSubmitted() && $form->isValid()) {
-                $this->entityManager->persist($form->getData());
-                $this->entityManager->flush();
+                $this->requestService->save($form->getData());
                 return $this->redirectToRoute('request_detail', ['id' => $newRequest->getId()]);
             }
 
@@ -147,13 +154,13 @@ class UserController extends AbstractController
      */
     public function confirmRequest(int $id)
     {
-        $user = $this->userRepository->find($id);
+        $user = $this->userService->find($id);
         if ($user->isAdmin()) {
-            $requests = $this->requestRepository->findNotApprovedRequestsAll();
+            $requests = $this->requestService->findNotApprovedRequestsAll();
         } elseif ($user->isRoomAdmin()) {
-            $requests = $this->requestRepository->findNotApprovedRequestsByRoom();
+            $requests = $this->requestService->findNotApprovedRequestsByRoom();
         } elseif ($user->isGroupAdmin()) {
-            $requests = $this->requestRepository->findNotApprovedRequestsByGroup();
+            $requests = $this->requestService->findNotApprovedRequestsByGroup();
         } else {
             return $this->render('permissions/denied.html.twig');
         }
