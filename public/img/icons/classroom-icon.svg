@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg class="button-icon" aria-hidden="true" role="img" viewBox="2 2 16 16" xmlns="http://www.w3.org/2000/svg">
+    <g fill="currentColor">
+        <path d="M9.184 2.112a.5.5 0 0 1 .419-.1l7 1.499a.5.5 0 0 1 .394.489v12a.5.5 0 0 1-.395.489l-7 1.5a.5.5 0 0 1-.604-.488v-15a.5.5 0 0 1 .186-.389zM12.5 10a.75.75 0 1 0-1.5 0a.75.75 0 0 0 1.5 0z"/>
+        <path d="M8 3.002H3.498a.5.5 0 0 0-.5.5v12.995a.5.5 0 0 0 .5.5H8V3.002z"/>
+    </g>
+</svg>

@@ -20,13 +20,7 @@
             {{ form(form) }}
 
             <a class="button-base button-with-icon button-skeleton" href="{{ path('login') }}">
-                <?xml version="1.0" encoding="UTF-8"?>
-                <svg class="button-icon" width="1em" height="1em" aria-hidden="true" role="img" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                    <g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
-                        <path d="m11 5-7 7 7 7"/>
-                        <path d="m4 12h16"/>
-                    </g>
-                </svg>
+                {{ source('@icons/arrow-left.svg') }}
                 Go back to log in</a>
         </section>
     </article>
