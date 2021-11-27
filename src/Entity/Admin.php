@@ -11,5 +11,8 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Admin extends User
 {
-
+    public function __construct()
+    {
+        parent::__construct();
+    }
 }
