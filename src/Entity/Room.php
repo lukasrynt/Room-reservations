@@ -285,20 +285,4 @@ class Room
 
         return $this;
     }
-
-    public function addRegisteredUser(User $user): self
-    {
-        if (!$this->registeredUsers->contains($user)) {
-            $this->registeredUsers[] = $user;
-        }
-
-        return $this;
-    }
-
-    public function removeRegisteredUser(User $user): self
-    {
-        $this->registeredUsers->removeElement($user);
-
-        return $this;
-    }
 }
