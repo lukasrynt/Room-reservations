@@ -6,3 +6,4 @@ PGPASSWORD=pgpass psql -h localhost -p 5432 -d pgdb -U pguser -a -f buildings.sq
 PGPASSWORD=pgpass psql -h localhost -p 5432 -d pgdb -U pguser -a -f rooms.sql
 PGPASSWORD=pgpass psql -h localhost -p 5432 -d pgdb -U pguser -a -f request.sql
 PGPASSWORD=pgpass psql -h localhost -p 5432 -d pgdb -U pguser -a -f room_user.sql
+PGPASSWORD=pgpass psql -h localhost -p 5432 -d pgdb -U pguser -a -f reservations.sql
