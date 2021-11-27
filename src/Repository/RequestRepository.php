@@ -22,36 +22,21 @@ class RequestRepository extends ServiceEntityRepository
         parent::__construct($registry, Request::class);
     }
 
-    // /**
-    //  * @return Request[] Returns an array of Request objects
-    //  */
-    /*
-    public function findByExampleField($value)
+    public function findNotApprovedRequestsAll(): Collection
     {
-        return $this->createQueryBuilder('r')
-            ->andWhere('r.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('r.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
+        $criteria = Criteria::create()
+            ->andWhere(Criteria::expr()->eq('valid', false));
+        return $this->matching($criteria);
     }
-    */
 
-    /*
-    public function findOneBySomeField($value): ?Request
+    public function findNotApprovedRequestsByGroup(): Collection
     {
-        return $this->createQueryBuilder('r')
-            ->andWhere('r.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
+        $criteria = Criteria::create()
+            ->andWhere(Criteria::expr()->eq('valid', false));
+        return $this->matching($criteria);
     }
-    */
 
-    public function findNotApprovedRequests(): Collection
+    public function findNotApprovedRequestsByRoom(): Collection
     {
         $criteria = Criteria::create()
             ->andWhere(Criteria::expr()->eq('valid', false));
