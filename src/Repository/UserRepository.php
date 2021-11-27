@@ -3,7 +3,12 @@
 namespace App\Repository;
 
 use App\Entity\User;
+use App\Services\Filter;
+use App\Services\Orderer;
+use App\Services\Paginator;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\ORM\LazyCriteriaCollection;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -19,32 +24,21 @@ class UserRepository extends ServiceEntityRepository
         parent::__construct($registry, User::class);
     }
 
-    // /**
-    //  * @return User[] Returns an array of User objects
-    //  */
-    /*
-    public function findByExampleField($value)
+    /**
+     * @return Collection|LazyCriteriaCollection
+     */
+    public function filter(?array $findFilters, ?array $orderByFilters, ?array $paginationFilters): Collection
     {
-        return $this->createQueryBuilder('u')
-            ->andWhere('u.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('u.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
+        $criteria = (new Filter())->getFilterCriteria($findFilters);
+        $criteria = (new Orderer($criteria))->getOrderCriteria($orderByFilters);
+        dump($paginationFilters);
+        $criteria = (new Paginator($criteria))->getCriteriaForPage($paginationFilters);
+        return $this->matching($criteria);
     }
-    */
 
-    /*
-    public function findOneBySomeField($value): ?User
+    public function search(?array $findFilters): Collection
     {
-        return $this->createQueryBuilder('u')
-            ->andWhere('u.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
+        $criteria = (new Filter())->getFilterCriteria($findFilters);
+        return $this->matching($criteria);
     }
-    */
 }

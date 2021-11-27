@@ -57,6 +57,12 @@ class Room
     private Collection $users;
 
     /**
+     * @ORM\ManyToMany(targetEntity=RoomUser::class, inversedBy="rooms")
+     * @ORM\JoinTable(name="members_rooms")
+     */
+    private Collection $registeredUsers;
+
+    /**
      * @ORM\OneToMany(targetEntity=Request::class, mappedBy="room")
      */
     private Collection $requests;
@@ -65,6 +71,11 @@ class Room
      * @ORM\OneToMany(targetEntity=Reservation::class, mappedBy="room_id")
      */
     private Collection $reservations;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=RoomManager::class, inversedBy="Room")
+     */
+    private ?RoomManager $roomManager;
 
     public function __construct()
     {
@@ -248,5 +259,46 @@ class Room
         return $this;
     }
 
+    public function addRegisteredUser(User $user): self
+    {
+        if (!$this->registeredUsers->contains($user)) {
+            $this->registeredUsers[] = $user;
+        }
 
+        return $this;
+    }
+
+    public function removeRegisteredUser(User $user): self
+    {
+        $this->registeredUsers->removeElement($user);
+
+        return $this;
+    }
+    public function getRoomManager(): ?RoomManager
+    {
+        return $this->roomManager;
+    }
+
+    public function setRoomManager(?RoomManager $roomManager): self
+    {
+        $this->roomManager = $roomManager;
+
+        return $this;
+    }
+
+    public function addRegisteredUser(User $user): self
+    {
+        if (!$this->registeredUsers->contains($user)) {
+            $this->registeredUsers[] = $user;
+        }
+
+        return $this;
+    }
+
+    public function removeRegisteredUser(User $user): self
+    {
+        $this->registeredUsers->removeElement($user);
+
+        return $this;
+    }
 }

@@ -1,39 +1,37 @@
 <?php
 
-
 namespace App\Controller;
 
-
-use App\Repository\RequestRepository;
+use App\Services\RequestService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
+/**
+ * @Route("/requests", name="requests_")
+ */
 class RequestController extends AbstractController
 {
-    private RequestRepository $requestRepository;
-    private EntityManagerInterface $entityManager;
+    private RequestService $requestService;
 
     /**
      * RequestController constructor.
-     * @param RequestRepository $requestRepository
-     * @param EntityManagerInterface $entityManager
+     * @param RequestService $requestService
      */
-    public function __construct(RequestRepository $requestRepository, EntityManagerInterface $entityManager)
+    public function __construct(RequestService $requestService)
     {
-        $this->requestRepository = $requestRepository;
-        $this->entityManager = $entityManager;
+        $this->requestService = $requestService;
     }
 
     /**
-     * @Route("/requests/{id}", name="request_detail")
+     * @Route("/{id}", name="detail")
      * @param int $id
      * @return Response
      */
     public function detail(int $id): Response
     {
-        $request = $this->requestRepository->find($id);
+        $request = $this->requestService->find($id);
         if (!$request)
             return $this->render('errors/404.html.twig');
         return $this->render('requests/detail.html.twig', ['request' => $request]);

@@ -14,6 +14,10 @@ use Symfony\Component\Security\Core\User\UserInterface;
  * @ORM\Entity(repositoryClass=UserRepository::class)
  * @ORM\Table(name="`user`")
  * @method string getUserIdentifier()
+ * @ORM\InheritanceType("SINGLE_TABLE")
+ * @ORM\DiscriminatorColumn(name="discr", type="string")
+ * @ORM\DiscriminatorMap({"user" = "User", "admin" = "Admin", "roomManager" = "RoomManager",
+ *                          "groupManager" = "GroupManager", "groupMember" = "GroupMember", "roomUser" = "RoomUser"})
  */
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {

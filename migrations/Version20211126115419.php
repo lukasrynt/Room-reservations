@@ -14,19 +14,17 @@ final class Version20211126115419 extends AbstractMigration
 {
     public function getDescription(): string
     {
-        return '';
+        return 'Modify field role in user table';
     }
 
     public function up(Schema $schema): void
     {
-        // this up() migration is auto-generated, please modify it to your needs
         $this->addSql('ALTER TABLE "user" ALTER role TYPE VARCHAR(20)');
         $this->addSql('ALTER TABLE "user" ALTER role DROP DEFAULT');
     }
 
     public function down(Schema $schema): void
     {
-        // this down() migration is auto-generated, please modify it to your needs
         $this->addSql('CREATE SCHEMA public');
         $this->addSql('ALTER TABLE "user" ALTER role TYPE VARCHAR(255)');
         $this->addSql('ALTER TABLE "user" ALTER role DROP DEFAULT');

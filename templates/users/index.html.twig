@@ -4,6 +4,7 @@
 
 {% block main %}
     <section>
+        {{ form(searchForm) }}
         <table>
             <thead>
             <tr>
@@ -21,10 +22,18 @@
                     <td>{{ user.email }}</td>
                     <td>{{ user.role }}</td>
                     <td>{{ user.phoneNumber }}</td>
-                    <td><a href={{ path('user_detail', {id: user.id }) }}>Detail</a></td>
+                    <td><a href={{ path('users_detail', {id: user.id}) }}>Detail</a></td>
                 </tr>
             {% endfor %}
             </tbody>
         </table>
+        {% if currentPage(app.request) > 1 %}
+            <a href={{ path('users_index', prevPageParams(app.request)) }}>&lt;</a>
+        {% endif %}
+        {{ currentPage(app.request) }}
+        {% set pageCnt = pagesCount(app.request, usersCount)  %}
+        {% if currentPage(app.request) < pageCnt %}
+            <a href={{ path('users_index', nextPageParams(app.request, pageCnt)) }}>&gt;</a>
+        {% endif %}
     </section>
 {% endblock %}

@@ -1,4 +1,4 @@
-{% extends 'header.html.twig' %}
+{% extends 'base.html.twig' %}
 
 {% block title %} Buildings {% endblock %}
 
@@ -6,7 +6,7 @@
     <h1>Buildings</h1>
     {% for building in buildings %}
         Name: {{ building.name }}, Address: {{ building.address }}
-        <a href={{ path('building_detail', {id: building.id }) }}>Detail</a>
+        <a href={{ path('buildings_detail', { id: building.id }) }}>Detail</a>
         <p></p>
     {% endfor %}
 {% endblock %}
