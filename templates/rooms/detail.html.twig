@@ -17,6 +17,6 @@
             <dt>{{ room.opened_from }} - {{ room.opened_to }}</dt>
         </dl>
         <a href="#">Reserve</a>
-        <a href={{ path('room_edit', {'id': room.id}) }}>Edit</a>
+        <a href={{ path('rooms_edit', {'id': room.id}) }}>Edit</a>
     </section>
 {% endblock %}

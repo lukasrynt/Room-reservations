@@ -1,13 +1,9 @@
 <?php
 
-
 namespace App\Controller;
 
-
-
 use App\Form\Type\BuildingType;
-use App\Repository\BuildingRepository;
-use Doctrine\ORM\EntityManagerInterface;
+use App\Services\BuildingService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\ButtonType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
@@ -15,52 +11,54 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
+/**
+ * @Route("/buildings", name="buildings_")
+ */
 class BuildingController extends AbstractController
 {
-    private BuildingRepository $buildingRepository;
-    private EntityManagerInterface $entityManager;
+    private BuildingService $buildingService;
 
     /**
      * BuildingController constructor.
-     * @param BuildingRepository $buildingRepository
-     * @param EntityManagerInterface $entityManager
+     * @param BuildingService $buildingService
      */
-    public function __construct(BuildingRepository $buildingRepository, EntityManagerInterface $entityManager)
+    public function __construct(BuildingService $buildingService)
     {
-        $this->buildingRepository = $buildingRepository;
-        $this->entityManager = $entityManager;
+        $this->buildingService = $buildingService;
     }
 
     /**
-     * @Route("/buildings", name="buildings_index")
+     * @Route("/", name="index")
      * @return Response
      */
     public function index(): Response
     {
-        $buildings = $this->buildingRepository->findAll();
+        $buildings = $this->buildingService->findAll();
         return $this->render('buildings/index.html.twig', ['buildings' => $buildings]);
     }
 
     /**
-     * @Route("/buildings/{id}", name="building_detail")
+     * @Route("/{id}", name="detail")
      * @param int $id
      * @return Response
      */
-    public function detail(int $id): Response{
-        $building = $this->buildingRepository->find($id);
+    public function detail(int $id): Response
+    {
+        $building = $this->buildingService->find($id);
         if (!$building)
             return $this->render('errors/404.html.twig');
         return $this->render('buildings/detail.html.twig', ['building' => $building]);
     }
 
     /**
-     * @Route("/buildings/{id}/edit", name="building_edit")
+     * @Route("/{id}/edit", name="edit")
      * @param Request $request
      * @param int $id
      * @return Response
      */
-    public function edit(Request $request, int $id): Response{
-        $building = $this->buildingRepository->find($id);
+    public function edit(Request $request, int $id): Response
+    {
+        $building = $this->buildingService->find($id);
 
         if (!$building)
             return $this->render('errors/404.html.twig');
@@ -77,9 +75,8 @@ class BuildingController extends AbstractController
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()){
-            $this->entityManager->persist($form->getData());
-            $this->entityManager->flush();
-            return $this->redirectToRoute('building_detail', ['id' => $building->getId()]);
+            $this->buildingService->save($form->getData());
+            return $this->redirectToRoute('buildings_detail', ['id' => $building->getId()]);
         }
 
         return $this->render('buildings/edit.html.twig', [

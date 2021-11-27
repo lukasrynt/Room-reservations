@@ -14,6 +14,6 @@
             <dd>Username</dd>
             <dt>{{ user.username }}</dt>
         </dl>
-        <a href={{ path('edit_user', {'id': user.id}) }}>Edit</a>
+        <a href={{ path('users_edit', {'id': user.id}) }}>Edit</a>
     </section>
 {% endblock %}
