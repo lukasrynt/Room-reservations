@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Form\Type\UserSearchType;
 use App\Form\Type\UserType;
 use App\Services\UserService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -28,7 +29,7 @@ class UserController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="detail")
+     * @Route("/{id}", name="detail", requirements={"id": "\d+"})
      * @param int $id
      * @return Response
      */
@@ -70,7 +71,28 @@ class UserController extends AbstractController
      */
     public function index(Request $request): Response
     {
+        $searchForm = $this->createForm(UserSearchType::class);
         $users = $this->userService->filter($request->query->all());
-        return $this->render('users/index.html.twig', ['users' => $users]);
+        return $this->render('users/index.html.twig', [
+            'users' => $users,
+            'searchForm' => $searchForm->createView()
+        ]);
+    }
+
+    /**
+     * @Route("/search", name="search")
+     * @param Request $request
+     * @return Response
+     */
+    public function search(Request $request): Response {
+        $searchForm = $this->createForm(UserSearchType::class);
+        $searchForm->handleRequest($request);
+        dump($searchForm->getData());
+        if ($searchForm->isSubmitted() && $searchForm->isValid())
+            $users = $this->userService->filter($searchForm->getData());
+        return $this->render('users/index.html.twig', [
+            'users' => $users ?? [],
+            'searchForm' => $searchForm->createView()
+        ]);
     }
 }
