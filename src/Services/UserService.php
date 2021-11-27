@@ -28,7 +28,7 @@ class UserService
 
     /**
      * @param int $id
-     * @return User
+     * @return User|null
      */
     public function find(int $id): ?User
     {
@@ -36,7 +36,7 @@ class UserService
     }
 
     /**
-     * @return User[]|array
+     * @return array
      */
     public function findAll(): array
     {
@@ -54,7 +54,7 @@ class UserService
 
     /**
      * @param array $queryParams
-     * @return Collection|LazyCriteriaCollection
+     * @return Collection
      */
     public function filter(array $queryParams): Collection
     {
