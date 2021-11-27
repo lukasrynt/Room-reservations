@@ -3,7 +3,6 @@
 {% block title %} Book a room {% endblock %}
 
 {% block main %}
-    {{ user }}
-    {{ user.role }}
+    User: {{ user }}, Room: {{ room }}
     {{ form(form) }}
 {% endblock %}
