@@ -30,7 +30,7 @@ form {
     padding: 0 3rem 0 3rem;
 }
 
-form input, form select {
+form input, form select, form textarea {
     font-family: 'Source Sans Pro', sans-serif;
     padding: .625rem;
     font-size: 1rem;
@@ -40,7 +40,7 @@ form input, form select {
     box-shadow: inset 0 0 0 0.078rem var(--gray-light);
 }
 
-form input:focus-visible, form select:focus-visible {
+form input:focus-visible, form select:focus-visible, form textarea:focus-visible {
     box-shadow: inset 0 0 0 0.078rem var(--main-darker);
     outline: unset;
 }
@@ -78,6 +78,11 @@ form h2 {
 
 .hidden {
     display: none;
+}
+
+textarea {
+    min-height: 5rem;
+    resize: vertical;
 }
 
 @media only screen and (min-width: 768px) {

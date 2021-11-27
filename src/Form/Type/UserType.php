@@ -4,6 +4,7 @@ namespace App\Form\Type;
 
 use App\Entity\User;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\ButtonType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
@@ -46,10 +47,6 @@ class UserType extends AbstractType
                     'attr' => ['placeholder' => 'Password']],
                 'second_options' => ['label' => 'Confirm Password',
                     'attr' => ['placeholder' => 'Confirm Password']],
-            ])
-            ->add('save', SubmitType::class, [
-                'attr' => ['class' => 'button-base button-main'],
-                'label' => 'Register'
             ]);
     }
 
