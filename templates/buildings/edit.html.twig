@@ -1,7 +1,24 @@
 {% extends 'base.html.twig' %}
 
-{% block title %} Edit Building {% endblock %}
+{% block title %} Building edit form {% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('styles/form.css') }}" type="text/css">
+{% endblock %}
 
 {% block main %}
-    {{ form(form) }}
+    <h1>Building edit form</h1>
+
+    <article id="form">
+        {{ form_start(form) }}
+        {{ form_row(form.name) }}
+        {{ form_row(form.address) }}
+        <div id="form-buttons">
+            {# TODO : add delete functionality #}
+            {{ form_widget(form.delete) }}
+            {{ form_widget(form.edit) }}
+        </div>
+        {{ form_end(form) }}
+    </article>
 {% endblock %}

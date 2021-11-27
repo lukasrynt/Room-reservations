@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Form\Type\BuildingType;
 use App\Services\BuildingService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Form\Extension\Core\Type\ButtonType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -63,7 +64,14 @@ class BuildingController extends AbstractController
             return $this->render('errors/404.html.twig');
 
         $form = $this->createForm(BuildingType::class, $building)
-            ->add('edit', SubmitType::class);
+            ->add('edit', SubmitType::class, [
+                'attr' => ['class' => 'button-base button-success'],
+                'label' => 'Save'
+            ])
+            ->add('delete', ButtonType::class, [
+                'attr' => ['class' => 'button-base button-danger-outline'],
+                'label' => 'Delete'
+            ]);
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()){

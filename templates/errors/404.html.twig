@@ -1,14 +1,26 @@
 {% extends 'base.html.twig' %}
 
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('styles/error.css') }}" type="text/css">
+{% endblock %}
+
 {% block main %}
-    <section>
-        <h1>4 <img src="#" alt="0"> 4</h1>
+    <article>
+        <h1>4
+            <img src="{{ asset('img/hamster.svg') }}" alt="Hamster in breakroom">
+            4</h1>
         <p>You have entered the hamster's breakroom!</p>
-    </section>
 
-    <nav>
-        <a href="#">Go back</a>
-    </nav>
-
+        {# TODO : go back to previus page - once we have sessions? #}
+        <a class="button-base button-with-icon button-main" href="#">
+            <svg class="button-icon" width="1em" height="1em" aria-hidden="true" role="img" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
+                    <path d="m11 5-7 7 7 7"/>
+                    <path d="m4 12h16"/>
+                </g>
+            </svg>
+            Go back</a>
+    </article>
 
 {% endblock %}

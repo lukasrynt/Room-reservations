@@ -36,6 +36,7 @@ header {
 
 main {
     flex: 1 1 auto;
+    padding: 2rem 0 2rem 0;
 }
 
 footer {
@@ -92,6 +93,10 @@ header h1 a:hover {
     font-size: 1.125rem;
     border-radius: .438rem;
     display: block;
+    border: unset;
+    cursor: pointer;
+    font-family: 'Source Sans Pro', sans-serif;
+    font-weight: 400;
 }
 
 .button-with-icon {
@@ -147,6 +152,7 @@ header h1 a:hover {
 .button-main-outline {
     box-shadow: inset 0 0 0 .078rem var(--main);
     color: var(--main);
+    background-color: var(--white)
 }
 
 .button-main-outline:hover {
@@ -158,6 +164,7 @@ header h1 a:hover {
 .button-secondary-outline {
     box-shadow: inset 0 0 0 .078rem var(--gray-light);
     color: var(--gray-light);
+    background-color: var(--white)
 }
 
 .button-secondary-outline:hover {
@@ -169,6 +176,7 @@ header h1 a:hover {
 .button-success-outline {
     box-shadow: inset 0 0 0 .078rem var(--green);
     color: var(--green);
+    background-color: var(--white)
 }
 
 .button-success-outline:hover {
@@ -180,10 +188,19 @@ header h1 a:hover {
 .button-danger-outline {
     box-shadow: inset 0 0 0 .078rem var(--red);
     color: var(--red);
+    background-color: var(--white)
 }
 
 .button-danger-outline:hover {
     box-shadow: unset;
     background-color: var(--red-dark);
     color: var(--white)
+}
+
+.button-skeleton {
+    color: var(--main);
+}
+
+.button-skeleton:hover {
+    color: var(--main-darker);
 }
