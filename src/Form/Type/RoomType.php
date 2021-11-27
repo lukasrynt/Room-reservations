@@ -38,11 +38,10 @@ class RoomType extends AbstractType
                 'widget' => 'single_text',
                 'label' => 'To :'
             ])->add('edit', SubmitType::class, [
-                'attr' => ['class' => 'hidden'],
-                'label' => 'Save',
-                'disabled' => true
+                'attr' => ['class' => 'button-base button-success'],
+                'label' => 'Save'
             ])->add('delete', ButtonType::class, [
-                'attr' => ['class' => 'hidden'],
+                'attr' => ['class' => 'button-base button-danger-outline'],
                 'label' => 'Delete'
             ]);
     }

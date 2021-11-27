@@ -20,15 +20,9 @@
         {{ form_row(form.opened_from) }}
         {{ form_row(form.opened_to) }}
         <div id="form-buttons">
+            {# TODO : add delete functionality #}
             {{ form_widget(form.delete) }}
             {{ form_widget(form.edit) }}
-            {# TODO : add delete functionality #}
-            <button type="button" id="room_delete" name="room[delete]" class="button-base button-danger-outline button-with-icon">
-                {{ source('@icons/delete-icon.svg') }}
-                Delete</button>
-            <button type="submit" id="room_edit" name="room[edit]" class="button-base button-success button-with-icon">
-                {{ source('@icons/save-icon.svg') }}
-                Save</button>
         </div>
         {{ form_end(form) }}
     </article>
