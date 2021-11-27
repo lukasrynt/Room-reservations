@@ -25,6 +25,9 @@ class GroupMember extends User
      */
     private Collection $groups;
 
+    /**
+     * @return Collection|Group[]
+     */
     public function getGroups(): Collection
     {
         return $this->groups;
