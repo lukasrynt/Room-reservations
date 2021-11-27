@@ -23,7 +23,7 @@
             <tr>
                 <td data-label="Name">{{ building.name }}</td>
                 <td data-label="Address">{{ building.address }}</td>
-                <td><a class="button-base button-main" href={{ path('building_detail', { id: building.id }) }}>Detail</a></td>
+                <td><a class="button-base button-main" href={{ path('buildings_detail', { id: building.id }) }}>Detail</a></td>
             </tr>
         {% endfor %}
         </tbody>
