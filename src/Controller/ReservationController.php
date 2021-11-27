@@ -4,9 +4,11 @@
 namespace App\Controller;
 
 
+use App\Form\Type\ReservationType;
 use App\Repository\ReservationRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -29,14 +31,19 @@ class ReservationController extends AbstractController
         $this->entityManager = $entityManager;
     }
 
-
     /**
-     * @Route("/new", name="_new")
+     * @Route("/new", name="new")
      * @return Response
      */
     public function createReservation(): Response
     {
-        //todo
+
+        $form = $this->createForm(ReservationType::class)
+            ->add('Reserve', SubmitType::class);
+
+        return $this->render('reservations/new.html.twig', [
+            'form' => $form->createView()
+        ]);
     }
 
 }

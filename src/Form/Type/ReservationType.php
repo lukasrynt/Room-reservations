@@ -31,25 +31,4 @@ class ReservationType extends AbstractType
                 "class" => Room::class
             ]);
     }
-
-    /*public function buildForm(FormBuilderInterface $builder, array $options)
-    {
-        $rooms = $options['rooms'];
-
-        $builder
-            ->add('date_from', DateType::class)
-            ->add('date_to', DateType::class)
-            ->add('room', EntityType::class, [
-                "class" => Room::class,
-                'query_builder' => function (RoomRepository $er) use ($rooms){
-                    return $er->createQueryBuilder('room')
-                        ->andWhere("room.id IN(:rooms)")
-                        ->setParameter('rooms', $rooms);
-                },
-            ]);
-    }
-    public function configureOptions(OptionsResolver $resolver)
-    {
-        $resolver->setRequired(['rooms']);
-    }*/
 }
