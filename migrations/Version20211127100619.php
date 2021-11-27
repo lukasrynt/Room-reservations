@@ -19,7 +19,6 @@ final class Version20211127100619 extends AbstractMigration
 
     public function up(Schema $schema): void
     {
-        // this up() migration is auto-generated, please modify it to your needs
         $this->addSql('ALTER TABLE "user" ADD discr VARCHAR(255) NOT NULL');
         $this->addSql('ALTER TABLE "user" ALTER role TYPE VARCHAR(20)');
         $this->addSql('ALTER TABLE "user" ALTER role DROP DEFAULT');
@@ -29,7 +28,6 @@ final class Version20211127100619 extends AbstractMigration
 
     public function down(Schema $schema): void
     {
-        // this down() migration is auto-generated, please modify it to your needs
         $this->addSql('CREATE SCHEMA public');
         $this->addSql('ALTER TABLE "user" DROP discr');
         $this->addSql('ALTER TABLE "user" ALTER role TYPE VARCHAR(20)');
