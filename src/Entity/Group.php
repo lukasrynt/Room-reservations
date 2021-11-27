@@ -31,7 +31,7 @@ class Group
     private ?GroupManager $groupManager;
 
     /**
-     * @ORM\OneToMany(targetEntity=GroupMember::class, mappedBy="memberGroup")
+     * @ORM\ManyToMany(targetEntity=GroupMember::class, mappedBy="groups")
      */
     private Collection $members;
 
@@ -82,7 +82,6 @@ class Group
     {
         if (!$this->members->contains($groupMember)) {
             $this->members[] = $groupMember;
-            $groupMember->setMemberGroup($this);
         }
 
         return $this;
@@ -90,12 +89,7 @@ class Group
 
     public function removeMember(GroupMember $groupMember): self
     {
-        if ($this->members->removeElement($groupMember)) {
-            // set the owning side to null (unless already changed)
-            if ($groupMember->getMemberGroup() === $this) {
-                $groupMember->setMemberGroup(null);
-            }
-        }
+        $this->members->removeElement($groupMember);
 
         return $this;
     }

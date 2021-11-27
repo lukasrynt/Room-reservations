@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\GroupMemberRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -14,21 +16,33 @@ class GroupMember extends User
     public function __construct()
     {
         parent::__construct();
+        $this->groups = new ArrayCollection();
     }
 
     /**
-     * @ORM\ManyToOne(targetEntity=Group::class, inversedBy="members")
+     * @ORM\ManyToMany(targetEntity=Group::class, inversedBy="members")
+     * @ORM\JoinTable(name="members_groups")
      */
-    private ?Group $memberGroup;
+    private Collection $groups;
 
-    public function getMemberGroup(): ?Group
+    public function getGroups(): Collection
     {
-        return $this->memberGroup;
+        return $this->groups;
     }
 
-    public function setMemberGroup(?Group $memberGroup): self
+
+    public function addGroup(Group $group): self
     {
-        $this->memberGroup = $memberGroup;
+        if (!$this->groups->contains($group)) {
+            $this->groups[] = $group;
+        }
+
+        return $this;
+    }
+
+    public function removeGroup(Group $group): self
+    {
+        $this->groups->removeElement($group);
 
         return $this;
     }
