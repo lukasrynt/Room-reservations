@@ -50,13 +50,4 @@ class RoomRepository extends ServiceEntityRepository
         ;
     }
     */
-
-    public function findRoomsByRoomManager(User $user): Collection
-    {
-        // todo jiný rooms, ty který spravuju
-        $rooms = $user->getRooms();
-        $criteria = Criteria::create()
-            ->andWhere(Criteria::expr()->in('id', array_column((array)$rooms, 'id')));
-        return $this->matching($criteria);
-    }
 }
