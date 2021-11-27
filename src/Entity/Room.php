@@ -77,6 +77,12 @@ class Room
      */
     private ?RoomManager $roomManager;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=Group::class, inversedBy="rooms")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $roomGroup;
+
     public function __construct()
     {
         $this->users = new ArrayCollection();
@@ -282,6 +288,18 @@ class Room
     public function setRoomManager(?RoomManager $roomManager): self
     {
         $this->roomManager = $roomManager;
+
+        return $this;
+    }
+
+    public function getRoomGroup(): ?Group
+    {
+        return $this->roomGroup;
+    }
+
+    public function setRoomGroup(?Group $roomGroup): self
+    {
+        $this->roomGroup = $roomGroup;
 
         return $this;
     }

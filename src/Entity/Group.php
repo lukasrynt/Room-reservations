@@ -35,9 +35,15 @@ class Group
      */
     private Collection $members;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Room::class, mappedBy="roomGroup")
+     */
+    private $rooms;
+
     public function __construct()
     {
         $this->members = new ArrayCollection();
+        $this->rooms = new ArrayCollection();
     }
 
 
@@ -90,6 +96,36 @@ class Group
     public function removeMember(GroupMember $groupMember): self
     {
         $this->members->removeElement($groupMember);
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Room[]
+     */
+    public function getRooms(): Collection
+    {
+        return $this->rooms;
+    }
+
+    public function addRoom(Room $room): self
+    {
+        if (!$this->rooms->contains($room)) {
+            $this->rooms[] = $room;
+            $room->setRoomGroup($this);
+        }
+
+        return $this;
+    }
+
+    public function removeRoom(Room $room): self
+    {
+        if ($this->rooms->removeElement($room)) {
+            // set the owning side to null (unless already changed)
+            if ($room->getRoomGroup() === $this) {
+                $room->setRoomGroup(null);
+            }
+        }
 
         return $this;
     }
