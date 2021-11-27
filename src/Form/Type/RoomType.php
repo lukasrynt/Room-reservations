@@ -40,9 +40,6 @@ class RoomType extends AbstractType
             ])->add('edit', SubmitType::class, [
                 'attr' => ['class' => 'button-base button-success'],
                 'label' => 'Save'
-            ])->add('delete', ButtonType::class, [
-                'attr' => ['class' => 'button-base button-danger-outline'],
-                'label' => 'Delete'
             ]);
     }
 }
