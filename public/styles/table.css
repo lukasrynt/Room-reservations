@@ -157,4 +157,7 @@ table tbody tr td {
     table tbody tr:hover td, table tbody tr:nth-child(even):hover td {
         background-color: unset;
     }
+    table tr {
+        background-color: var(--gray-table-backgroud);
+    }
 }
