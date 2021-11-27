@@ -26,80 +26,79 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
      */
-    private int $id;
+    protected int $id;
 
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private string $firstName;
+    protected string $firstName;
 
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private string $lastName;
+    protected string $lastName;
 
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private string $email;
+    protected string $email;
 
     /**
      * @ORM\Column(type="integer", nullable=true)
      */
-    private int $phoneNumber;
+    protected int $phoneNumber;
 
     /**
      * @ORM\Column(type="json")
      */
-    private array $roles = [];
+    protected array $roles = [];
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
-    private string $note;
+    protected string $note;
 
     /**
      * @var string The hashed password
      * @ORM\Column(type="string")
      */
-    private string $password;
+    protected string $password;
 
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
-    private string $plainPassword;
+    protected string $plainPassword;
 
     /**
      * @ORM\Column(type="string", length=100, nullable=false)
      */
-    private string $username;
+    protected string $username;
 
     /**
      * @ORM\Column(type="enum_roles_type", length=255, nullable=true)
      */
-    private Roles $role;
+    protected Roles $role;
 
     /**
      * @ORM\ManyToMany(targetEntity=Room::class, mappedBy="users")
      */
-    private Collection $rooms;
+    protected Collection $rooms;
 
     /**
      * @ORM\OneToMany(targetEntity=Request::class, mappedBy="requestor")
      */
-    private Collection $requests;
+    protected Collection $requests;
 
     /**
      * @ORM\OneToMany(targetEntity=Reservation::class, mappedBy="user_id")
      */
-    private Collection $reservations;
+    protected Collection $reservations;
 
 
     public function __construct()
     {
         $this->rooms = new ArrayCollection();
-        $this->requestsToAttend = new ArrayCollection();
         $this->requests = new ArrayCollection();
         $this->reservations = new ArrayCollection();
     }
@@ -111,8 +110,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         return $this->id;
     }
-
-
 
     public function getFirstName(): ?string
     {
@@ -269,7 +266,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     }
 
     /**
-     * @return Collection
+     * @return Collection|Room[]
      */
     public function getRooms(): Collection
     {
