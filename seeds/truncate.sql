@@ -1,1 +1,1 @@
-TRUNCATE "user", room, building, room_user, reservation, request
+TRUNCATE "user", room, building, room_user, reservation, request, group
