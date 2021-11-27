@@ -6,6 +6,7 @@ namespace App\Controller;
 
 
 use App\Repository\RoomRepository;
+use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use App\Form\Type\RoomType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -17,18 +18,22 @@ use Symfony\Component\Routing\Annotation\Route;
 class RoomController extends AbstractController
 {
     private RoomRepository $roomRepository;
+    private UserRepository $userRepository;
     private EntityManagerInterface $entityManager;
 
     /**
      * RoomController constructor.
      * @param RoomRepository $roomRepository
+     * @param UserRepository $userRepository
      * @param EntityManagerInterface $entityManager
      */
-    public function __construct(RoomRepository $roomRepository, EntityManagerInterface $entityManager)
+    public function __construct(RoomRepository $roomRepository, UserRepository $userRepository, EntityManagerInterface $entityManager)
     {
         $this->roomRepository = $roomRepository;
+        $this->userRepository = $userRepository;
         $this->entityManager = $entityManager;
     }
+
 
     /**
      * @Route("/rooms", name="rooms_index")
@@ -47,9 +52,10 @@ class RoomController extends AbstractController
      */
     public function detail(int $id): Response{
         $room = $this->roomRepository->find($id);
+        $user = $this->userRepository->find(2);
         if (!$room)
             return $this->render('errors/404.html.twig');
-        return $this->render('rooms/detail.html.twig', ['room' => $room]);
+        return $this->render('rooms/detail.html.twig', ['room' => $room, 'user' => $user]);
     }
 
     /**
@@ -78,4 +84,5 @@ class RoomController extends AbstractController
             'form' => $form->createView()
         ]);
     }
+
 }
