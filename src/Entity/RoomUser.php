@@ -14,38 +14,38 @@ class RoomUser extends User
     /**
      * @ORM\ManyToMany(targetEntity=Room::class, mappedBy="registeredUsers")
      */
-    private Collection $rooms;
+    private Collection $member_rooms;
 
 
     public function __construct()
     {
         parent::__construct();
-        $this->rooms = new ArrayCollection();
+        $this->member_rooms = new ArrayCollection();
     }
 
 
     /**
-     * @return Collection
+     * @return Collection|Group[]
      */
     public function getRooms(): Collection
     {
-        return $this->rooms;
+        return $this->member_rooms;
     }
 
-    public function addRoom(Room $room): self
+    public function addRoom(Room $member_room): self
     {
-        if (!$this->rooms->contains($room)) {
-            $this->rooms[] = $room;
-            $room->addRegisteredUser($this);
+        if (!$this->member_rooms->contains($member_room)) {
+            $this->member_rooms[] = $member_room;
+            $member_room->addRegisteredUser($this);
         }
 
         return $this;
     }
 
-    public function removeRoom(Room $room): self
+    public function removeRoom(Room $member_room): self
     {
-        if ($this->rooms->removeElement($room)) {
-            $room->removeRegisteredUser($this);
+        if ($this->member_rooms->removeElement($member_room)) {
+            $member_room->removeRegisteredUser($this);
         }
 
         return $this;
