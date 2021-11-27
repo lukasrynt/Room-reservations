@@ -1,12 +1,8 @@
 <?php
 
-
 namespace App\Controller;
 
-
-
-use App\Repository\RoomRepository;
-use Doctrine\ORM\EntityManagerInterface;
+use App\Services\RoomService;
 use App\Form\Type\RoomType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\ButtonType;
@@ -14,52 +10,52 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
+/**
+ * @Route("/rooms", name="rooms_")
+ */
 class RoomController extends AbstractController
 {
-    private RoomRepository $roomRepository;
-    private EntityManagerInterface $entityManager;
+    private RoomService $roomService;
 
     /**
      * RoomController constructor.
-     * @param RoomRepository $roomRepository
-     * @param EntityManagerInterface $entityManager
+     * @param RoomService $roomService
      */
-    public function __construct(RoomRepository $roomRepository, EntityManagerInterface $entityManager)
+    public function __construct(RoomService $roomService)
     {
-        $this->roomRepository = $roomRepository;
-        $this->entityManager = $entityManager;
+        $this->roomService = $roomService;
     }
 
     /**
-     * @Route("/rooms", name="rooms_index")
+     * @Route("/", name="index")
      * @return Response
      */
     public function index(): Response
     {
-        $rooms = $this->roomRepository->findAll();
+        $rooms = $this->roomService->findAll();
         return $this->render('rooms/index.html.twig', ['rooms' => $rooms]);
     }
 
     /**
-     * @Route("/rooms/{id}", name="room_detail")
+     * @Route("/{id}", name="detail")
      * @param int $id
      * @return Response
      */
     public function detail(int $id): Response{
-        $room = $this->roomRepository->find($id);
+        $room = $this->roomService->find($id);
         if (!$room)
             return $this->render('errors/404.html.twig');
         return $this->render('rooms/detail.html.twig', ['room' => $room]);
     }
 
     /**
-     * @Route("/rooms/{id}/edit", name="room_edit")
+     * @Route("/{id}/edit", name="edit")
      * @param Request $request
      * @param int $id
      * @return Response
      */
     public function edit(Request $request, int $id): Response{
-        $room = $this->roomRepository->find($id);
+        $room = $this->roomService->find($id);
 
         if (!$room)
             return $this->render('errors/404.html.twig');
@@ -72,9 +68,8 @@ class RoomController extends AbstractController
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()){
-            $this->entityManager->persist($form->getData());
-            $this->entityManager->flush();
-            return $this->redirectToRoute('room_detail', ['id' => $room->getId()]);
+            $this->roomService->save($form->getData());
+            return $this->redirectToRoute('rooms_detail', ['id' => $room->getId()]);
         }
 
         return $this->render('rooms/edit.html.twig', [
