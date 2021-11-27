@@ -23,6 +23,6 @@
         {% elseif (user.isAdmin() or user.isRoomAdmin() or user.isGroupAdmin()) %}
             <a href=#>Make a reservation</a>
         {% endif %}
-        <a href={{ path('room_edit', {'id': room.id}) }}>Edit</a>
+        <a href={{ path('rooms_edit', {'id': room.id}) }}>Edit</a>
     </section>
 {% endblock %}
