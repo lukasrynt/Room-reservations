@@ -47,7 +47,8 @@ class UserController extends AbstractController
      * @param int $id
      * @return Response
      */
-    public function detail(int $id): Response{
+    public function detail(int $id): Response
+    {
         $user = $this->userRepository->find($id);
         if (!$user)
             return $this->render('errors/404.html.twig');
@@ -60,7 +61,7 @@ class UserController extends AbstractController
      * @param int $id
      * @return Response
      */
-    public function editUser(Request $request, int $id) :Response
+    public function editUser(Request $request, int $id): Response
     {
         $user = $this->userRepository->find($id);
 
@@ -68,7 +69,7 @@ class UserController extends AbstractController
             ->add('edit', SubmitType::class);
 
         $form->handleRequest($request);
-        if ($form->isSubmitted() && $form->isValid()){
+        if ($form->isSubmitted() && $form->isValid()) {
             $this->entityManager->persist($form->getData());
             $this->entityManager->flush();
             return $this->redirectToRoute('user_detail', ['id' => $user->getId()]);
@@ -90,71 +91,71 @@ class UserController extends AbstractController
     }
 
     /**
-     * @Route("/users/{id}/book", name="users_book")
+     * @Route("/users/{user_id}/book_room/{room_id}", name="users_book_room_member")
      * @param Request $request
-     * @param int $id
+     * @param int $user_id
+     * @param int $room_id
      * @return Response
      */
-    public function bookRoom(Request $request, int $id): Response
+    public function bookRoomAsMember(Request $request, int $user_id, int $room_id): Response
     {
-        $user = $this->userRepository->find($id);
+        $user = $this->userRepository->find($user_id);
+        $room = $this->roomRepository->find($room_id);
 
-        //todo roomAdmin + groupADmin + jiné uživatele
+        //todo roomAdmin + groupADmin + jiné uživatele tam dělat rovnou reservation
 
-        if($user->isRoomMember() || $user->isAdmin() ||$user->isRoomAdmin()){
+        if ($user->isRoomMember() || $user->isAdmin() || $user->isRoomAdmin()) {
             $newRequest = new \App\Entity\Request();
             $newRequest->setRequestor($user);
             $newRequest->setValid(false);
+            $newRequest->setRoom($room);
 
-            if ($user->isRoomMember()){
+            /*if ($user->isRoomMember()){
                 $rooms = $user->getRooms();
             }elseif($user->isGroupMember()){
                 // todo
                 $rooms = $user->getRooms();
             }else
-                $rooms = [];
+                $rooms = [];*/
 
-            $form = $this->createForm(ReservationType::class, $newRequest, ['rooms' => $rooms])
-                ->add('Book', SubmitType::class);
+            $form = $this->createForm(RequestType::class, $newRequest)
+                ->add('Request', SubmitType::class);
 
             $form->handleRequest($request);
-            if ($form->isSubmitted() && $form->isValid()){
+            if ($form->isSubmitted() && $form->isValid()) {
                 $this->entityManager->persist($form->getData());
                 $this->entityManager->flush();
                 return $this->redirectToRoute('request_detail', ['id' => $newRequest->getId()]);
             }
 
-            return $this->render('users/bookRoom.html.twig', [
+            return $this->render('requests/new.html.twig', [
+                'room' => $room,
                 'user' => $user,
                 'form' => $form->createView()
             ]);
-        }else{
+        } else {
             return $this->render('permissions/denied.html.twig');
         }
     }
 
     /**
-     * @Route("/users/{id}/approve_reservations", name="users_book")
+     * @Route("/users/{id}/confirm_requests", name="users_confirm_requests")
      * @param int $id
      * @return Response
      */
-    public function authorizeRequest(int $id)
+    public function confirmRequest(int $id)
     {
         $user = $this->userRepository->find($id);
-        if ($user->isAdmin() || $user->isRoomAdmin() || $user->isGroupAdmin()){
-            if ($user->isAdmin()){
-                $requests = $this->requestRepository->findNotApprovedRequests();
-            }elseif($user->isRoomAdmin()){
-                $requests = $this->requestRepository->findNotApprovedRequests();
-            }elseif($user->isGroupAdmin()){
-                $requests = $this->requestRepository->findNotApprovedRequests();
-            }else{
-                $requests = [];
-            }
-            return $this->render('users/approve_reservations.html.twig', ['requests' => $requests]);
-        }else{
+        if ($user->isAdmin()) {
+            $requests = $this->requestRepository->findNotApprovedRequestsAll();
+        } elseif ($user->isRoomAdmin()) {
+            $requests = $this->requestRepository->findNotApprovedRequestsByRoom();
+        } elseif ($user->isGroupAdmin()) {
+            $requests = $this->requestRepository->findNotApprovedRequestsByGroup();
+        } else {
             return $this->render('permissions/denied.html.twig');
         }
+        return $this->render('users/confirm_requests.html.twig', ['requests' => $requests]);
     }
 
 }
