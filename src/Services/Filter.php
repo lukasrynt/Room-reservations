@@ -33,6 +33,8 @@ class Filter
         if (!$attributes)
             return $this->criteria;
         foreach ($attributes as $key => $value) {
+            if (!$value)
+                continue;
             if (is_numeric($value))
                 $expression = Criteria::expr()->eq($key, $value);
             else

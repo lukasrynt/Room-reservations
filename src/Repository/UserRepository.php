@@ -34,4 +34,10 @@ class UserRepository extends ServiceEntityRepository
         $criteria = (new Paginator($criteria))->getCriteriaForPage($paginationFilters);
         return $this->matching($criteria);
     }
+
+    public function search(?array $findFilters): Collection
+    {
+        $criteria = (new Filter())->getFilterCriteria($findFilters);
+        return $this->matching($criteria);
+    }
 }

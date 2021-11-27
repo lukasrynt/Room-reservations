@@ -64,4 +64,9 @@ class UserService
             ParamsParser::getFilters($queryParams, 'paginate')
         );
     }
+
+    public function search(array $searchParams): Collection
+    {
+        return $this->userRepository->search($searchParams);
+    }
 }

@@ -16,13 +16,13 @@ class UserSearchType extends AbstractType
         return $builder
             ->setMethod('GET')
             ->setAction('/users/search')
-            ->add('first_name', TextType::class, [
+            ->add('firstName', TextType::class, [
                 'required' => false, 'label' => 'Jméno']
-            )->add('last_name', TextType::class, [
+            )->add('lastName', TextType::class, [
                 'required' => false, 'label' => 'Příjmení']
             )->add('email', TextType::class, [
                 'required' => false]
-            )->add('phone_number', TextType::class, [
+            )->add('phoneNumber', TextType::class, [
                 'required' => false, 'label' => 'Telefonní číslo']
             )->add('search', SubmitType::class, [
                 'attr' => ['class' => 'primary-button'],

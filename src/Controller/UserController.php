@@ -87,9 +87,8 @@ class UserController extends AbstractController
     public function search(Request $request): Response {
         $searchForm = $this->createForm(UserSearchType::class);
         $searchForm->handleRequest($request);
-        dump($searchForm->getData());
         if ($searchForm->isSubmitted() && $searchForm->isValid())
-            $users = $this->userService->filter($searchForm->getData());
+            $users = $this->userService->search($searchForm->getData());
         return $this->render('users/index.html.twig', [
             'users' => $users ?? [],
             'searchForm' => $searchForm->createView()
