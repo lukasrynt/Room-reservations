@@ -2,7 +2,11 @@
 
 namespace App\Services;
 
+use App\Entity\GroupManager;
 use App\Entity\Request;
+use App\Entity\Room;
+use App\Entity\RoomManager;
+use App\Entity\User;
 use App\Repository\RequestRepository;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\Criteria;
@@ -45,22 +49,44 @@ class RequestService
 
     public function findNotApprovedRequestsAll(): Collection
     {
-        $criteria = Criteria::create()
-            ->andWhere(Criteria::expr()->eq('valid', false));
+        $criteria = $this->getCriteriaNotValid();
         return $this->requestRepository->matching($criteria);
     }
 
-    public function findNotApprovedRequestsByGroup(): Collection
+    public function findNotApprovedRequestsByGroup(GroupManager $groupManager): Collection
     {
-        $criteria = Criteria::create()
-            ->andWhere(Criteria::expr()->eq('valid', false));
+        $requestedGroups = $groupManager->getGroups();
+        // todo na groupy
+        $criteria = $this->getCriteriaByIds($requestedGroups);
         return $this->requestRepository->matching($criteria);
     }
 
-    public function findNotApprovedRequestsByRoom(): Collection
+    public function findNotApprovedRequestsByRoom(RoomManager $roomManager): Collection
     {
-        $criteria = Criteria::create()
-            ->andWhere(Criteria::expr()->eq('valid', false));
+        $requestedRooms = $roomManager->getManagedRooms();
+        $criteria = $this->getCriteriaByIds($requestedRooms);
         return $this->requestRepository->matching($criteria);
+    }
+
+    /**
+     * @param Collection|Room[] $ids
+     * @return Criteria
+     */
+    public function getCriteriaByIds(Collection $ids): Criteria
+    {
+        $criteria = $this->getCriteriaNotValid();
+        if (!$ids->isEmpty())
+            return $criteria
+                ->andWhere(Criteria::expr()->in('room', $ids->map(function($obj){return $obj->getId();})->getValues()));
+        return $criteria;
+    }
+
+    /**
+     * @return Criteria
+     */
+    public function getCriteriaNotValid(): Criteria
+    {
+        return Criteria::create()
+            ->andWhere(Criteria::expr()->eq('valid', false));
     }
 }
