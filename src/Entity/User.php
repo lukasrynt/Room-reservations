@@ -82,14 +82,14 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private Collection $rooms;
 
     /**
-     * @ORM\ManyToMany(targetEntity=Request::class, mappedBy="attendees")
-     */
-    private Collection $requestsToAttend;
-
-    /**
      * @ORM\OneToMany(targetEntity=Request::class, mappedBy="requestor")
      */
     private Collection $requests;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Reservation::class, mappedBy="user_id")
+     */
+    private Collection $reservations;
 
 
     public function __construct()
@@ -97,6 +97,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->rooms = new ArrayCollection();
         $this->requestsToAttend = new ArrayCollection();
         $this->requests = new ArrayCollection();
+        $this->reservations = new ArrayCollection();
     }
 
     /**
@@ -290,32 +291,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    /**
-     * @return Collection
-     */
-    public function getRequestsToAttend(): Collection
-    {
-        return $this->requestsToAttend;
-    }
-
-    public function addRequestsToAttend(Request $request): self
-    {
-        if (!$this->requestsToAttend->contains($request)) {
-            $this->requestsToAttend[] = $request;
-            $request->addAttendee($this);
-        }
-
-        return $this;
-    }
-
-    public function removeRequestsToAttend(Request $request): self
-    {
-        if ($this->requestsToAttend->removeElement($request)) {
-            $request->removeAttendee($this);
-        }
-
-        return $this;
-    }
 
     /**
      * @return Collection
@@ -375,6 +350,36 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function isGroupAdmin(): Bool
     {
         return $this->role == Roles::GROUP_ADMIN;
+    }
+
+    /**
+     * @return Collection|Reservation[]
+     */
+    public function getReservations(): Collection
+    {
+        return $this->reservations;
+    }
+
+    public function addReservation(Reservation $reservation): self
+    {
+        if (!$this->reservations->contains($reservation)) {
+            $this->reservations[] = $reservation;
+            $reservation->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeReservation(Reservation $reservation): self
+    {
+        if ($this->reservations->removeElement($reservation)) {
+            // set the owning side to null (unless already changed)
+            if ($reservation->getUser() === $this) {
+                $reservation->setUser(null);
+            }
+        }
+
+        return $this;
     }
 
 }
