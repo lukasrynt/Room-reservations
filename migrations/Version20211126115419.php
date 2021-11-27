@@ -10,21 +10,23 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20211103212249 extends AbstractMigration
+final class Version20211126115419 extends AbstractMigration
 {
     public function getDescription(): string
     {
-        return 'Add plain_password field to user table';
+        return 'Modify field role in user table';
     }
 
     public function up(Schema $schema): void
     {
-        $this->addSql('ALTER TABLE "user" ADD plain_password VARCHAR(255) DEFAULT NULL');
+        $this->addSql('ALTER TABLE "user" ALTER role TYPE VARCHAR(20)');
+        $this->addSql('ALTER TABLE "user" ALTER role DROP DEFAULT');
     }
 
     public function down(Schema $schema): void
     {
         $this->addSql('CREATE SCHEMA public');
-        $this->addSql('ALTER TABLE "user" DROP plain_password');
+        $this->addSql('ALTER TABLE "user" ALTER role TYPE VARCHAR(255)');
+        $this->addSql('ALTER TABLE "user" ALTER role DROP DEFAULT');
     }
 }
