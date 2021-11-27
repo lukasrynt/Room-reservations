@@ -16,7 +16,13 @@
             <dd>Opened from - to</dd>
             <dt>{{ room.opened_from }} - {{ room.opened_to }}</dt>
         </dl>
-        <a href="#">Reserve</a>
+        Dodělat aby admin svý Roomky byl převeden rovnou na rezervaci + Admin svý groupy + Admin - EXTENSIONS
+        <br>
+        {% if (user.isRoomMember() or user.isGroupMember()) %}
+            <a href={{ path('users_book_room_member', {'user_id': user.id, 'room_id': room.id}) }}>Request a reservation</a>
+        {% elseif (user.isAdmin() or user.isRoomAdmin() or user.isGroupAdmin()) %}
+            <a href=#>Make a reservation</a>
+        {% endif %}
         <a href={{ path('room_edit', {'id': room.id}) }}>Edit</a>
     </section>
 {% endblock %}
