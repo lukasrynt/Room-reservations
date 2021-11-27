@@ -2,6 +2,11 @@
 
 {% block title %} Classrooms {% endblock %}
 
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('styles/table.css') }}" type="text/css">
+{% endblock %}
+
 {% block main %}
     <section>
         <form>
@@ -22,7 +27,6 @@
         </form>
     </section>
 
-    <section>
         <table>
             <thead>
                 <tr>
@@ -38,15 +42,18 @@
             <tbody>
                 {% for room in rooms %}
                 <tr>
-                    <td>{{ room.name }}</td>
-                    <td>{{ room.building }}</td>
-                    <td>{{ room.floor }}</td>
-                    <td>{{ room.capacity }}</td>
-                    <td>{{ room.opened_from }} - {{ room.opened_to }}</td>
-                    <td><a href={{ path('rooms_detail', {id: room.id }) }}>Detail</a></td>
+                    <td data-label="Room name">{{ room.name }}</td>
+                    <td data-label="Building">{{ room.building }}</td>
+                    <td data-label="Floor">{{ room.floor }}</td>
+                    <td data-label="Capacity">{{ room.capacity }}</td>
+                    <td data-label="Opened from - to">{{ room.opened_from }} - {{ room.opened_to }}</td>
+                    <td>
+                        <div>
+                            <a class="button-base button-main" href={{ path('rooms_detail', {id: room.id }) }}>Detail</a>
+                        </div>
+                    </td>
                 </tr>
                 {% endfor %}
             </tbody>
         </table>
-    </section>
 {% endblock %}

@@ -39,7 +39,7 @@ table tr th:last-of-type {
     border-radius: 0 .438rem 0 0;
 }
 
-table tr td:last-of-type {
+table tr td:last-of-type div {
     display: flex;
     justify-content: flex-end;
 }
