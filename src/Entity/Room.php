@@ -61,6 +61,11 @@ class Room
      */
     private Collection $requests;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=RoomManager::class, inversedBy="Room")
+     */
+    private ?RoomManager $roomManager;
+
     public function __construct()
     {
         $this->users = new ArrayCollection();
@@ -210,6 +215,18 @@ class Room
     public function __toString()
     {
         return $this->name;
+    }
+
+    public function getRoomManager(): ?RoomManager
+    {
+        return $this->roomManager;
+    }
+
+    public function setRoomManager(?RoomManager $roomManager): self
+    {
+        $this->roomManager = $roomManager;
+
+        return $this;
     }
 
 
