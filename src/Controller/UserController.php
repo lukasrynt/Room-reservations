@@ -2,11 +2,16 @@
 
 namespace App\Controller;
 
+use App\Entity\RoomManager;
 use App\Form\Type\LoginType;
 use App\Form\Type\RequestType;
 use App\Form\Type\UserSearchType;
 use App\Form\Type\UserType;
+use App\Repository\GroupManagerRepository;
+use App\Repository\RoomManagerRepository;
+use App\Services\GroupManagerService;
 use App\Services\RequestService;
+use App\Services\RoomManagerService;
 use App\Services\RoomService;
 use App\Services\UserService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -26,16 +31,24 @@ class UserController extends AbstractController
     private UserService $userService;
     private RoomService $roomService;
     private RequestService $requestService;
+    private RoomManagerService $roomManagerService;
+    private GroupManagerService $groupManagerService;
 
     /**
      * UserController constructor.
      * @param UserService $userService
      * @param RoomService $roomService
+     * @param RequestService $requestService
+     * @param RoomManagerService $roomManagerService
+     * @param GroupManagerService $groupManagerService
      */
-    public function __construct(UserService $userService, RoomService $roomService)
+    public function __construct(UserService $userService, RoomService $roomService, RequestService $requestService, RoomManagerService $roomManagerService, GroupManagerService $groupManagerService)
     {
         $this->userService = $userService;
         $this->roomService = $roomService;
+        $this->requestService = $requestService;
+        $this->roomManagerService = $roomManagerService;
+        $this->groupManagerService = $groupManagerService;
     }
 
 
@@ -101,7 +114,7 @@ class UserController extends AbstractController
     }
 
     /**
-     * @Route("/users/{user_id}/book_room/{room_id}", name="users_book_room_member")
+     * @Route("/{user_id}/book_room/{room_id}", name="book_room_member")
      * @param Request $request
      * @param int $user_id
      * @param int $room_id
@@ -114,19 +127,11 @@ class UserController extends AbstractController
 
         //todo roomAdmin + groupADmin + jiné uživatele tam dělat rovnou reservation
 
-        if ($user->isRoomMember() || $user->isAdmin() || $user->isRoomAdmin()) {
+        if ($user->isRoomMember() || $user->isAdmin() || $user->isGroupMember() || $user->isGroupAdmin() || $user->isRoomAdmin()) {
             $newRequest = new \App\Entity\Request();
             $newRequest->setRequestor($user);
             $newRequest->setValid(false);
             $newRequest->setRoom($room);
-
-            /*if ($user->isRoomMember()){
-                $rooms = $user->getRooms();
-            }elseif($user->isGroupMember()){
-                // todo
-                $rooms = $user->getRooms();
-            }else
-                $rooms = [];*/
 
             $form = $this->createForm(RequestType::class, $newRequest)
                 ->add('Request', SubmitType::class);
@@ -148,7 +153,7 @@ class UserController extends AbstractController
     }
 
     /**
-     * @Route("/users/{id}/confirm_requests", name="users_confirm_requests")
+     * @Route("/{id}/confirm_requests", name="confirm_requests")
      * @param int $id
      * @return Response
      */
@@ -158,9 +163,11 @@ class UserController extends AbstractController
         if ($user->isAdmin()) {
             $requests = $this->requestService->findNotApprovedRequestsAll();
         } elseif ($user->isRoomAdmin()) {
-            $requests = $this->requestService->findNotApprovedRequestsByRoom();
+            $roomAdmin = $this->roomManagerService->find($user->getId());
+            $requests = $this->requestService->findNotApprovedRequestsByRoom($roomAdmin);
         } elseif ($user->isGroupAdmin()) {
-            $requests = $this->requestService->findNotApprovedRequestsByGroup();
+            $groupAdmin = $this->groupManagerService->find($user->getId());
+            $requests = $this->requestService->findNotApprovedRequestsByGroup($groupAdmin);
         } else {
             return $this->render('permissions/denied.html.twig');
         }
