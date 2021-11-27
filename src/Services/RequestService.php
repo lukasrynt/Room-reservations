@@ -4,6 +4,8 @@ namespace App\Services;
 
 use App\Entity\Request;
 use App\Repository\RequestRepository;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\Criteria;
 use Doctrine\ORM\EntityManagerInterface;
 
 class RequestService
@@ -28,7 +30,7 @@ class RequestService
     }
 
     /**
-     * @return Request[]|array
+     * @return array
      */
     public function findAll(): array
     {
@@ -39,5 +41,26 @@ class RequestService
     {
         $this->entityManager->persist($request);
         $this->entityManager->flush();
+    }
+
+    public function findNotApprovedRequestsAll(): Collection
+    {
+        $criteria = Criteria::create()
+            ->andWhere(Criteria::expr()->eq('valid', false));
+        return $this->requestRepository->matching($criteria);
+    }
+
+    public function findNotApprovedRequestsByGroup(): Collection
+    {
+        $criteria = Criteria::create()
+            ->andWhere(Criteria::expr()->eq('valid', false));
+        return $this->requestRepository->matching($criteria);
+    }
+
+    public function findNotApprovedRequestsByRoom(): Collection
+    {
+        $criteria = Criteria::create()
+            ->andWhere(Criteria::expr()->eq('valid', false));
+        return $this->requestRepository->matching($criteria);
     }
 }

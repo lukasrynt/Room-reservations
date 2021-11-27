@@ -21,25 +21,4 @@ class RequestRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, Request::class);
     }
-
-    public function findNotApprovedRequestsAll(): Collection
-    {
-        $criteria = Criteria::create()
-            ->andWhere(Criteria::expr()->eq('valid', false));
-        return $this->matching($criteria);
-    }
-
-    public function findNotApprovedRequestsByGroup(): Collection
-    {
-        $criteria = Criteria::create()
-            ->andWhere(Criteria::expr()->eq('valid', false));
-        return $this->matching($criteria);
-    }
-
-    public function findNotApprovedRequestsByRoom(): Collection
-    {
-        $criteria = Criteria::create()
-            ->andWhere(Criteria::expr()->eq('valid', false));
-        return $this->matching($criteria);
-    }
 }
