@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\GroupRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -27,6 +29,17 @@ class Group
      * @ORM\ManyToOne(targetEntity=GroupManager::class, inversedBy="groups")
      */
     private ?GroupManager $groupManager;
+
+    /**
+     * @ORM\OneToMany(targetEntity=GroupMember::class, mappedBy="memberGroup")
+     */
+    private Collection $members;
+
+    public function __construct()
+    {
+        $this->members = new ArrayCollection();
+    }
+
 
     public function getId(): ?int
     {
@@ -56,4 +69,36 @@ class Group
 
         return $this;
     }
+
+    /**
+     * @return Collection
+     */
+    public function getMembers(): Collection
+    {
+        return $this->members;
+    }
+
+    public function addMember(GroupMember $groupMember): self
+    {
+        if (!$this->members->contains($groupMember)) {
+            $this->members[] = $groupMember;
+            $groupMember->setMemberGroup($this);
+        }
+
+        return $this;
+    }
+
+    public function removeMember(GroupMember $groupMember): self
+    {
+        if ($this->members->removeElement($groupMember)) {
+            // set the owning side to null (unless already changed)
+            if ($groupMember->getMemberGroup() === $this) {
+                $groupMember->setMemberGroup(null);
+            }
+        }
+
+        return $this;
+    }
+
+
 }
