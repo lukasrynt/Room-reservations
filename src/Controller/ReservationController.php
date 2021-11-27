@@ -10,6 +10,9 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
+/**
+ * @Route("/reservations", name="reservations_")
+ */
 class ReservationController extends AbstractController
 {
     private ReservationRepository $reservationRepository;
@@ -28,7 +31,7 @@ class ReservationController extends AbstractController
 
 
     /**
-     * @Route("/reservations/new", name="reservation_new")
+     * @Route("/new", name="_new")
      * @return Response
      */
     public function createReservation(): Response
