@@ -36,7 +36,6 @@
                     <th>Floor</th>
                     <th>Capacity</th>
                     <th>Opened from - to</th>
-                    <th>Buttons</th>
                 </tr>
             </thead>
 
@@ -48,10 +47,8 @@
                     <td data-label="Floor">{{ room.floor }}</td>
                     <td data-label="Capacity">{{ room.capacity }}</td>
                     <td data-label="Opened from - to">{{ room.opened_from }} - {{ room.opened_to }}</td>
-                    <td>
-                        <div>
-                            <a class="button-base button-main" href={{ path('rooms_detail', {id: room.id }) }}>Detail</a>
-                        </div>
+                    <td class="table-buttons">
+                        <a class="button-base button-main" href={{ path('rooms_detail', {id: room.id }) }}>Detail</a>
                     </td>
                 </tr>
                 {% endfor %}

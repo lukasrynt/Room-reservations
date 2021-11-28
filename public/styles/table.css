@@ -5,159 +5,160 @@ main {
 }
 
 table {
+    border: 0;
+    background-color: var(--white);
+    display: flex;
+    justify-content: center;
+    padding: 2rem 0 calc(2rem - .625rem) 0;
+    border-radius: .438rem;
+    box-shadow: 0 2px 8px 0 rgba(0,0,0,0.1);
+    margin-top: 2rem;
     width: 90%;
-    margin: 2rem auto 0 auto;
-    table-layout: fixed;
 }
 
-table tr td {
-    background-color: var(--gray-table-backgroud);
+table tbody {
+    width: calc(100% - 4rem);
 }
 
-table tr:nth-child(even) td {
-    background-color: var(--gray-table-light)
+table thead {
+    display: none;
 }
-
 
 table th, table td {
+    padding: .625rem;
+}
+
+table tr {
+    border: .063rem solid #ddd;
+    display: block;
+    margin-bottom: .625rem;
+    padding: .35em;
+}
+
+table td {
+    border-bottom: 0.063rem solid #ddd;
+    display: block;
+    text-align: right;
+}
+
+table td::before {
+    content: attr(data-label);
+    float: left;
+    font-weight: bold;
+    text-transform: uppercase;
+    font-size: 1rem;
+}
+
+table td:last-child {
+    border-bottom: 0;
     text-align: center;
 }
 
-table th {
-    font-size: 1rem;
-    letter-spacing: .1rem;
-    text-transform: uppercase;
-    background-color: var(--main);
-    color: var(--white);
-}
-
-table tr th:first-of-type {
-    border-radius: .438rem 0 0 0;
-}
-
-table tr th:last-of-type {
-    border-radius: 0 .438rem 0 0;
-}
-
-table tr td:last-of-type div {
-    display: flex;
-    justify-content: flex-end;
-}
-
-table tbody tr:hover td, table tbody tr:nth-child(even):hover td {
-    background-color: var(--gray-lightest)
-}
-
 table tbody tr td {
-    box-shadow: inset 0 -.055rem 0 0 var(--gray-light);
+    padding: .625rem;
 }
 
-table tbody tr td:first-of-type {
-    box-shadow: inset 0 -.055rem 0 0 var(--gray-light), inset .055rem 0 0 0 var(--gray-light);
+table tr {
+    background-color: var(--gray-table-backgroud);
 }
 
-table tbody tr td:last-of-type {
-    box-shadow: inset 0 -.055rem 0 0 var(--gray-light), inset -.055rem 0 0 0 var(--gray-light);
+.table-buttons a:not(:last-child) {
+    margin-bottom: .35rem
 }
 
-table tbody tr:last-of-type td:first-of-type {
-    border-radius: 0 0 0 .438rem;
-}
-
-table tbody tr:last-of-type td:last-of-type {
-    border-radius: 0 0 .438rem 0;
-}
-
-table tr th {
-    padding: 1rem 0 1rem 0;
-}
-
-table tbody tr td {
-    padding: .3rem 1rem .3rem 1rem;
-}
-
-@media screen and (max-width: 790px) {
+@media screen and (min-width: 790px) {
     table {
-        border: 0;
-        background-color: var(--white);
-        display: flex;
-        justify-content: center;
-        padding: 2rem 0 calc(2rem - .625rem) 0;
-        border-radius: .438rem;
-        box-shadow: 0 2px 8px 0 rgba(0,0,0,0.1);
-    }
-
-    table tbody tr:nth-child(even) td {
+        box-shadow: unset;
         background-color: unset;
+        display: block;
     }
 
-    table tbody {
-        width: calc(100% - 4rem);
-    }
-
-    table thead {
-        display: none;
-    }
-
-    table th, table td {
-        padding: .625rem;
+    table thead, table tbody {
+        display: block;
     }
 
     table tr {
-        border: .063rem solid #ddd;
-        display: block;
-        margin-bottom: .625rem;
-        padding: .35em;
+        margin: 0;
+        border: unset;
     }
 
     table td {
-        border-bottom: 0.063rem solid #ddd;
-        display: block;
-        font-size: 1rem;
-        text-align: right;
+        display: table-cell;
+        border: unset;
     }
 
     table td::before {
-        content: attr(data-label);
-        float: left;
-        font-weight: bold;
-        text-transform: uppercase;
-        font-size: 1rem;
+        display: none;
     }
 
-    table td:last-child {
-        border-bottom: 0;
+    table thead tr {
+        display: flex;
+    }
+
+    table thead tr th {
+        flex: 1 1 0;
+    }
+
+    table thead tr, table tbody tr {
+        padding: 0;
+    }
+
+    table th {
+        letter-spacing: .1rem;
+        text-transform: uppercase;
+        background-color: var(--main);
+        color: var(--white);
+    }
+
+    table thead tr th, table tbody tr td {
+        padding: 1rem 0 1rem 0;
+    }
+
+    table tr th:first-of-type {
+        border-radius: .438rem 0 0 0;
+    }
+
+    table tr th:last-of-type {
+        border-radius: 0 .438rem 0 0;
+    }
+
+    table tbody {
+        width: 100%;
+    }
+
+    table tbody tr {
+        display: flex;
+        flex-wrap: wrap;
+        box-shadow: inset 0 -.055rem 0 0 var(--gray-light), inset .055rem 0 0 0 var(--gray-light), inset -.055rem 0 0 0 var(--gray-light);
+        padding-bottom: .5rem;
+    }
+
+    table tbody td {
+        flex: 1 1 0;
         text-align: center;
     }
 
-    table tbody tr td {
-        box-shadow: unset;
+    .table-buttons {
+        flex-basis: 100%;
+        box-sizing: border-box;
+        padding: 0 .5rem 0 .5rem;
+        display: flex;
+        justify-content: flex-end;
     }
 
-    table tbody tr td:first-of-type {
-        box-shadow: unset;
+    .table-buttons a:not(:last-child) {
+        margin: 0 .5rem 0 0;
     }
 
-    table tbody tr td:last-of-type {
-        box-shadow: unset;
+    table tbody tr:last-of-type {
+        border-radius: 0 0 .438rem .438rem;
     }
 
-    table tbody tr:last-of-type td:first-of-type {
-        border-radius: unset;
+    table tr:nth-child(even) {
+        background-color: var(--gray-table-light)
     }
 
-    table tbody tr:last-of-type td:last-of-type {
-        border-radius: unset;
-    }
-
-    table tbody tr td {
-        padding: .625rem;
-    }
-
-    table tbody tr:hover td, table tbody tr:nth-child(even):hover td {
-        background-color: unset;
-    }
-    table tr {
-        background-color: var(--gray-table-backgroud);
+    table tr:hover {
+        background-color: var(--gray-lightest)
     }
 }

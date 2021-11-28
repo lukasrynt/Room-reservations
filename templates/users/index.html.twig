@@ -18,7 +18,6 @@
             <th>Email</th>
             <th>Role</th>
             <th>Phone number</th>
-            <th>Buttons</th>
         </tr>
         </thead>
 
@@ -29,10 +28,8 @@
                 <td data-label="Email">{{ user.email }}</td>
                 <td data-label="Role">{{ user.role }}</td>
                 <td data-label="Phone number">{{ user.phoneNumber }}</td>
-                <td>
-                    <div>
-                        <a class="button-base button-main" href={{ path('users_detail', {id: user.id}) }}>Detail</a>
-                    </div>
+                <td class="table-buttons">
+                    <a class="button-base button-main" href={{ path('users_detail', {id: user.id}) }}>Detail</a>
                 </td>
             </tr>
         {% endfor %}
