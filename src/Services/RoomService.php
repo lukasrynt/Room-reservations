@@ -2,9 +2,11 @@
 
 namespace App\Services;
 
+use App\Entity\Group;
 use App\Entity\Room;
 use App\Repository\RoomRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\Common\Collections\Collection;
 
 class RoomService
 {
@@ -39,5 +41,14 @@ class RoomService
     {
         $this->entityManager->persist($room);
         $this->entityManager->flush();
+    }
+
+    /**
+     * @param Collection $groups
+     * @return Collection
+     */
+    public function findByGroups(Collection $groups): Collection
+    {
+        return $this->roomRepository->filterByGroups($groups);
     }
 }
