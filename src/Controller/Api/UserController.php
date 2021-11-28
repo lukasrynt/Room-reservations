@@ -5,8 +5,9 @@
 
 namespace App\Controller\Api;
 
-use App\Repository\UserRepository;
+use App\Services\UserService;
 use FOS\RestBundle\Controller\AbstractFOSRestController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -17,23 +18,24 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class UserController extends AbstractFOSRestController
 {
-    private UserRepository $userRepository;
+    private UserService $userService;
 
     /**
-     * @param UserRepository $userRepository
+     * @param UserService $userService
      */
-    public function __construct(UserRepository $userRepository)
+    public function __construct(UserService $userService)
     {
-        $this->userRepository = $userRepository;
+        $this->userService = $userService;
     }
 
     /**
      * @Route("/", methods={"GET"}, name="list")
+     * @param Request $request
      * @return Response
      */
-    public function all(): Response
+    public function all(Request $request): Response
     {
-        $users = $this->userRepository->findAll();
+        $users = $this->userService->filter($request->query->all())->toArray();
         $view = $this->view($users, 200);
         return $this->handleView($view);
     }
@@ -45,7 +47,7 @@ class UserController extends AbstractFOSRestController
      */
     public function detail(int $id): Response
     {
-        $request = $this->userRepository->find($id);
+        $request = $this->userService->find($id);
         $view = $this->view($request, 200);
         return $this->handleView($view);
     }

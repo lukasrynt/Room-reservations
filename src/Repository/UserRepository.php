@@ -31,7 +31,6 @@ class UserRepository extends ServiceEntityRepository
     {
         $criteria = (new Filter())->getFilterCriteria($findFilters);
         $criteria = (new Orderer($criteria))->getOrderCriteria($orderByFilters);
-        dump($paginationFilters);
         $criteria = (new Paginator($criteria))->getCriteriaForPage($paginationFilters);
         return $this->matching($criteria);
     }
