@@ -54,9 +54,9 @@ class UserService
 
     /**
      * @param array $queryParams
-     * @return Collection|LazyCriteriaCollection
+     * @return array
      */
-    public function filter(array $queryParams): Collection
+    public function filter(array $queryParams): array
     {
         return $this->userRepository->filter(
             ParamsParser::getFilters($queryParams, 'filter_by'),

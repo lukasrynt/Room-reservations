@@ -25,19 +25,22 @@ class UserRepository extends ServiceEntityRepository
     }
 
     /**
-     * @return Collection|LazyCriteriaCollection
+     * @param array|null $findFilters
+     * @param array|null $orderByFilters
+     * @param array|null $paginationFilters
+     * @return array
      */
-    public function filter(?array $findFilters, ?array $orderByFilters, ?array $paginationFilters): Collection
+    public function filter(?array $findFilters, ?array $orderByFilters, ?array $paginationFilters): array
     {
         $criteria = (new Filter())->getFilterCriteria($findFilters);
         $criteria = (new Orderer($criteria))->getOrderCriteria($orderByFilters);
         $criteria = (new Paginator($criteria))->getCriteriaForPage($paginationFilters);
-        return $this->matching($criteria);
+        return $this->matching($criteria)->toArray();
     }
 
     public function search(?array $findFilters): Collection
     {
         $criteria = (new Filter())->getFilterCriteria($findFilters);
-        return $this->matching($criteria);
+        return $this->matching($criteria)->toArray();
     }
 }

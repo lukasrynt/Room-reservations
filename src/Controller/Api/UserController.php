@@ -35,7 +35,7 @@ class UserController extends AbstractFOSRestController
      */
     public function all(Request $request): Response
     {
-        $users = $this->userService->filter($request->query->all())->toArray();
+        $users = $this->userService->filter($request->query->all());
         $view = $this->view($users, 200);
         return $this->handleView($view);
     }
