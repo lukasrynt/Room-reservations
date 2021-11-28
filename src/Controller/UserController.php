@@ -114,7 +114,7 @@ class UserController extends AbstractController
     }
 
     /**
-     * @Route("/{user_id}/book_room/{room_id}", name="book_room_member")
+     * @Route("/{user_id}/book_room_member/{room_id}", name="book_room_member")
      * @param Request $request
      * @param int $user_id
      * @param int $room_id
@@ -125,9 +125,7 @@ class UserController extends AbstractController
         $user = $this->userService->find($user_id);
         $room = $this->roomService->find($room_id);
 
-        //todo roomAdmin + groupADmin + jiné uživatele tam dělat rovnou reservation
-
-        if ($user->isRoomMember() || $user->isAdmin() || $user->isGroupMember() || $user->isGroupAdmin() || $user->isRoomAdmin()) {
+        if ($user->isRoomMember() || $user->isGroupMember()) {
             $newRequest = new \App\Entity\Request();
             $newRequest->setRequestor($user);
             $newRequest->setValid(false);
