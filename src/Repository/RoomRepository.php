@@ -3,8 +3,13 @@
 namespace App\Repository;
 
 use App\Entity\Room;
+use App\Services\Filter;
+use App\Services\Orderer;
+use App\Services\Paginator;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\LazyCriteriaCollection;
 use Doctrine\Persistence\ManagerRegistry;
+use Symfony\Component\Validator\Constraints\Collection;
 
 /**
  * @method Room|null find($id, $lockMode = null, $lockVersion = null)
@@ -19,32 +24,17 @@ class RoomRepository extends ServiceEntityRepository
         parent::__construct($registry, Room::class);
     }
 
-    // /**
-    //  * @return Room[] Returns an array of Room objects
-    //  */
-    /*
-    public function findByExampleField($value)
+    /**
+     * @param array|null $findFilters
+     * @param array|null $orderByFilters
+     * @param array|null $paginationFilters
+     * @return array
+     */
+    public function filter(?array $findFilters, ?array $orderByFilters, ?array $paginationFilters): array
     {
-        return $this->createQueryBuilder('r')
-            ->andWhere('r.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('r.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
+        $criteria = (new Filter())->getFilterCriteria($findFilters);
+        $criteria = (new Orderer($criteria))->getOrderCriteria($orderByFilters);
+        $criteria = (new Paginator($criteria))->getCriteriaForPage($paginationFilters);
+        return $this->matching($criteria)->toArray();
     }
-    */
-
-    /*
-    public function findOneBySomeField($value): ?Room
-    {
-        return $this->createQueryBuilder('r')
-            ->andWhere('r.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
-    }
-    */
 }

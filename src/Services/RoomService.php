@@ -40,4 +40,17 @@ class RoomService
         $this->entityManager->persist($room);
         $this->entityManager->flush();
     }
+
+    /**
+     * @param array $queryParams
+     * @return array
+     */
+    public function filter(array $queryParams): array
+    {
+        return $this->roomRepository->filter(
+            ParamsParser::getFilters($queryParams, 'filter_by'),
+            ParamsParser::getFilters($queryParams, 'order_by'),
+            ParamsParser::getFilters($queryParams, 'paginate')
+        );
+    }
 }
