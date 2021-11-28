@@ -36,18 +36,20 @@
         </tbody>
     </table>
 
-    <div id="pagination">
-        <a class="button-base button-main button-pagination {{ currentPage(app.request) > 1 ? "" : "dummy" }}"
-           href={{ currentPage(app.request) > 1 ? path('users_index', prevPageParams(app.request)) : "" }}>
-            {{ source('@icons/arrow-left.svg') }}
-        </a>
-        <button class="button-base button-secondary-outline button-pagination">
-            {{ currentPage(app.request) }}
-        </button>
-        {% set pageCnt = pagesCount(app.request, usersCount) %}
-        <a class="button-base button-main button-pagination {{ currentPage(app.request) < pageCnt ? "" : "dummy" }}"
-           href={{ currentPage(app.request) < pageCnt ? path('users_index', nextPageParams(app.request, pageCnt)) : "" }}>
-            {{ source('@icons/arrow-right.svg') }}
-        </a>
-    </div>
+    {% set pageCnt = pagesCount(app.request, usersCount) %}
+        {% if pageCnt > 1 %}
+            <div id="pagination">
+                <a class="button-base button-main button-pagination {{ currentPage(app.request) > 1 ? "" : "dummy" }}"
+                   href={{ currentPage(app.request) > 1 ? path('users_index', prevPageParams(app.request)) : "" }}>
+                    {{ source('@icons/arrow-left.svg') }}
+                </a>
+                <button class="button-base button-secondary-outline button-pagination">
+                    {{ currentPage(app.request) }}
+                </button>
+                <a class="button-base button-main button-pagination {{ currentPage(app.request) < pageCnt ? "" : "dummy" }}"
+                   href={{ path('users_index', nextPageParams(app.request, pageCnt)) }}>
+                    {{ source('@icons/arrow-right.svg') }}
+                </a>
+            </div>
+        {% endif %}
 {% endblock %}
