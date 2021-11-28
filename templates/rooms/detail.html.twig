@@ -19,7 +19,7 @@
         {% if hasUserRequestPermission(user, room) %}
             <a href={{ path('users_book_room_member', {'user_id': user.id, 'room_id': room.id}) }}>Request a reservation</a>
         {% elseif hasUserRegistrationPermission(user, room) %}
-            <a href={{ path('reservations_new') }}>Make a reservation</a>
+            <a href={{ path('reservations_new', {'id': user.id}) }}>Make a reservation</a>
         {% endif %}
         <a href={{ path('rooms_edit', {'id': room.id}) }}>Edit</a>
     </section>
