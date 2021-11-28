@@ -8,6 +8,7 @@ use App\Entity\Room;
 use App\Entity\RoomManager;
 use App\Entity\User;
 use App\Repository\RequestRepository;
+use App\Repository\RoomRepository;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\Criteria;
 use Doctrine\ORM\EntityManagerInterface;
@@ -15,6 +16,7 @@ use Doctrine\ORM\EntityManagerInterface;
 class RequestService
 {
     private RequestRepository $requestRepository;
+    private RoomRepository $roomRepository;
     private EntityManagerInterface $entityManager;
 
     /**
@@ -55,9 +57,9 @@ class RequestService
 
     public function findNotApprovedRequestsByGroup(GroupManager $groupManager): Collection
     {
-        $requestedGroups = $groupManager->getGroups();
-        // todo na groupy
-        $criteria = $this->getCriteriaByIds($requestedGroups);
+        $managedGroups = $groupManager->getGroups();
+        $requestedRooms = $this->roomRepository->filterByGroups($managedGroups);
+        $criteria = $this->getCriteriaByIds($requestedRooms);
         return $this->requestRepository->matching($criteria);
     }
 
