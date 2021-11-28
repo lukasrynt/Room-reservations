@@ -68,7 +68,7 @@ class Room
     private Collection $requests;
 
     /**
-     * @ORM\ManyToOne(targetEntity=RoomManager::class, inversedBy="Room")
+     * @ORM\ManyToOne(targetEntity=RoomManager::class, inversedBy="managedRooms")
      */
     private ?RoomManager $roomManager;
 
