@@ -35,9 +35,16 @@ class Group
      */
     private Collection $members;
 
+    /**
+     * @ORM\ManyToMany(targetEntity="Room", inversedBy="groups")
+     * @ORM\JoinTable(name="groups_rooms")
+     */
+    private Collection $rooms;
+
     public function __construct()
     {
         $this->members = new ArrayCollection();
+        $this->rooms = new ArrayCollection();
     }
 
 
@@ -94,5 +101,27 @@ class Group
         return $this;
     }
 
+    /**
+     * @return Collection|Room[]
+     */
+    public function getRooms(): Collection
+    {
+        return $this->rooms;
+    }
 
+    public function addRoom(Room $room): self
+    {
+        if (!$this->rooms->contains($room)) {
+            $this->rooms[] = $room;
+        }
+
+        return $this;
+    }
+
+    public function removeRoom(Room $room): self
+    {
+        $this->rooms->removeElement($room);
+
+        return $this;
+    }
 }
