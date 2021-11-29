@@ -15,12 +15,12 @@ class RoomManager extends User
     /**
      * @ORM\OneToMany(targetEntity=Room::class, mappedBy="roomManager")
      */
-    private Collection $managed_rooms;
+    private Collection $managedRooms;
 
     public function __construct()
     {
+        $this->managedRooms = new ArrayCollection();
         parent::__construct();
-        $this->managed_rooms = new ArrayCollection();
     }
 
     /**
@@ -28,25 +28,25 @@ class RoomManager extends User
      */
     public function getManagedRooms(): Collection
     {
-        return $this->managed_rooms;
+        return $this->managedRooms;
     }
 
-    public function addManagedRoom(Room $managed_room): self
+    public function addManagedRoom(Room $room): self
     {
-        if (!$this->managed_rooms->contains($managed_room)) {
-            $this->managed_rooms[] = $managed_room;
-            $managed_room->setRoomManager($this);
+        if (!$this->managedRooms->contains($room)) {
+            $this->managedRooms[] = $room;
+            $room->setRoomManager($this);
         }
 
         return $this;
     }
 
-    public function removeManagedRoom(Room $managed_room): self
+    public function removeManagedRoom(Room $room): self
     {
-        if ($this->managed_rooms->removeElement($managed_room)) {
+        if ($this->managedRooms->removeElement($room)) {
             // set the owning side to null (unless already changed)
-            if ($managed_room->getRoomManager() === $this) {
-                $managed_room->setRoomManager(null);
+            if ($room->getRoomManager() === $this) {
+                $room->setRoomManager(null);
             }
         }
 
