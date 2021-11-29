@@ -14,7 +14,7 @@ use Symfony\Component\Routing\Annotation\Route;
 /**
  * @package App\Controller\Api
  *
- * @Route("/api/groups", name="_api_groups")
+ * @Route("/api/groups", name="api_groups_")
  */
 class GroupController extends AbstractFOSRestController
 {
@@ -37,6 +37,38 @@ class GroupController extends AbstractFOSRestController
     {
         $groups = $this->groupService->filter($request->query->all());
         $view = $this->view($groups, 200);
+        return $this->handleView($view);
+    }
+
+    /**
+     * @Route("/{gid}/users/{uid}",
+     *        methods={"PUT"},
+     *        name="add_user",
+     *        requirements={"gid": "\d+", "uid": "\d+"})
+     * @param int $gid
+     * @param int $uid
+     * @return Response
+     */
+    public function addUserToGroup(int $gid, int $uid): Response
+    {
+        $editedGroup = $this->groupService->addUser($gid, $uid);
+        $view = $this->view($editedGroup, 201);
+        return $this->handleView($view);
+    }
+
+    /**
+     * @Route("/{gid}/users/{uid}",
+     *        methods={"DELETE"},
+     *        name="remove_user",
+     *        requirements={"gid": "\d+", "uid": "\d+"})
+     * @param int $gid
+     * @param int $uid
+     * @return Response
+     */
+    public function removeUserFromGroup(int $gid, int $uid): Response
+    {
+        $editedGroup = $this->groupService->removeUser($gid, $uid);
+        $view = $this->view($editedGroup, 200);
         return $this->handleView($view);
     }
 }
