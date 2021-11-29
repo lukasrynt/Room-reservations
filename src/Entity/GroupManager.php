@@ -15,12 +15,12 @@ class GroupManager extends User
     /**
      * @ORM\OneToMany(targetEntity=Group::class, mappedBy="groupManager")
      */
-    private Collection $groups;
+    private Collection $managedGroups;
 
     public function __construct()
     {
         parent::__construct();
-        $this->groups = new ArrayCollection();
+        $this->managedGroups = new ArrayCollection();
     }
 
     /**
@@ -28,13 +28,13 @@ class GroupManager extends User
      */
     public function getGroups(): Collection
     {
-        return $this->groups;
+        return $this->managedGroups;
     }
 
     public function addGroup(Group $group): self
     {
-        if (!$this->groups->contains($group)) {
-            $this->groups[] = $group;
+        if (!$this->managedGroups->contains($group)) {
+            $this->managedGroups[] = $group;
             $group->setGroupManager($this);
         }
 
@@ -43,7 +43,7 @@ class GroupManager extends User
 
     public function removeGroup(Group $group): self
     {
-        if ($this->groups->removeElement($group)) {
+        if ($this->managedGroups->removeElement($group)) {
             // set the owning side to null (unless already changed)
             if ($group->getGroupManager() === $this) {
                 $group->setGroupManager(null);
