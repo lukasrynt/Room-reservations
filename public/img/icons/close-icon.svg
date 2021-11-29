@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg class="button-icon" width="1em" height="1em" aria-hidden="true" role="img" viewBox="4 4 16 16" xmlns="http://www.w3.org/2000/svg">
+    <path d="m13.41 12 4.3-4.29a1 1 0 1 0-1.42-1.42l-4.29 4.3-4.29-4.3a1 1 0 0 0-1.42 1.42l4.3 4.29-4.3 4.29a1 1 0 0 0 0 1.42 1 1 0 0 0 1.42 0l4.29-4.3 4.29 4.3a1 1 0 0 0 1.42 0 1 1 0 0 0 0-1.42z" fill="currentColor"/>
+</svg>
