@@ -54,6 +54,52 @@ header .user-links {
     margin-right: 2rem;
 }
 
+/* dropdown */
+.dropdown {
+    position: relative;
+    display: none;
+}
+
+.dropdown > a {
+    cursor: unset;
+    pointer-events: none;
+}
+
+/* dropdown content */
+.dropdown-content {
+    display: none;
+    position: absolute;
+    width: 100%;
+    z-index: 1;
+    border-radius: 0 0 .438rem .438rem;
+}
+
+.dropdown-content a {
+    padding: .75rem 0 .75rem .5rem;
+    text-decoration: none;
+    display: block;
+    color: var(--white);
+    background-color: var(--gray-light);
+}
+
+/* dropdown hover */
+.dropdown-content a:hover {
+    background-color: var(--gray-dark);
+}
+
+.dropdown-content a:last-of-type {
+    border-radius: 0 0 .438rem .438rem;
+}
+
+.dropdown:hover .dropdown-content {
+    display: block;
+}
+
+.dropdown:hover > a {
+    background-color: var(--main-darker);
+    border-radius: .438rem .438rem 0 0;
+}
+
 @media screen and (min-width: 740px) {
     .hamburger-menu-button {
         display: none;
@@ -71,7 +117,7 @@ header .user-links {
         margin: 0;
     }
 
-    header nav ul li a span, header .user-links a span, header .user-links .button-icon:first-of-type {
+    header nav ul li a span, header .user-links a span, header .user-links .button-icon:first-of-type, .dropdown button span {
         display: none;
     }
 }
@@ -83,7 +129,7 @@ header .user-links {
 }
 
 @media screen and (min-width: 1150px) {
-    header nav ul li a span, header .user-links a span, header .user-links .button-icon:first-of-type {
+    header nav ul li a span, header .user-links a span, header .user-links .button-icon:first-of-type, .dropdown button span {
         display: block;
     }
 
