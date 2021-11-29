@@ -76,7 +76,6 @@ class GroupService
         $user = $this->userRepository->find($userId);
         $group->removeMember($user);
         $this->entityManager->persist($group);
-        $this->entityManager->persist($user);
         $this->entityManager->flush();
         return $group;
     }

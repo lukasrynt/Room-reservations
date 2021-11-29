@@ -31,7 +31,7 @@ class Group
     private ?GroupManager $groupManager;
 
     /**
-     * @ORM\ManyToMany(targetEntity=User::class, mappedBy="groups")
+     * @ORM\ManyToMany(targetEntity="User", mappedBy="groups")
      */
     private Collection $members;
 
@@ -78,30 +78,6 @@ class Group
     }
 
     /**
-     * @return Collection
-     */
-    public function getMembers(): Collection
-    {
-        return $this->members;
-    }
-
-    public function addMember(User $groupMember): self
-    {
-        if (!$this->members->contains($groupMember)) {
-            $this->members[] = $groupMember;
-        }
-
-        return $this;
-    }
-
-    public function removeMember(User $groupMember): self
-    {
-        $this->members->removeElement($groupMember);
-
-        return $this;
-    }
-
-    /**
      * @return Collection|Room[]
      */
     public function getRooms(): Collection
@@ -121,6 +97,33 @@ class Group
     public function removeRoom(Room $room): self
     {
         $this->rooms->removeElement($room);
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|User[]
+     */
+    public function getMembers(): Collection
+    {
+        return $this->members;
+    }
+
+    public function addMember(User $member): self
+    {
+        if (!$this->members->contains($member)) {
+            $this->members[] = $member;
+            $member->addGroup($this);
+        }
+
+        return $this;
+    }
+
+    public function removeMember(User $member): self
+    {
+        if ($this->members->removeElement($member)) {
+            $member->removeGroup($this);
+        }
 
         return $this;
     }
