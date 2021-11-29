@@ -6,14 +6,22 @@
         {# TODO: Add condition for hide when no user is logged in #}
         <nav>
             <ul>
-                <li><a class="button-base button-main" href="{{ path('rooms_index') }}">Classrooms</a></li>
-                <li><a class="button-base button-secondary-outline" href="#">Reservation</a></li>
-                <li><a class="button-base button-secondary-outline" href="#">Groups</a></li>
-                <li><a class="button-base button-secondary-outline" href="{{ path('users_index') }}">Users</a></li>
+                <li><a class="button-base button-main button-with-icon" href="{{ path('rooms_index') }}">
+                        {{ source('@icons/classroom-icon.svg') }}
+                        <span>Classrooms</span></a></li>
+                <li><a class="button-base button-secondary-outline button-with-icon" href="#">
+                        {{ source('@icons/reservation-icon.svg') }}
+                        <span>Reservation</span></a></li>
+                <li><a class="button-base button-secondary-outline button-with-icon" href="#">
+                        {{ source('@icons/group-icon.svg') }}
+                        <span>Groups</span></a></li>
+                <li><a class="button-base button-secondary-outline button-with-icon" href="{{ path('users_index') }}">
+                        {{ source('@icons/account-badge-icon.svg') }}
+                        <span>Users</span></a></li>
             </ul>
         </nav>
 
-        <section class="secondary-links">
+        <section class="user-links">
             <a class="button-base button-main" href="#">User name</a>
             {#
             TODO : once we have JS make it work :]
