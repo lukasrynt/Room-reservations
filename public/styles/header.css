@@ -1,0 +1,42 @@
+header {
+    background-color: var(--white);
+    padding: 0.625rem 0 0.625rem 0;
+    display: flex;
+    box-shadow: 0 0.125rem 0.625rem 0 rgba(0,0,0,0.15)
+}
+
+header h1, header nav, header section {
+    flex: 1;
+}
+
+header h1 {
+    margin-left: 2rem;
+    height: 2.6rem;
+    overflow: hidden;
+}
+
+header h1 a {
+    font-weight: 900;
+    font-family: 'Martel Sans', sans-serif;
+    font-size: 3rem;
+    color: var(--main);
+}
+
+header nav, header nav ul, header section {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+header nav ul li:not(:last-child) {
+    margin-right: 0.625rem;
+}
+
+header section {
+    justify-content: flex-end;
+    margin-right: 2rem;
+}
+
+header h1 a:hover {
+    color: var(--main-darker)
+}
