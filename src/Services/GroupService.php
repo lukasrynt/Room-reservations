@@ -75,6 +75,9 @@ class GroupService
         $group = $this->groupRepository->find($groupId);
         $user = $this->userRepository->find($userId);
         $group->removeMember($user);
+        $this->entityManager->persist($group);
+        $this->entityManager->persist($user);
+        $this->entityManager->flush();
         return $group;
     }
 
@@ -87,6 +90,17 @@ class GroupService
     {
         $group = $this->groupRepository->find($groupId);
         $room = $this->roomRepository->find($roomId);
+        $group->addRoom($room);
+        $this->entityManager->persist($group);
+        $this->entityManager->flush();
+        return $group;
+    }
+
+    public function removeRoom(int $groupId, int $roomId): Group
+    {
+        $group = $this->groupRepository->find($groupId);
+        $room = $this->roomRepository->find($roomId);
+        $group->removeRoom($room);
         $this->entityManager->persist($group);
         $this->entityManager->flush();
         return $group;

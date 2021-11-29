@@ -71,4 +71,36 @@ class GroupController extends AbstractFOSRestController
         $view = $this->view($editedGroup, 200);
         return $this->handleView($view);
     }
+
+    /**
+     * @Route("/{gid}/rooms/{rid}",
+     *        methods={"PUT"},
+     *        name="add_room",
+     *        requirements={"gid": "\d+", "rid": "\d+"})
+     * @param int $gid
+     * @param int $rid
+     * @return Response
+     */
+    public function addRoomToGroup(int $gid, int $rid): Response
+    {
+        $editedGroup = $this->groupService->addRoom($gid, $rid);
+        $view = $this->view($editedGroup, 201);
+        return $this->handleView($view);
+    }
+
+    /**
+     * @Route("/{gid}/rooms/{rid}",
+     *        methods={"DELETE"},
+     *        name="remove_room",
+     *        requirements={"gid": "\d+", "rid": "\d+"})
+     * @param int $gid
+     * @param int $rid
+     * @return Response
+     */
+    public function removeRoomFromGroup(int $gid, int $rid): Response
+    {
+        $editedGroup = $this->groupService->removeRoom($gid, $rid);
+        $view = $this->view($editedGroup, 200);
+        return $this->handleView($view);
+    }
 }
