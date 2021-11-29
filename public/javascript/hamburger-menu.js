@@ -21,7 +21,7 @@ class HamburgerMenu {
     }
 
     show() {
-        this.main.style.display = 'none';
+        this.main.classList.add('main-hidden');
         this.header.setAttribute('id', 'hamburger-menu');
         this.logo.setAttribute('id', 'hamburger-menu-logo');
         this.hideButton.classList.remove('hamburger-menu-close-hidden');
@@ -31,7 +31,7 @@ class HamburgerMenu {
     }
 
     hide() {
-        this.main.style.display = 'flex';
+        this.main.classList.remove('main-hidden');
         this.header.removeAttribute('id');
         this.logo.removeAttribute('id', 'hamburger-menu-logo');
         this.hideButton.classList.add("hamburger-menu-close-hidden");

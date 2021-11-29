@@ -41,6 +41,10 @@ main {
     padding: 2rem 0 2rem 0;
 }
 
+body .main-hidden {
+    display: none;
+}
+
 footer {
     flex: 0 1 auto;
 }
