@@ -5,6 +5,9 @@
 
         {# TODO: Add condition for hide when no user is logged in #}
         <nav>
+            <button onclick="hamburgerMenuInstance.hide()" class="hamburger-menu-close hamburger-menu-close-hidden">
+                {{ source('@icons/close-icon.svg') }}
+            </button>
             <ul>
                 <li><a class="button-base button-main button-with-icon" href="{{ path('rooms_index') }}">
                         {{ source('@icons/classroom-icon.svg') }}
@@ -33,5 +36,9 @@
                 </div>
             </div>
         </section>
+
+        <button onclick="hamburgerMenuInstance.show()" class="button-base button-main hamburger-menu-button button-with-icon">
+            {{ source('@icons/hamburger-menu-icon.svg') }}
+        </button>
     </header>
 {% endblock %}
