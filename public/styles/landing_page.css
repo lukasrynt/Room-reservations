@@ -11,14 +11,14 @@ article {
 article h1 {
     font-weight: 900;
     font-family: 'Martel Sans', sans-serif;
-    font-size: 9rem;
+    font-size: 6rem;
     color: var(--main);
     margin-left: -0.6rem;
 }
 
 article p {
     color: var(--gray-dark);
-    font-size: 2.25rem;
+    font-size: 1.518rem;
     margin: -0.5rem 0 1rem 0;
 }
 
@@ -53,4 +53,14 @@ footer img {
 footer p {
     margin: .5rem 0 1rem 0;
     color: var(--gray-light)
+}
+
+@media screen and (min-width: 690px) {
+    article h1 {
+        font-size: 9rem;
+    }
+
+    article p {
+        font-size: 2.25rem;
+    }
 }
