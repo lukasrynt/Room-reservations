@@ -6,9 +6,10 @@
         <title>{% block title %}Welcome page{% endblock %}</title>
 
         {% block stylesheets %}
-        <link rel="stylesheet" href="{{ asset('styles/reset.css') }}" type="text/css">
-        <link rel="stylesheet" href="{{ asset('styles/general.css') }}" type="text/css">
-        <link rel="stylesheet" href="{{ asset('styles/header.css') }}" type="text/css">
+            <link rel="stylesheet" href="{{ asset('styles/reset.css') }}" type="text/css">
+            <link rel="stylesheet" href="{{ asset('styles/general.css') }}" type="text/css">
+            <link rel="stylesheet" href="{{ asset('styles/header.css') }}" type="text/css">
+            <link rel="stylesheet" href="{{ asset('styles/hamburger.css') }}" type="text/css">
         {% endblock %}
 
         <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -20,11 +21,17 @@
             <script>
                 let hamburgerMenuInstance;
 
-                document.addEventListener("DOMContentLoaded", function(){
+                document.addEventListener("DOMContentLoaded", function() {
+                    let main = document.getElementsByTagName('main')[0];
                     let header = document.getElementsByTagName('header')[0];
-                    let nav = header.getElementsByTagName('nav')[0];
-                    hamburgerMenuInstance = new HamburgerMenu(nav);
+                    hamburgerMenuInstance = new HamburgerMenu(main, header);
                 });
+
+                {# is it worth it? #}
+                window.addEventListener('resize', function () {
+                    if (window.innerWidth > 740)
+                        hamburgerMenuInstance.hide()
+                })
             </script>
         {% endblock %}
     </head>

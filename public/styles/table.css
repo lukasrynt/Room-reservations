@@ -59,7 +59,7 @@ table tbody tr td {
 }
 
 table tr {
-    background-color: var(--gray-table-backgroud);
+    background-color: var(--gray-table-background);
 }
 
 .table-buttons a:not(:last-child) {
