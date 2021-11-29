@@ -95,7 +95,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private Collection $requests;
 
     /**
-     * @ORM\ManyToMany(targetEntity=Group::class, inversedBy="members")
+     * @ORM\ManyToMany(targetEntity=Group::class, inversedBy="users")
+     * @ORM\JoinTable(name="members_groups")
      */
     private Collection $groups;
 

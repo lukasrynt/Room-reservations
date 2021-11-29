@@ -52,7 +52,7 @@ class Room
     private Building $building;
 
     /**
-     * @ORM\ManyToMany(targetEntity=User::class, inversedBy="rooms")yes
+     * @ORM\ManyToMany(targetEntity=User::class, inversedBy="rooms")
      * @ORM\JoinTable(name="members_rooms")
      */
     private Collection $users;
