@@ -17,7 +17,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
  * @ORM\InheritanceType("SINGLE_TABLE")
  * @ORM\DiscriminatorColumn(name="discr", type="string")
  * @ORM\DiscriminatorMap({"user" = "User", "admin" = "Admin", "roomManager" = "RoomManager",
- *                          "groupManager" = "GroupManager", "groupMember" = "GroupMember", "roomUser" = "RoomUser"})
+ *                          "groupManager" = "GroupManager"})
  */
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
@@ -64,7 +64,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     private string $password;
 
-
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
@@ -95,9 +94,15 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     private Collection $requests;
 
+    /**
+     * @ORM\ManyToMany(targetEntity="Group", inversedBy="members")
+     * @ORM\JoinTable(name="members_groups")
+     */
+    private Collection $groups;
 
     public function __construct()
     {
+        $this->groups = new ArrayCollection();
         $this->rooms = new ArrayCollection();
         $this->requestsToAttend = new ArrayCollection();
         $this->requests = new ArrayCollection();
@@ -110,8 +115,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         return $this->id;
     }
-
-
 
     public function getFirstName(): ?string
     {
@@ -267,6 +270,28 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
+    public function getGroups(): Collection
+    {
+        return $this->groups;
+    }
+
+
+    public function addGroup(Group $group): self
+    {
+        if (!$this->groups->contains($group)) {
+            $this->groups[] = $group;
+        }
+
+        return $this;
+    }
+
+    public function removeGroup(Group $group): self
+    {
+        $this->groups->removeElement($group);
+
+        return $this;
+    }
+
     /**
      * @return Collection
      */
@@ -361,24 +386,13 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->role == Roles::ADMIN;
     }
 
-    public function isRoomMember(): Boolean
-    {
-        return $this->role == Roles::ROOM_MEMBER;
-    }
-
     public function isRoomAdmin(): Boolean
     {
         return $this->role == Roles::ROOM_ADMIN;
-    }
-
-    public function isGroupMember(): Boolean
-    {
-        return $this->role == Roles::GROUP_MEMBER;
     }
 
     public function isGroupAdmin(): Boolean
     {
         return $this->role == Roles::GROUP_ADMIN;
     }
-
 }

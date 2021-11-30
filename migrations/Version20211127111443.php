@@ -7,9 +7,6 @@ namespace DoctrineMigrations;
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\Migrations\AbstractMigration;
 
-/**
- * Auto-generated Migration: Please modify to your needs!
- */
 final class Version20211127111443 extends AbstractMigration
 {
     public function getDescription(): string
@@ -25,7 +22,6 @@ final class Version20211127111443 extends AbstractMigration
 
     public function down(Schema $schema): void
     {
-        $this->addSql('CREATE SCHEMA public');
         $this->addSql('DROP SEQUENCE "group_id_seq" CASCADE');
         $this->addSql('DROP TABLE "group"');
     }

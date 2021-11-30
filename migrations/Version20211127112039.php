@@ -7,9 +7,6 @@ namespace DoctrineMigrations;
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\Migrations\AbstractMigration;
 
-/**
- * Auto-generated Migration: Please modify to your needs!
- */
 final class Version20211127112039 extends AbstractMigration
 {
     public function getDescription(): string
@@ -26,7 +23,6 @@ final class Version20211127112039 extends AbstractMigration
 
     public function down(Schema $schema): void
     {
-        $this->addSql('CREATE SCHEMA public');
         $this->addSql('ALTER TABLE "group" DROP CONSTRAINT FK_6DC044C5AFF355D1');
         $this->addSql('DROP INDEX IDX_6DC044C5AFF355D1');
         $this->addSql('ALTER TABLE "group" DROP group_manager_id');
