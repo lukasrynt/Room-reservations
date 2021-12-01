@@ -26,7 +26,7 @@ class Group
     private ?string $name;
 
     /**
-     * @ORM\ManyToOne(targetEntity=GroupManager::class, inversedBy="groups")
+     * @ORM\ManyToOne(targetEntity=GroupManager::class, inversedBy="managedGroups")
      */
     private ?GroupManager $groupManager;
 
