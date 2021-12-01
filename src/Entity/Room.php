@@ -261,33 +261,6 @@ class Room
         return $this;
     }
 
-    /**
-     * @return Collection|Group[]
-     */
-    public function getGroups(): Collection
-    {
-        return $this->groups;
-    }
-
-    public function addGroup(Group $group): self
-    {
-        if (!$this->groups->contains($group)) {
-            $this->groups[] = $group;
-            $group->addRoom($this);
-        }
-
-        return $this;
-    }
-
-    public function removeGroup(Group $group): self
-    {
-        if ($this->groups->removeElement($group)) {
-            $group->removeRoom($this);
-        }
-
-        return $this;
-    }
-
     public function getRoomManager(): ?RoomManager
     {
         return $this->roomManager;
