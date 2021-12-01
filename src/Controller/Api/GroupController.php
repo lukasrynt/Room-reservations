@@ -37,7 +37,7 @@ class GroupController extends AbstractFOSRestController
     public function all(Request $request): Response
     {
         $groups = $this->groupService->filter($request->query->all());
-        $view = $this->view($groups, 200);
+        $view = $this->view($groups, Response::HTTP_OK);
         return $this->handleView($view);
     }
 
@@ -52,7 +52,7 @@ class GroupController extends AbstractFOSRestController
     public function addUserToGroup(int $gid, int $uid): Response
     {
         $editedGroup = $this->groupService->addUser($gid, $uid);
-        $view = $this->view($editedGroup, 201);
+        $view = $this->view($editedGroup, Response::HTTP_CREATED);
         return $this->handleView($view);
     }
 
@@ -67,7 +67,7 @@ class GroupController extends AbstractFOSRestController
     public function removeUserFromGroup(int $gid, int $uid): Response
     {
         $editedGroup = $this->groupService->removeUser($gid, $uid);
-        $view = $this->view($editedGroup, 200);
+        $view = $this->view($editedGroup, Response::HTTP_OK);
         return $this->handleView($view);
     }
 
@@ -82,7 +82,7 @@ class GroupController extends AbstractFOSRestController
     public function addRoomToGroup(int $gid, int $rid): Response
     {
         $editedGroup = $this->groupService->addRoom($gid, $rid);
-        $view = $this->view($editedGroup, 201);
+        $view = $this->view($editedGroup, Response::HTTP_CREATED);
         return $this->handleView($view);
     }
 
@@ -97,7 +97,7 @@ class GroupController extends AbstractFOSRestController
     public function removeRoomFromGroup(int $gid, int $rid): Response
     {
         $editedGroup = $this->groupService->removeRoom($gid, $rid);
-        $view = $this->view($editedGroup, 200);
+        $view = $this->view($editedGroup, Response::HTTP_OK);
         return $this->handleView($view);
     }
 }
