@@ -6,14 +6,10 @@ namespace App\Controller;
 
 use App\Entity\Reservation;
 use App\Form\Type\ReservationType;
-use App\Repository\ReservationRepository;
-use App\Services\GroupManagerService;
 use App\Services\RequestService;
 use App\Services\ReservationService;
-use App\Services\RoomManagerService;
 use App\Services\RoomService;
 use App\Services\UserService;
-use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\Response;
@@ -27,8 +23,6 @@ class ReservationController extends AbstractController
     private ReservationService $reservationService;
     private UserService $userService;
     private RoomService $roomService;
-    private RoomManagerService $roomManagerService;
-    private GroupManagerService $groupManagerService;
     private RequestService $requestService;
 
     /**
@@ -36,17 +30,13 @@ class ReservationController extends AbstractController
      * @param ReservationService $reservationService
      * @param UserService $userService
      * @param RoomService $roomService
-     * @param RoomManagerService $roomManagerService
-     * @param GroupManagerService $groupManagerService
      * @param RequestService $requestService
      */
-    public function __construct(ReservationService $reservationService, UserService $userService, RoomService $roomService, RoomManagerService $roomManagerService, GroupManagerService $groupManagerService, RequestService $requestService)
+    public function __construct(ReservationService $reservationService, UserService $userService, RoomService $roomService, RequestService $requestService)
     {
         $this->reservationService = $reservationService;
         $this->userService = $userService;
         $this->roomService = $roomService;
-        $this->roomManagerService = $roomManagerService;
-        $this->groupManagerService = $groupManagerService;
         $this->requestService = $requestService;
     }
 
@@ -87,25 +77,21 @@ class ReservationController extends AbstractController
     public function createReservation(int $id): Response
     {
         $user = $this->userService->find($id);
-        if ($user->isAdmin() || $user->isRoomAdmin() || $user->isGroupAdmin()){
-            if ($user->isAdmin())
-                $rooms = $this->roomService->findAll();
-            if ($user->isRoomAdmin()){
-                $roomManager = $this->roomManagerService->find($user->getId());
-                $rooms = $roomManager->getManagedRooms();
-            }
-            if ($user->isGroupAdmin()) {
-                $groupManager = $this->groupManagerService->find($user->getId());
-                $groups = $groupManager->getGroups();
-                $rooms = $this->roomService->findByGroups($groups);
-            }
-            $form = $this->createForm(ReservationType::class, null, ['rooms' => $rooms ?? []])
-                ->add('Reserve', SubmitType::class);
 
-            return $this->render('reservations/new.html.twig', [
-                'form' => $form->createView()
-            ]);
-        }
-        return $this->render('permissions/denied.html.twig');
+        if ($user->isAdmin())
+            $rooms = $this->roomService->findAll();
+        else if ($user->isRoomAdmin())
+            $rooms = $this->userService->getManagedRoomsByRoomAdmin($user);
+        else if ($user->isGroupAdmin())
+            $rooms = $this->userService->getManagedRoomsByGroupAdmin($user);
+        else
+            return $this->render('permissions/denied.html.twig');
+
+        $form = $this->createForm(ReservationType::class, null, ['rooms' => $rooms ?? []])
+            ->add('Reserve', SubmitType::class);
+
+        return $this->render('reservations/new.html.twig', [
+            'form' => $form->createView()
+        ]);
     }
 }

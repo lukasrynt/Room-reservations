@@ -15,16 +15,27 @@ class UserService
 {
     private UserRepository $userRepository;
     private EntityManagerInterface $entityManager;
+    private RoomManagerService $roomManagerService;
+    private $groupManagerService;
+    private $roomService;
 
     /**
+     * UserService constructor.
      * @param UserRepository $userRepository
      * @param EntityManagerInterface $entityManager
+     * @param RoomManagerService $roomManagerService
+     * @param $groupManagerService
+     * @param $roomService
      */
-    public function __construct(UserRepository $userRepository, EntityManagerInterface $entityManager)
+    public function __construct(UserRepository $userRepository, EntityManagerInterface $entityManager, RoomManagerService $roomManagerService, $groupManagerService, $roomService)
     {
         $this->userRepository = $userRepository;
         $this->entityManager = $entityManager;
+        $this->roomManagerService = $roomManagerService;
+        $this->groupManagerService = $groupManagerService;
+        $this->roomService = $roomService;
     }
+
 
     /**
      * @param int $id
@@ -68,5 +79,18 @@ class UserService
     public function search(array $searchParams): Collection
     {
         return $this->userRepository->search($searchParams);
+    }
+
+    public function getManagedRoomsByRoomAdmin(User $user): Collection
+    {
+        $roomManager = $this->roomManagerService->find($user->getId());
+        return $roomManager->getManagedRooms();
+    }
+
+    public function getManagedRoomsByGroupAdmin(User $user): Collection
+    {
+        $groupManager = $this->groupManagerService->find($user->getId());
+        $groups = $groupManager->getGroups();
+        return $this->roomService->findByGroups($groups);
     }
 }
