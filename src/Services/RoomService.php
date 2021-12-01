@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Entity\Room;
 use App\Repository\RoomRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\Common\Collections\Collection;
 
 class RoomService
 {
@@ -52,5 +53,14 @@ class RoomService
             ParamsParser::getFilters($queryParams, 'order_by'),
             ParamsParser::getFilters($queryParams, 'paginate')
         );
+    }
+
+    /**
+     * @param Collection $groups
+     * @return Collection
+     */
+    public function findByGroups(Collection $groups): Collection
+    {
+        return $this->roomRepository->filterByGroups($groups);
     }
 }

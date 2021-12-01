@@ -9,26 +9,40 @@ use App\Entity\User;
 use App\Repository\UserRepository;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\EntityManagerInterface;
-use Doctrine\ORM\LazyCriteriaCollection;
 
 class UserService
 {
     private UserRepository $userRepository;
     private EntityManagerInterface $entityManager;
+    private RoomManagerService $roomManagerService;
+    private GroupManagerService $groupManagerService;
+    private RoomService $roomService;
 
     /**
+     * UserService constructor.
      * @param UserRepository $userRepository
      * @param EntityManagerInterface $entityManager
+     * @param RoomManagerService $roomManagerService
+     * @param GroupManagerService $groupManagerService
+     * @param RoomService $roomService
      */
-    public function __construct(UserRepository $userRepository, EntityManagerInterface $entityManager)
+    public function __construct(UserRepository $userRepository,
+                                EntityManagerInterface $entityManager,
+                                RoomManagerService $roomManagerService,
+                                GroupManagerService $groupManagerService,
+                                RoomService $roomService)
     {
         $this->userRepository = $userRepository;
         $this->entityManager = $entityManager;
+        $this->roomManagerService = $roomManagerService;
+        $this->groupManagerService = $groupManagerService;
+        $this->roomService = $roomService;
     }
+
 
     /**
      * @param int $id
-     * @return User
+     * @return User|null
      */
     public function find(int $id): ?User
     {
@@ -68,5 +82,18 @@ class UserService
     public function search(array $searchParams): Collection
     {
         return $this->userRepository->search($searchParams);
+    }
+
+    public function getManagedRoomsByRoomAdmin(User $user): Collection
+    {
+        $roomManager = $this->roomManagerService->find($user->getId());
+        return $roomManager->getManagedRooms();
+    }
+
+    public function getManagedRoomsByGroupAdmin(User $user): Collection
+    {
+        $groupManager = $this->groupManagerService->find($user->getId());
+        $groups = $groupManager->getGroups();
+        return $this->roomService->findByGroups($groups);
     }
 }

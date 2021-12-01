@@ -1,7 +1,7 @@
-insert into "group" (id, name, group_manager_id)
+insert into "group" (id, name)
 values (
-           nextval('group_id_seq'), 'Pilni studenti', 5
+           nextval('group_id_seq'), 'Pilni studenti'
        ),
        (
-           nextval('group_id_seq'), 'Ne moc dobri studenti', 5
+           nextval('group_id_seq'), 'Ne moc dobri studenti'
        );

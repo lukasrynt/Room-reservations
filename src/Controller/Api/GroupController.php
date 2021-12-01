@@ -7,6 +7,7 @@ namespace App\Controller\Api;
 
 use App\Services\GroupService;
 use FOS\RestBundle\Controller\AbstractFOSRestController;
+use FOS\RestBundle\Controller\Annotations as Rest;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -29,20 +30,19 @@ class GroupController extends AbstractFOSRestController
     }
 
     /**
-     * @Route("/", methods={"GET"}, name="list")
+     * @Rest\Get("/", name="list")
      * @param Request $request
      * @return Response
      */
     public function all(Request $request): Response
     {
         $groups = $this->groupService->filter($request->query->all());
-        $view = $this->view($groups, 200);
+        $view = $this->view($groups, Response::HTTP_OK);
         return $this->handleView($view);
     }
 
     /**
-     * @Route("/{gid}/users/{uid}",
-     *        methods={"PUT"},
+     * @Rest\Put("/{gid}/users/{uid}",
      *        name="add_user",
      *        requirements={"gid": "\d+", "uid": "\d+"})
      * @param int $gid
@@ -52,13 +52,15 @@ class GroupController extends AbstractFOSRestController
     public function addUserToGroup(int $gid, int $uid): Response
     {
         $editedGroup = $this->groupService->addUser($gid, $uid);
-        $view = $this->view($editedGroup, 201);
+        if (!$editedGroup)
+            $view = $this->view([], Response::HTTP_NOT_FOUND);
+        else
+            $view = $this->view($editedGroup, Response::HTTP_CREATED);
         return $this->handleView($view);
     }
 
     /**
-     * @Route("/{gid}/users/{uid}",
-     *        methods={"DELETE"},
+     * @Rest\Delete("/{gid}/users/{uid}",
      *        name="remove_user",
      *        requirements={"gid": "\d+", "uid": "\d+"})
      * @param int $gid
@@ -68,13 +70,15 @@ class GroupController extends AbstractFOSRestController
     public function removeUserFromGroup(int $gid, int $uid): Response
     {
         $editedGroup = $this->groupService->removeUser($gid, $uid);
-        $view = $this->view($editedGroup, 200);
+        if (!$editedGroup)
+            $view = $this->view([], Response::HTTP_NOT_FOUND);
+        else
+            $view = $this->view($editedGroup, Response::HTTP_OK);
         return $this->handleView($view);
     }
 
     /**
-     * @Route("/{gid}/rooms/{rid}",
-     *        methods={"PUT"},
+     * @Rest\Put("/{gid}/rooms/{rid}",
      *        name="add_room",
      *        requirements={"gid": "\d+", "rid": "\d+"})
      * @param int $gid
@@ -84,13 +88,15 @@ class GroupController extends AbstractFOSRestController
     public function addRoomToGroup(int $gid, int $rid): Response
     {
         $editedGroup = $this->groupService->addRoom($gid, $rid);
-        $view = $this->view($editedGroup, 201);
+        if (!$editedGroup)
+            $view = $this->view([], Response::HTTP_NOT_FOUND);
+        else
+            $view = $this->view($editedGroup, Response::HTTP_CREATED);
         return $this->handleView($view);
     }
 
     /**
-     * @Route("/{gid}/rooms/{rid}",
-     *        methods={"DELETE"},
+     * @Rest\Delete("/{gid}/rooms/{rid}",
      *        name="remove_room",
      *        requirements={"gid": "\d+", "rid": "\d+"})
      * @param int $gid
@@ -100,7 +106,10 @@ class GroupController extends AbstractFOSRestController
     public function removeRoomFromGroup(int $gid, int $rid): Response
     {
         $editedGroup = $this->groupService->removeRoom($gid, $rid);
-        $view = $this->view($editedGroup, 200);
+        if (!$editedGroup)
+            $view = $this->view([], Response::HTTP_NOT_FOUND);
+        else
+            $view = $this->view($editedGroup, Response::HTTP_OK);
         return $this->handleView($view);
     }
 }

@@ -1,0 +1,9 @@
+{% extends 'base.html.twig' %}
+
+{% block title %} Reservation detail {% endblock %}
+
+{% block main %}
+    Reservation
+    <br>
+    Requestor: {{ reservation.user }}, Room: {{ reservation.room }}
+{% endblock %}

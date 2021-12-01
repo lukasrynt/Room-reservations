@@ -41,11 +41,6 @@ class Request
     private Room $room;
 
     /**
-     * @ORM\ManyToMany(targetEntity=User::class, inversedBy="requestsToAttend")
-     */
-    private Collection $attendees;
-
-    /**
      * @ORM\ManyToOne(targetEntity=User::class, inversedBy="requests")
      * @ORM\JoinColumn(nullable=false)
      */

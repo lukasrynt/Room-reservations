@@ -2,7 +2,9 @@
 
 namespace App\Form\Type;
 
+use App\Entity\EnumRolesType;
 use App\Entity\User;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ButtonType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
@@ -32,8 +34,8 @@ class UserType extends AbstractType
             ->add("phone_number", TelType::class, [
                 'attr' => ['placeholder' => 'Phone number']
             ])
-            ->add("role", TextType::class, [
-                'attr' => ['placeholder' => 'Role']
+            ->add("role", EntityType::class, [
+                "class" => EnumRolesType::class
             ])
             ->add("note", TextareaType::class, [
                 'attr' => ['placeholder' => 'Note']
@@ -41,12 +43,8 @@ class UserType extends AbstractType
             ->add("username", TextType::class, [
                 'attr' => ['placeholder' => 'Username']
             ])
-            ->add("plain_password", RepeatedType::class, [
-                'type' => PasswordType::class,
-                'first_options' => ['label' => 'Password',
-                    'attr' => ['placeholder' => 'Password']],
-                'second_options' => ['label' => 'Confirm Password',
-                    'attr' => ['placeholder' => 'Confirm Password']],
+            ->add("role", EntityType::class, [
+                "class" => EnumRolesType::class
             ]);
     }
 

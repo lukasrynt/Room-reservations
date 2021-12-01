@@ -1,7 +1,10 @@
 <?php
 
+
 namespace App\Controller;
 
+
+use App\Services\UserService;
 use App\Services\RoomService;
 use App\Form\Type\RoomType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -16,15 +19,19 @@ use Symfony\Component\Routing\Annotation\Route;
 class RoomController extends AbstractController
 {
     private RoomService $roomService;
+    private UserService $userService;
 
     /**
      * RoomController constructor.
      * @param RoomService $roomService
+     * @param UserService $userService
      */
-    public function __construct(RoomService $roomService)
+    public function __construct(RoomService $roomService, UserService $userService)
     {
         $this->roomService = $roomService;
+        $this->userService = $userService;
     }
+
 
     /**
      * @Route("/", name="index")
@@ -43,9 +50,10 @@ class RoomController extends AbstractController
      */
     public function detail(int $id): Response{
         $room = $this->roomService->find($id);
+        $user = $this->userService->find(2);
         if (!$room)
             return $this->render('errors/404.html.twig');
-        return $this->render('rooms/detail.html.twig', ['room' => $room]);
+        return $this->render('rooms/detail.html.twig', ['room' => $room, 'user' => $user]);
     }
 
     /**

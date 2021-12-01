@@ -7,6 +7,7 @@ namespace App\Controller\Api;
 
 use App\Services\UserService;
 use FOS\RestBundle\Controller\AbstractFOSRestController;
+use FOS\RestBundle\Controller\Annotations as Rest;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -29,26 +30,26 @@ class UserController extends AbstractFOSRestController
     }
 
     /**
-     * @Route("/", methods={"GET"}, name="list")
+     * @Rest\Get("/", name="list")
      * @param Request $request
      * @return Response
      */
     public function all(Request $request): Response
     {
         $users = $this->userService->filter($request->query->all());
-        $view = $this->view($users, 200);
+        $view = $this->view($users, Response::HTTP_OK);
         return $this->handleView($view);
     }
 
     /**
-     * @Route("/{id}", name="detail")
+     * @Rest\Get("/{id}", name="detail", requirements={"id": "\d+"})
      * @param int $id
      * @return Response
      */
     public function detail(int $id): Response
     {
         $request = $this->userService->find($id);
-        $view = $this->view($request, 200);
+        $view = $this->view($request, Response::HTTP_OK);
         return $this->handleView($view);
     }
 }

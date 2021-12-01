@@ -33,6 +33,6 @@ class GroupRepository extends ServiceEntityRepository
         $criteria = (new Filter())->getFilterCriteria($findFilters);
         $criteria = (new Orderer($criteria))->getOrderCriteria($orderByFilters);
         $criteria = (new Paginator($criteria))->getCriteriaForPage($paginationFilters);
-        return $this->matching($criteria)->toArray();
+        return $this->matching($criteria)->getValues();
     }
 }

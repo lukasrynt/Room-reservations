@@ -7,9 +7,9 @@ use App\Services\Filter;
 use App\Services\Orderer;
 use App\Services\Paginator;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\ORM\LazyCriteriaCollection;
+use Doctrine\Common\Collections\Criteria;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\Persistence\ManagerRegistry;
-use Symfony\Component\Validator\Constraints\Collection;
 
 /**
  * @method Room|null find($id, $lockMode = null, $lockVersion = null)
@@ -36,5 +36,16 @@ class RoomRepository extends ServiceEntityRepository
         $criteria = (new Orderer($criteria))->getOrderCriteria($orderByFilters);
         $criteria = (new Paginator($criteria))->getCriteriaForPage($paginationFilters);
         return $this->matching($criteria)->toArray();
+    }
+
+    /**
+     * @param Collection $groups
+     * @return Collection
+     */
+    public function filterByGroups(Collection $groups): Collection
+    {
+        $criteria = Criteria::create()
+            ->andWhere(Criteria::expr()->in('id', $groups->map(function($obj){return $obj->getId();})->getValues()));
+        return $this->matching($criteria);
     }
 }

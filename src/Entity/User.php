@@ -26,86 +26,84 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
      */
-    private int $id;
+    protected int $id;
 
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private string $firstName;
+    protected string $firstName;
 
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private string $lastName;
+    protected string $lastName;
 
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private string $email;
+    protected string $email;
 
     /**
      * @ORM\Column(type="integer", nullable=true)
      */
-    private int $phoneNumber;
+    protected int $phoneNumber;
 
     /**
      * @ORM\Column(type="json")
      */
-    private array $roles = [];
+    protected array $roles = [];
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
-    private string $note;
+    protected string $note;
 
     /**
      * @var string The hashed password
      * @ORM\Column(type="string")
      */
-    private string $password;
+    protected string $password;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
-    private string $plainPassword;
+    protected string $plainPassword;
 
     /**
      * @ORM\Column(type="string", length=100, nullable=false)
      */
-    private string $username;
+    protected string $username;
 
     /**
      * @ORM\Column(type="enum_roles_type", length=255, nullable=true)
      */
-    private Roles $role;
+    protected Roles $role;
 
     /**
      * @ORM\ManyToMany(targetEntity=Room::class, mappedBy="users")
      */
-    private Collection $rooms;
-
-    /**
-     * @ORM\ManyToMany(targetEntity=Request::class, mappedBy="attendees")
-     */
-    private Collection $requestsToAttend;
+    protected Collection $rooms;
 
     /**
      * @ORM\OneToMany(targetEntity=Request::class, mappedBy="requestor")
      */
-    private Collection $requests;
+    protected Collection $requests;
 
     /**
-     * @ORM\ManyToMany(targetEntity="Group", inversedBy="members")
-     * @ORM\JoinTable(name="members_groups")
+     * @ORM\OneToMany(targetEntity=Reservation::class, mappedBy="user")
      */
-    private Collection $groups;
+    protected Collection $reservations;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=Group::class, inversedBy="members")
+     */
+    private ?Group $group;
 
     public function __construct()
     {
-        $this->groups = new ArrayCollection();
         $this->rooms = new ArrayCollection();
-        $this->requestsToAttend = new ArrayCollection();
         $this->requests = new ArrayCollection();
+        $this->reservations = new ArrayCollection();
     }
 
     /**
@@ -270,30 +268,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function getGroups(): Collection
-    {
-        return $this->groups;
-    }
-
-
-    public function addGroup(Group $group): self
-    {
-        if (!$this->groups->contains($group)) {
-            $this->groups[] = $group;
-        }
-
-        return $this;
-    }
-
-    public function removeGroup(Group $group): self
-    {
-        $this->groups->removeElement($group);
-
-        return $this;
-    }
-
     /**
-     * @return Collection
+     * @return Collection|Room[]
      */
     public function getRooms(): Collection
     {
@@ -314,33 +290,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         if ($this->rooms->removeElement($room)) {
             $room->removeUser($this);
-        }
-
-        return $this;
-    }
-
-    /**
-     * @return Collection
-     */
-    public function getRequestsToAttend(): Collection
-    {
-        return $this->requestsToAttend;
-    }
-
-    public function addRequestsToAttend(Request $request): self
-    {
-        if (!$this->requestsToAttend->contains($request)) {
-            $this->requestsToAttend[] = $request;
-            $request->addAttendee($this);
-        }
-
-        return $this;
-    }
-
-    public function removeRequestsToAttend(Request $request): self
-    {
-        if ($this->requestsToAttend->removeElement($request)) {
-            $request->removeAttendee($this);
         }
 
         return $this;
@@ -381,18 +330,65 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->firstName . " " . $this->lastName;
     }
 
-    public function isAdmin(): Boolean
+    public function isAdmin(): Bool
     {
         return $this->role == Roles::ADMIN;
     }
 
-    public function isRoomAdmin(): Boolean
+    public function isRoomAdmin(): Bool
     {
         return $this->role == Roles::ROOM_ADMIN;
     }
 
-    public function isGroupAdmin(): Boolean
+    public function isGroupAdmin(): Bool
     {
         return $this->role == Roles::GROUP_ADMIN;
+    }
+
+    public function isCommonUser(): Bool
+    {
+        return $this->role == Roles::COMMON_USER;
+    }
+
+    /**
+     * @return Collection|Reservation[]
+     */
+    public function getReservations(): Collection
+    {
+        return $this->reservations;
+    }
+
+    public function addReservation(Reservation $reservation): self
+    {
+        if (!$this->reservations->contains($reservation)) {
+            $this->reservations[] = $reservation;
+            $reservation->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeReservation(Reservation $reservation): self
+    {
+        if ($this->reservations->removeElement($reservation)) {
+            // set the owning side to null (unless already changed)
+            if ($reservation->getUser() === $this) {
+                $reservation->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getGroup(): ?Group
+    {
+        return $this->group;
+    }
+
+    public function setGroup(?Group $group): self
+    {
+        $this->group = $group;
+
+        return $this;
     }
 }
