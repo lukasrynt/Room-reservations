@@ -63,7 +63,7 @@ class Room
     private Collection $requests;
 
     /**
-     * @ORM\OneToMany(targetEntity=Reservation::class, mappedBy="room_id")
+     * @ORM\OneToMany(targetEntity=Reservation::class, mappedBy="room")
      */
     private Collection $reservations;
 
@@ -82,7 +82,6 @@ class Room
     {
         $this->users = new ArrayCollection();
         $this->requests = new ArrayCollection();
-        $this->groups = new ArrayCollection();
         $this->reservations = new ArrayCollection();
     }
 
