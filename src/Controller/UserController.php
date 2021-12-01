@@ -127,10 +127,8 @@ class UserController extends AbstractController
         $room = $this->roomService->find($room_id);
 
         if (in_array($room, $user->getRooms()->getValues()) || $user->getGroup() === $room->getGroup()) {
-            $newRequest = new \App\Entity\Request();
-            $newRequest->setRequestor($user);
-            $newRequest->setValid(false);
-            $newRequest->setRoom($room);
+
+            $newRequest = $this->requestService->newWithRequestorAndRoom($user, $room);
 
             $form = $this->createForm(RequestType::class, $newRequest)
                 ->add('Request', SubmitType::class);

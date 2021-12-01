@@ -66,6 +66,15 @@ class RequestService
         $this->entityManager->flush();
     }
 
+    public function newWithRequestorAndRoom(User $user, Room $room) : Request
+    {
+        $newRequest = new Request();
+        $newRequest->setRequestor($user);
+        $newRequest->setValid(false);
+        $newRequest->setRoom($room);
+        return $newRequest;
+    }
+
     public function getRequestsToConfirmFor(User $user): ?Collection
     {
         if ($user->isAdmin())
