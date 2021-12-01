@@ -8,6 +8,7 @@ use App\Repository\RoomRepository;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Monolog\Logger;
+use phpDocumentor\Reflection\Types\Collection;
 
 class GroupService
 {
@@ -35,16 +36,16 @@ class GroupService
     }
 
     /**
-     * @return Group[]|array
+     * @return Group[]|Collection
      */
-    public function findAll(): array
+    public function findAll(): Collection
     {
         return $this->groupRepository->findAll();
     }
 
     /**
      * @param array $queryParams
-     * @return array
+     * @return Group[]|array
      */
     public function filter(array $queryParams): array
     {
@@ -58,22 +59,33 @@ class GroupService
     /**
      * @param int $groupId
      * @param int $userId
-     * @return Group
+     * @return Group|null
      */
-    public function addUser(int $groupId, int $userId): Group
+    public function addUser(int $groupId, int $userId): ?Group
     {
         $group = $this->groupRepository->find($groupId);
         $user = $this->userRepository->find($userId);
+        if (!$user || !$group)
+            return null;
+
         $group->addMember($user);
         $this->entityManager->persist($group);
         $this->entityManager->flush();
         return $group;
     }
 
-    public function removeUser(int $groupId, int $userId): Group
+    /**
+     * @param int $groupId
+     * @param int $userId
+     * @return Group|null
+     */
+    public function removeUser(int $groupId, int $userId): ?Group
     {
         $group = $this->groupRepository->find($groupId);
         $user = $this->userRepository->find($userId);
+        if (!$user || !$group)
+            return null;
+
         $group->removeMember($user);
         $this->entityManager->persist($group);
         $this->entityManager->flush();
@@ -85,20 +97,31 @@ class GroupService
      * @param int $roomId
      * @return Group
      */
-    public function addRoom(int $groupId, int $roomId): Group
+    public function addRoom(int $groupId, int $roomId): ?Group
     {
         $group = $this->groupRepository->find($groupId);
         $room = $this->roomRepository->find($roomId);
+        if (!$room || !$group)
+            return null;
+
         $group->addRoom($room);
         $this->entityManager->persist($group);
         $this->entityManager->flush();
         return $group;
     }
 
-    public function removeRoom(int $groupId, int $roomId): Group
+    /**
+     * @param int $groupId
+     * @param int $roomId
+     * @return Group|null
+     */
+    public function removeRoom(int $groupId, int $roomId): ?Group
     {
         $group = $this->groupRepository->find($groupId);
         $room = $this->roomRepository->find($roomId);
+        if (!$room || !$group)
+            return null;
+
         $group->removeRoom($room);
         $this->entityManager->persist($group);
         $this->entityManager->flush();
