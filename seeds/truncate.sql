@@ -1,1 +1,1 @@
-TRUNCATE "user", room, building, room_user, reservation, request, group
+TRUNCATE "user", room, building, members_rooms, members_groups, request_user, reservation, request, "group" CASCADE;

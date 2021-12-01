@@ -36,7 +36,7 @@ class UserService
     }
 
     /**
-     * @return array
+     * @return User[]|array
      */
     public function findAll(): array
     {
@@ -54,9 +54,9 @@ class UserService
 
     /**
      * @param array $queryParams
-     * @return Collection
+     * @return array
      */
-    public function filter(array $queryParams): Collection
+    public function filter(array $queryParams): array
     {
         return $this->userRepository->filter(
             ParamsParser::getFilters($queryParams, 'filter_by'),

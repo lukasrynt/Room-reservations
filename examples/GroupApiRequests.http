@@ -1,0 +1,14 @@
+# Remove user from group
+DELETE localhost:8080/api/groups/1/users/1
+
+###
+# Add user to group
+PUT localhost:8080/api/groups/2/users/1
+
+###
+# Remove room from group
+DELETE localhost:8080/api/groups/2/rooms/1
+
+###
+# Add room to group
+PUT localhost:8080/api/groups/2/rooms/2

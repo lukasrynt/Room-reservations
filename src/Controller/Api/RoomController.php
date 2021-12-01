@@ -6,7 +6,9 @@
 namespace App\Controller\Api;
 
 use App\Repository\RoomRepository;
+use App\Services\RoomService;
 use FOS\RestBundle\Controller\AbstractFOSRestController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -17,23 +19,24 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class RoomController extends AbstractFOSRestController
 {
-    private RoomRepository $roomRepository;
+    private RoomService $roomService;
 
     /**
-     * @param RoomRepository $roomRepository
+     * @param RoomService $roomService
      */
-    public function __construct(RoomRepository $roomRepository)
+    public function __construct(RoomService $roomService)
     {
-        $this->roomRepository = $roomRepository;
+        $this->roomService = $roomService;
     }
 
     /**
      * @Route("/", methods={"GET"}, name="list")
+     * @param Request $request
      * @return Response
      */
-    public function all(): Response
+    public function all(Request $request): Response
     {
-        $rooms = $this->roomRepository->findAll();
+        $rooms = $this->roomService->filter($request->query->all());
         $view = $this->view($rooms, 200);
         return $this->handleView($view);
     }
@@ -45,7 +48,7 @@ class RoomController extends AbstractFOSRestController
      */
     public function detail(int $id): Response
     {
-        $request = $this->roomRepository->find($id);
+        $request = $this->roomService->find($id);
         $view = $this->view($request, 200);
         return $this->handleView($view);
     }

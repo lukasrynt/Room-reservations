@@ -2,7 +2,6 @@
 
 namespace App\Services;
 
-use App\Entity\Group;
 use App\Entity\Room;
 use App\Repository\RoomRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -41,6 +40,19 @@ class RoomService
     {
         $this->entityManager->persist($room);
         $this->entityManager->flush();
+    }
+
+    /**
+     * @param array $queryParams
+     * @return array
+     */
+    public function filter(array $queryParams): array
+    {
+        return $this->roomRepository->filter(
+            ParamsParser::getFilters($queryParams, 'filter_by'),
+            ParamsParser::getFilters($queryParams, 'order_by'),
+            ParamsParser::getFilters($queryParams, 'paginate')
+        );
     }
 
     /**

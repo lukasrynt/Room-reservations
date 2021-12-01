@@ -3,10 +3,12 @@
 namespace App\Repository;
 
 use App\Entity\Room;
-use App\Entity\User;
+use App\Services\Filter;
+use App\Services\Orderer;
+use App\Services\Paginator;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\Criteria;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -20,6 +22,20 @@ class RoomRepository extends ServiceEntityRepository
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Room::class);
+    }
+
+    /**
+     * @param array|null $findFilters
+     * @param array|null $orderByFilters
+     * @param array|null $paginationFilters
+     * @return array
+     */
+    public function filter(?array $findFilters, ?array $orderByFilters, ?array $paginationFilters): array
+    {
+        $criteria = (new Filter())->getFilterCriteria($findFilters);
+        $criteria = (new Orderer($criteria))->getOrderCriteria($orderByFilters);
+        $criteria = (new Paginator($criteria))->getCriteriaForPage($paginationFilters);
+        return $this->matching($criteria)->toArray();
     }
 
     /**

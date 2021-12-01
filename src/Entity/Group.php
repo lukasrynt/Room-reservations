@@ -31,14 +31,15 @@ class Group
     private ?GroupManager $groupManager;
 
     /**
-     * @ORM\ManyToMany(targetEntity=GroupMember::class, mappedBy="groups")
+     * @ORM\ManyToMany(targetEntity="User", mappedBy="groups")
      */
     private Collection $members;
 
     /**
-     * @ORM\OneToMany(targetEntity=Room::class, mappedBy="roomGroup")
+     * @ORM\ManyToMany(targetEntity="Room", inversedBy="groups")
+     * @ORM\JoinTable(name="groups_rooms")
      */
-    private $rooms;
+    private Collection $rooms;
 
     public function __construct()
     {
@@ -77,30 +78,6 @@ class Group
     }
 
     /**
-     * @return Collection
-     */
-    public function getMembers(): Collection
-    {
-        return $this->members;
-    }
-
-    public function addMember(GroupMember $groupMember): self
-    {
-        if (!$this->members->contains($groupMember)) {
-            $this->members[] = $groupMember;
-        }
-
-        return $this;
-    }
-
-    public function removeMember(GroupMember $groupMember): self
-    {
-        $this->members->removeElement($groupMember);
-
-        return $this;
-    }
-
-    /**
      * @return Collection|Room[]
      */
     public function getRooms(): Collection
@@ -112,7 +89,6 @@ class Group
     {
         if (!$this->rooms->contains($room)) {
             $this->rooms[] = $room;
-            $room->setRoomGroup($this);
         }
 
         return $this;
@@ -120,15 +96,35 @@ class Group
 
     public function removeRoom(Room $room): self
     {
-        if ($this->rooms->removeElement($room)) {
-            // set the owning side to null (unless already changed)
-            if ($room->getRoomGroup() === $this) {
-                $room->setRoomGroup(null);
-            }
+        $this->rooms->removeElement($room);
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|User[]
+     */
+    public function getMembers(): Collection
+    {
+        return $this->members;
+    }
+
+    public function addMember(User $member): self
+    {
+        if (!$this->members->contains($member)) {
+            $this->members[] = $member;
+            $member->addGroup($this);
         }
 
         return $this;
     }
 
+    public function removeMember(User $member): self
+    {
+        if ($this->members->removeElement($member)) {
+            $member->removeGroup($this);
+        }
 
+        return $this;
+    }
 }
