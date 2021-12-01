@@ -74,9 +74,8 @@ class Room
 
     /**
      * @ORM\ManyToOne(targetEntity="Group", inversedBy="rooms")
-     * @ORM\JoinColumn(nullable=false)
      */
-    private Group $group;
+    private ?Group $group;
 
     public function __construct()
     {

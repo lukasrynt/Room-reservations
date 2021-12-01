@@ -96,9 +96,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     /**
      * @ORM\ManyToOne(targetEntity=Group::class, inversedBy="members")
-     * @ORM\JoinColumn(nullable=false)
      */
-    private Group $group;
+    private ?Group $group;
 
     public function __construct()
     {
