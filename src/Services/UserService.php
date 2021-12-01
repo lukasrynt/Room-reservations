@@ -9,25 +9,28 @@ use App\Entity\User;
 use App\Repository\UserRepository;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\EntityManagerInterface;
-use Doctrine\ORM\LazyCriteriaCollection;
 
 class UserService
 {
     private UserRepository $userRepository;
     private EntityManagerInterface $entityManager;
     private RoomManagerService $roomManagerService;
-    private $groupManagerService;
-    private $roomService;
+    private GroupManagerService $groupManagerService;
+    private RoomService $roomService;
 
     /**
      * UserService constructor.
      * @param UserRepository $userRepository
      * @param EntityManagerInterface $entityManager
      * @param RoomManagerService $roomManagerService
-     * @param $groupManagerService
-     * @param $roomService
+     * @param GroupManagerService $groupManagerService
+     * @param RoomService $roomService
      */
-    public function __construct(UserRepository $userRepository, EntityManagerInterface $entityManager, RoomManagerService $roomManagerService, $groupManagerService, $roomService)
+    public function __construct(UserRepository $userRepository,
+                                EntityManagerInterface $entityManager,
+                                RoomManagerService $roomManagerService,
+                                GroupManagerService $groupManagerService,
+                                RoomService $roomService)
     {
         $this->userRepository = $userRepository;
         $this->entityManager = $entityManager;
