@@ -73,9 +73,10 @@ class Room
     private ?RoomManager $roomManager;
 
     /**
-     * @ORM\ManyToMany(targetEntity="Group", mappedBy="rooms")
+     * @ORM\ManyToOne(targetEntity="Group", inversedBy="rooms")
+     * @ORM\JoinColumn(nullable=false)
      */
-    private Collection $groups;
+    private Group $group;
 
     public function __construct()
     {
@@ -283,6 +284,30 @@ class Room
         if ($this->groups->removeElement($group)) {
             $group->removeRoom($this);
         }
+
+        return $this;
+    }
+
+    public function getRoomManager(): ?RoomManager
+    {
+        return $this->roomManager;
+    }
+
+    public function setRoomManager(?RoomManager $roomManager): self
+    {
+        $this->roomManager = $roomManager;
+
+        return $this;
+    }
+
+    public function getGroup(): ?Group
+    {
+        return $this->group;
+    }
+
+    public function setGroup(?Group $group): self
+    {
+        $this->group = $group;
 
         return $this;
     }

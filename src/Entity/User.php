@@ -90,19 +90,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     protected Collection $requests;
 
     /**
-     * @ORM\OneToMany(targetEntity=Reservation::class, mappedBy="user_id")
+     * @ORM\OneToMany(targetEntity=Reservation::class, mappedBy="user")
      */
     protected Collection $reservations;
 
     /**
-     * @ORM\ManyToMany(targetEntity="Group", inversedBy="members")
-     * @ORM\JoinTable(name="members_groups")
+     * @ORM\ManyToOne(targetEntity=Group::class, inversedBy="members")
+     * @ORM\JoinColumn(nullable=false)
      */
-    private Collection $groups;
+    private Group $group;
 
     public function __construct()
     {
-        $this->groups = new ArrayCollection();
         $this->rooms = new ArrayCollection();
         $this->requests = new ArrayCollection();
         $this->reservations = new ArrayCollection();
@@ -270,28 +269,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function getGroups(): Collection
-    {
-        return $this->groups;
-    }
-
-
-    public function addGroup(Group $group): self
-    {
-        if (!$this->groups->contains($group)) {
-            $this->groups[] = $group;
-        }
-
-        return $this;
-    }
-
-    public function removeGroup(Group $group): self
-    {
-        $this->groups->removeElement($group);
-
-        return $this;
-    }
-
     /**
      * @return Collection|Room[]
      */
@@ -399,4 +376,15 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
+    public function getGroup(): ?Group
+    {
+        return $this->group;
+    }
+
+    public function setGroup(?Group $group): self
+    {
+        $this->group = $group;
+
+        return $this;
+    }
 }

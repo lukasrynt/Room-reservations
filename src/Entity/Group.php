@@ -31,13 +31,12 @@ class Group
     private ?GroupManager $groupManager;
 
     /**
-     * @ORM\ManyToMany(targetEntity="User", mappedBy="groups")
+     * @ORM\OneToMany(targetEntity="User", mappedBy="group")
      */
     private Collection $members;
 
     /**
-     * @ORM\ManyToMany(targetEntity="Room", inversedBy="groups")
-     * @ORM\JoinTable(name="groups_rooms")
+     * @ORM\OneToMany(targetEntity="Room", mappedBy="group")
      */
     private Collection $rooms;
 
@@ -78,30 +77,6 @@ class Group
     }
 
     /**
-     * @return Collection|Room[]
-     */
-    public function getRooms(): Collection
-    {
-        return $this->rooms;
-    }
-
-    public function addRoom(Room $room): self
-    {
-        if (!$this->rooms->contains($room)) {
-            $this->rooms[] = $room;
-        }
-
-        return $this;
-    }
-
-    public function removeRoom(Room $room): self
-    {
-        $this->rooms->removeElement($room);
-
-        return $this;
-    }
-
-    /**
      * @return Collection|User[]
      */
     public function getMembers(): Collection
@@ -113,7 +88,7 @@ class Group
     {
         if (!$this->members->contains($member)) {
             $this->members[] = $member;
-            $member->addGroup($this);
+            $member->setGroup($this);
         }
 
         return $this;
@@ -122,7 +97,40 @@ class Group
     public function removeMember(User $member): self
     {
         if ($this->members->removeElement($member)) {
-            $member->removeGroup($this);
+            // set the owning side to null (unless already changed)
+            if ($member->getGroup() === $this) {
+                $member->setGroup(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Room[]
+     */
+    public function getRooms(): Collection
+    {
+        return $this->rooms;
+    }
+
+    public function addRoom(Room $room): self
+    {
+        if (!$this->rooms->contains($room)) {
+            $this->rooms[] = $room;
+            $room->setGroup($this);
+        }
+
+        return $this;
+    }
+
+    public function removeRoom(Room $room): self
+    {
+        if ($this->rooms->removeElement($room)) {
+            // set the owning side to null (unless already changed)
+            if ($room->getGroup() === $this) {
+                $room->setGroup(null);
+            }
         }
 
         return $this;
