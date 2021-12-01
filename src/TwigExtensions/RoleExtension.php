@@ -18,26 +18,20 @@ class RoleExtension extends AbstractExtension
 
     private GroupManagerService $groupManagerService;
     private RoomManagerService $roomManagerService;
-    private GroupMemberService $groupMemberService;
-    private RoomUserService $roomUserService;
 
     /**
      * RoleExtension constructor.
      * @param GroupManagerService $groupManagerService
      * @param RoomManagerService $roomManagerService
-     * @param GroupMemberService $groupMemberService
-     * @param RoomUserService $roomUserService
      */
-    public function __construct(GroupManagerService $groupManagerService, RoomManagerService $roomManagerService, GroupMemberService $groupMemberService, RoomUserService $roomUserService)
+    public function __construct(GroupManagerService $groupManagerService, RoomManagerService $roomManagerService)
     {
         $this->groupManagerService = $groupManagerService;
         $this->roomManagerService = $roomManagerService;
-        $this->groupMemberService = $groupMemberService;
-        $this->roomUserService = $roomUserService;
     }
 
 
-    public function getFunctions()
+    public function getFunctions(): array
     {
         return [
             new TwigFunction('hasUserRequestPermission', array($this, 'hasUserRequestPermission')),
@@ -47,23 +41,19 @@ class RoleExtension extends AbstractExtension
 
     public function hasUserRequestPermission(User $user, Room $room): bool
     {
-        if ($user->isGroupMember()) {
-            $groupMember = $this->groupMemberService->find($user->getId());
-            return in_array($room->getRoomGroup(), $groupMember->getGroups()->getValues());
-        } elseif ($user->isRoomMember()) {
-            $roomUser = $this->roomUserService->find($user->getId());
-            return in_array($room, $roomUser->getRooms()->getValues());
-        }
-        return false;
+        if ($room->getGroup() === $user->getGroup())
+            return true;
+        else
+            return in_array($room, $user->getRooms()->getValues());
     }
 
     public function hasUserRegistrationPermission(User $user, Room $room): bool
     {
         if ($user->isAdmin())
             return true;
-        if ($user->isGroupAdmin()) {
+        elseif ($user->isGroupAdmin()) {
             $groupManager = $this->groupManagerService->find($user->getId());
-            return in_array($room->getRoomGroup(), $groupManager->getGroups()->getValues());
+            return in_array($room->getGroup(), $groupManager->getGroups()->getValues());
         } elseif ($user->isRoomAdmin()) {
             $roomManager = $this->roomManagerService->find($user->getId());
             return in_array($room, $roomManager->getManagedRooms()->getValues());

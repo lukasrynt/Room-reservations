@@ -120,12 +120,13 @@ class UserController extends AbstractController
      * @param int $room_id
      * @return Response
      */
+    # TODO; move to request controller once we have authorization setup
     public function bookRoomAsMember(Request $request, int $user_id, int $room_id): Response
     {
         $user = $this->userService->find($user_id);
         $room = $this->roomService->find($room_id);
 
-        if ($user->isRoomMember() || $user->isGroupMember()) {
+        if (in_array($room, $user->getRooms()->getValues()) || $user->getGroup() === $room->getGroup()) {
             $newRequest = new \App\Entity\Request();
             $newRequest->setRequestor($user);
             $newRequest->setValid(false);
@@ -137,7 +138,7 @@ class UserController extends AbstractController
             $form->handleRequest($request);
             if ($form->isSubmitted() && $form->isValid()) {
                 $this->requestService->save($form->getData());
-                return $this->redirectToRoute('request_detail', ['id' => $newRequest->getId()]);
+                return $this->redirectToRoute('requests_detail', ['id' => $newRequest->getId()]);
             }
 
             return $this->render('requests/new.html.twig', [
@@ -155,20 +156,13 @@ class UserController extends AbstractController
      * @param int $id
      * @return Response
      */
+    # TODO; move to request controller once we have authorization setup
     public function confirmRequest(int $id)
     {
         $user = $this->userService->find($id);
-        if ($user->isAdmin()) {
-            $requests = $this->requestService->findNotApprovedRequestsAll();
-        } elseif ($user->isRoomAdmin()) {
-            $roomAdmin = $this->roomManagerService->find($user->getId());
-            $requests = $this->requestService->findNotApprovedRequestsByRoom($roomAdmin);
-        } elseif ($user->isGroupAdmin()) {
-            $groupAdmin = $this->groupManagerService->find($user->getId());
-            $requests = $this->requestService->findNotApprovedRequestsByGroup($groupAdmin);
-        } else {
+        if ($user->isCommonUser())
             return $this->render('permissions/denied.html.twig');
-        }
+        $requests = $this->requestService->getRequestsToConfirmFor($user);
         return $this->render('users/confirm_requests.html.twig', ['requests' => $requests]);
     }
 

@@ -108,5 +108,4 @@ class ReservationController extends AbstractController
         }
         return $this->render('permissions/denied.html.twig');
     }
-
 }

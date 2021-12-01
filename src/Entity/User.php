@@ -346,6 +346,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->role == Roles::GROUP_ADMIN;
     }
 
+    public function isCommonUser(): Bool
+    {
+        return $this->role == Roles::COMMON_USER;
+    }
+
     /**
      * @return Collection|Reservation[]
      */
