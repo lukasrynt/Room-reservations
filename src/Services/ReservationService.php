@@ -58,6 +58,9 @@ class ReservationService
         $reservation->setUser($request->getRequestor());
         $request->setState(new States("APPROVED"));
 
+        foreach ($request->getAttendees() as $attendee)
+            $reservation->addAttendee($attendee);
+
         $this->save($reservation);
         return $reservation->getId();
     }

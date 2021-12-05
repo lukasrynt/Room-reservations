@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\ReservationRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -38,6 +40,16 @@ class Reservation
      * @ORM\JoinColumn(nullable=false)
      */
     private Room $room;
+
+    /**
+     * @ORM\ManyToMany(targetEntity=User::class, inversedBy="reservationsToAttend")
+     */
+    private Collection $attendees;
+
+    public function __construct()
+    {
+        $this->attendees = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -88,6 +100,30 @@ class Reservation
     public function setRoom(Room $room): self
     {
         $this->room = $room;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|User[]
+     */
+    public function getAttendees(): Collection
+    {
+        return $this->attendees;
+    }
+
+    public function addAttendee(User $attendee): self
+    {
+        if (!$this->attendees->contains($attendee)) {
+            $this->attendees[] = $attendee;
+        }
+
+        return $this;
+    }
+
+    public function removeAttendee(User $attendee): self
+    {
+        $this->attendees->removeElement($attendee);
 
         return $this;
     }

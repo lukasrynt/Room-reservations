@@ -46,6 +46,11 @@ class Request
      */
     private User $requestor;
 
+    /**
+     * @ORM\ManyToMany(targetEntity=User::class)
+     */
+    private Collection $attendees;
+
     public function __construct()
     {
         $this->attendees = new ArrayCollection();
@@ -105,9 +110,9 @@ class Request
     }
 
     /**
-     * @return Collection|User[]
+     * @return Collection|null
      */
-    public function getAttendees(): Collection
+    public function getAttendees(): ?Collection
     {
         return $this->attendees;
     }
