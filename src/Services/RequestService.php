@@ -2,10 +2,12 @@
 
 namespace App\Services;
 
+use App\Entity\EnumStateType;
 use App\Entity\GroupManager;
 use App\Entity\Request;
 use App\Entity\Room;
 use App\Entity\RoomManager;
+use App\Entity\States;
 use App\Entity\User;
 use App\Repository\GroupManagerRepository;
 use App\Repository\RequestRepository;
@@ -21,6 +23,7 @@ class RequestService
     private RoomManagerRepository $roomManagerRepository;
     private GroupManagerRepository $groupManagerRepository;
     private EntityManagerInterface $entityManager;
+    private RoomRepository $roomRepository;
 
     /**
      * RoomService constructor.
@@ -28,16 +31,19 @@ class RequestService
      * @param RoomManagerRepository $roomManagerRepository
      * @param GroupManagerRepository $groupManagerRepository
      * @param EntityManagerInterface $entityManager
+     * @param RoomRepository $roomRepository
      */
     public function __construct(RequestRepository $requestRepository,
                                 RoomManagerRepository $roomManagerRepository,
                                 GroupManagerRepository $groupManagerRepository,
-                                EntityManagerInterface $entityManager)
+                                EntityManagerInterface $entityManager,
+                                RoomRepository $roomRepository)
     {
         $this->groupManagerRepository = $groupManagerRepository;
         $this->roomManagerRepository = $roomManagerRepository;
         $this->requestRepository = $requestRepository;
         $this->entityManager = $entityManager;
+        $this->roomRepository = $roomRepository;
     }
 
     /**
@@ -70,12 +76,16 @@ class RequestService
     {
         $newRequest = new Request();
         $newRequest->setRequestor($user);
-        $newRequest->setValid(false);
+        $newRequest->setState(new States("PENDING"));
         $newRequest->setRoom($room);
         return $newRequest;
     }
 
-    public function getRequestsToConfirmFor(User $user): ?Collection
+    /**
+     * @param User $user
+     * @return array|array
+     */
+    public function getRequestsToConfirmFor(User $user): array
     {
         if ($user->isAdmin())
             return self::findNotApprovedRequestsAll();
@@ -86,13 +96,13 @@ class RequestService
             $groupAdmin = $this->groupManagerRepository->find($user->getId());
             return self::findNotApprovedRequestsByGroup($groupAdmin);
         }
-        return null;
+        return [];
     }
 
     /**
-     * @return Collection
+     * @return array
      */
-    public function findNotApprovedRequestsAll(): Collection
+    public function findNotApprovedRequestsAll(): array
     {
         $criteria = $this->getCriteriaNotValid();
         return $this->requestRepository->matching($criteria)->getValues();
@@ -100,9 +110,9 @@ class RequestService
 
     /**
      * @param GroupManager $groupManager
-     * @return Collection
+     * @return array
      */
-    public function findNotApprovedRequestsByGroup(GroupManager $groupManager): Collection
+    public function findNotApprovedRequestsByGroup(GroupManager $groupManager): array
     {
         $managedGroups = $groupManager->getGroups();
         $requestedRooms = $this->roomRepository->filterByGroups($managedGroups);
@@ -112,9 +122,9 @@ class RequestService
 
     /**
      * @param RoomManager $roomManager
-     * @return Collection
+     * @return array
      */
-    public function findNotApprovedRequestsByRoom(RoomManager $roomManager): Collection
+    public function findNotApprovedRequestsByRoom(RoomManager $roomManager): array
     {
         $requestedRooms = $roomManager->getManagedRooms();
         $criteria = $this->getCriteriaByIds($requestedRooms);
@@ -140,6 +150,6 @@ class RequestService
     public function getCriteriaNotValid(): Criteria
     {
         return Criteria::create()
-            ->andWhere(Criteria::expr()->eq('valid', false));
+            ->andWhere(Criteria::expr()->eq('state', new States("PENDING")));
     }
 }

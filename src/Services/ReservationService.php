@@ -6,6 +6,7 @@ namespace App\Services;
 
 use App\Entity\Request;
 use App\Entity\Reservation;
+use App\Entity\States;
 use App\Repository\ReservationRepository;
 use Doctrine\ORM\EntityManagerInterface;
 
@@ -55,9 +56,7 @@ class ReservationService
         $reservation->setDateFrom($request->getDateFrom());
         $reservation->setDateTo($request->getDateTo());
         $reservation->setUser($request->getRequestor());
-
-        // todo change state of request - ENUM
-        $request->setValid(true);
+        $request->setState(new States("APPROVED"));
 
         $this->save($reservation);
         return $reservation->getId();
