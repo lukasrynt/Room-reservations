@@ -4,7 +4,8 @@
 
 {% block main %}
     {% for request in requests %}
-        {{ request.valid }} - {{ request.requestor }} <a href={{ path('reservations_new_from_request', {id: request.id}) }}>CONFIRM REQUEST AND CREATE RESERVATION</a>
+        {# TODO; Reject the request  #}
+        {{ request.state }} - {{ request.requestor }} <a href={{ path('reservations_new_from_request', {id: request.id}) }}>CONFIRM REQUEST AND CREATE RESERVATION</a>
         <br>
     {% endfor %}
 {% endblock %}

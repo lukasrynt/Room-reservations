@@ -85,6 +85,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     protected Collection $rooms;
 
     /**
+     * @ORM\ManyToMany(targetEntity=Request::class, mappedBy="attendees")
+     */
+    private Collection $requestsToAttend;
+
+    /**
      * @ORM\OneToMany(targetEntity=Request::class, mappedBy="requestor")
      */
     protected Collection $requests;
@@ -99,11 +104,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     private ?Group $group;
 
+    /**
+     * @ORM\ManyToMany(targetEntity=Reservation::class, mappedBy="attendees")
+     */
+    private Collection $reservationsToAttend;
+
     public function __construct()
     {
         $this->rooms = new ArrayCollection();
         $this->requests = new ArrayCollection();
         $this->reservations = new ArrayCollection();
+        $this->requestsToAttend = new ArrayCollection();
+        $this->reservationsToAttend = new ArrayCollection();
     }
 
     /**
@@ -298,6 +310,34 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     /**
      * @return Collection
      */
+    public function getRequestsToAttend(): Collection
+    {
+        return $this->requestsToAttend;
+    }
+
+    public function addRequestsToAttend(Request $request): self
+    {
+        if (!$this->requestsToAttend->contains($request)) {
+            $this->requestsToAttend[] = $request;
+            $request->addAttendee($this);
+        }
+
+        return $this;
+    }
+
+    public function removeRequestsToAttend(Request $request): self
+    {
+        if ($this->requestsToAttend->removeElement($request)) {
+            $request->removeAttendee($this);
+        }
+
+        return $this;
+    }
+
+
+    /**
+     * @return Collection
+     */
     public function getRequests(): Collection
     {
         return $this->requests;
@@ -388,6 +428,33 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setGroup(?Group $group): self
     {
         $this->group = $group;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Reservation[]
+     */
+    public function getReservationsToAttend(): Collection
+    {
+        return $this->reservationsToAttend;
+    }
+
+    public function addReservationsToAttend(Reservation $reservationsToAttend): self
+    {
+        if (!$this->reservationsToAttend->contains($reservationsToAttend)) {
+            $this->reservationsToAttend[] = $reservationsToAttend;
+            $reservationsToAttend->addAttendee($this);
+        }
+
+        return $this;
+    }
+
+    public function removeReservationsToAttend(Reservation $reservationsToAttend): self
+    {
+        if ($this->reservationsToAttend->removeElement($reservationsToAttend)) {
+            $reservationsToAttend->removeAttendee($this);
+        }
 
         return $this;
     }

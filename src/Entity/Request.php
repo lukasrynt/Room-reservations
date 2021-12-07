@@ -30,9 +30,9 @@ class Request
     private $dateTo;
 
     /**
-     * @ORM\Column(type="boolean", options={"default": false})
+     * @ORM\Column(type="enum_state_type", options={"default": "PENDING"}, length=255, nullable=false)
      */
-    private bool $valid;
+    private States $state;
 
     /**
      * @ORM\ManyToOne(targetEntity=Room::class, inversedBy="requests")
@@ -45,6 +45,11 @@ class Request
      * @ORM\JoinColumn(nullable=false)
      */
     private User $requestor;
+
+    /**
+     * @ORM\ManyToMany(targetEntity=User::class)
+     */
+    private Collection $attendees;
 
     public function __construct()
     {
@@ -80,14 +85,14 @@ class Request
         return $this;
     }
 
-    public function getValid(): ?bool
+    public function getState(): States
     {
-        return $this->valid;
+        return $this->state;
     }
 
-    public function setValid(bool $valid): self
+    public function setState(States $state): self
     {
-        $this->valid = $valid;
+        $this->state = $state;
 
         return $this;
     }
@@ -105,9 +110,9 @@ class Request
     }
 
     /**
-     * @return Collection|User[]
+     * @return Collection|null
      */
-    public function getAttendees(): Collection
+    public function getAttendees(): ?Collection
     {
         return $this->attendees;
     }

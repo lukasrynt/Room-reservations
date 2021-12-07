@@ -36,6 +36,10 @@ class ReservationType extends AbstractType
                         ->andWhere("room.id IN(:rooms)")
                         ->setParameter('rooms', $rooms);
                 },
+            ])
+            ->add('attendees', EntityType::class, [
+                "class" => User::class,
+                'multiple'=> true,
             ]);
     }
 
