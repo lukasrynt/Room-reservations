@@ -1,0 +1,24 @@
+#pagination {
+    display: flex;
+}
+
+#pagination .button-icon {
+    margin: 0
+}
+
+#pagination button {
+    pointer-events: none;
+}
+
+#pagination > *:not(:last-child) {
+    margin-right: 0.5rem;
+}
+
+.dummy {
+    background-color: var(--gray-lightest);
+    pointer-events: none;
+}
+
+.button-pagination {
+    padding: 0.625rem 0.625rem 0.625rem 0.625rem;
+}

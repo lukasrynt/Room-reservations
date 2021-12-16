@@ -5,24 +5,40 @@
 
         {# TODO: Add condition for hide when no user is logged in #}
         <nav>
+            <button onclick="hamburgerMenuInstance.hide()" class="hamburger-menu-close hamburger-menu-close-hidden">
+                {{ source('@icons/close-icon.svg') }}
+            </button>
             <ul>
-                <li><a class="button-base button-main" href="{{ path('rooms_index') }}">Classrooms</a></li>
-                <li><a class="button-base button-secondary-outline" href="#">Reservation</a></li>
-                <li><a class="button-base button-secondary-outline" href="#">Groups</a></li>
-                <li><a class="button-base button-secondary-outline" href="{{ path('users_index') }}">Users</a></li>
+                <li><a class="button-base button-main button-with-icon" href="{{ path('rooms_index') }}">
+                        {{ source('@icons/classroom-icon.svg') }}
+                        <span>Classrooms</span></a></li>
+                <li><a class="button-base button-secondary-outline button-with-icon" href="#">
+                        {{ source('@icons/reservation-icon.svg') }}
+                        <span>Reservation</span></a></li>
+                <li><a class="button-base button-secondary-outline button-with-icon" href="#">
+                        {{ source('@icons/group-icon.svg') }}
+                        <span>Groups</span></a></li>
+                <li><a class="button-base button-secondary-outline button-with-icon" href="{{ path('users_index') }}">
+                        {{ source('@icons/account-badge-icon.svg') }}
+                        <span>Users</span></a></li>
             </ul>
         </nav>
 
-        <section class="secondary-links">
-            <a class="button-base button-main" href="#">User name</a>
-            {#
-            TODO : once we have JS make it work :]
-            <ul>
-                User name
-                <li><a href="#">Profile</a></li>
-                <li><a href="#">Log out</a></li>
-            </ul>
-            #}
+        <section class="user-links">
+            <div class="dropdown">
+                <a class="button-base button-main button-with-icon">
+                    {{ source('@icons/drop-down-menu.svg') }}
+                    {{ source('@icons/profile-icon.svg') }}
+                    <span>User name</span></a>
+                <div class="dropdown-content">
+                    <a href="#">Profile</a>
+                    <a href="#">Log out</a>
+                </div>
+            </div>
         </section>
+
+        <button onclick="hamburgerMenuInstance.show()" class="button-base button-main hamburger-menu-open button-with-icon">
+            {{ source('@icons/hamburger-menu-icon.svg') }}
+        </button>
     </header>
 {% endblock %}

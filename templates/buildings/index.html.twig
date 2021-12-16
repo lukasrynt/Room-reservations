@@ -2,11 +2,32 @@
 
 {% block title %} Buildings {% endblock %}
 
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('styles/table.css') }}" type="text/css">
+    <link rel="stylesheet" href="{{ asset('styles/pagination.css') }}" type="text/css">
+{% endblock %}
+
 {% block main %}
     <h1>Buildings</h1>
-    {% for building in buildings %}
-        Name: {{ building.name }}, Address: {{ building.address }}
-        <a href={{ path('buildings_detail', { id: building.id }) }}>Detail</a>
-        <p></p>
-    {% endfor %}
+
+    <table>
+        <thead>
+        <tr>
+            <th>Name</th>
+            <th>Address</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for building in buildings %}
+            <tr>
+                <td data-label="Name">{{ building.name }}</td>
+                <td data-label="Address">{{ building.address }}</td>
+                <td class="table-buttons">
+                    <a class="button-base button-main" href={{ path('buildings_detail', { id: building.id }) }}>Detail</a>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
 {% endblock %}
