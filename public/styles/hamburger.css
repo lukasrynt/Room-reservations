@@ -112,7 +112,7 @@
 }
 
 /* user links */
-header .hamburger-menu-user-links {
+.main-header .hamburger-menu-user-links {
     display: flex;
     margin: 0;
     width: 100%;
