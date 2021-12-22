@@ -3,10 +3,12 @@
 namespace App\Form\Type;
 
 use App\Entity\EnumRolesType;
+use App\Entity\Roles;
 use App\Entity\User;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ButtonType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
@@ -34,17 +36,15 @@ class UserType extends AbstractType
             ->add("phone_number", TelType::class, [
                 'attr' => ['placeholder' => 'Phone number']
             ])
-            ->add("role", EntityType::class, [
-                "class" => EnumRolesType::class
+            ->add("role", ChoiceType::class, [
+                'placeholder' => 'Vyberte roli uživatele',
+                'choices' => Roles::getAll()
             ])
             ->add("note", TextareaType::class, [
                 'attr' => ['placeholder' => 'Note']
             ])
             ->add("username", TextType::class, [
                 'attr' => ['placeholder' => 'Username']
-            ])
-            ->add("role", EntityType::class, [
-                "class" => EnumRolesType::class
             ]);
     }
 
