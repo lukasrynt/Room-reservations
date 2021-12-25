@@ -30,7 +30,8 @@
                 <label for="password">Password:</label>
                 <input type="password" id="password" name="_password" placeholder="Password"/>
 
-                <input type="hidden" name="_target_path" value="dashboard"/>
+                {# TODO : Once the dashboard is done, redirect to dashboard after successful login #}
+               {# <input type="hidden" name="_target_path" value="dashboard"/>#}
 
                 <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
 

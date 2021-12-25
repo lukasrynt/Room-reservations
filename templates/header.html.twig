@@ -29,10 +29,14 @@
                 <a class="button-base button-main button-with-icon">
                     {{ source('@icons/drop-down-menu.svg') }}
                     {{ source('@icons/profile-icon.svg') }}
-                    <span>User name</span></a>
+                    {% if not app.user %}
+                        <span>User name</span></a>
+                    {% else %}
+                        <span>{{ app.user.username }}</span></a>
+                    {% endif %}
                 <div class="dropdown-content">
                     <a href="#">Profile</a>
-                    <a href="#">Log out</a>
+                    <a href={{ path('app_logout') }}>Log out</a>
                 </div>
             </div>
         </section>

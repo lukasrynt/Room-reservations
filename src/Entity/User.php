@@ -64,10 +64,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     protected string $password;
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
-    protected string $plainPassword;
 
     /**
      * @ORM\Column(type="string", length=100, nullable=false)
@@ -77,7 +73,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     /**
      * @ORM\Column(type="enum_roles_type", length=255, nullable=true)
      */
-    protected Roles $role;
+    protected string $role;
 
     /**
      * @ORM\ManyToMany(targetEntity=Room::class, mappedBy="users")
@@ -167,20 +163,19 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->phoneNumber;
     }
 
-    public function setPhoneNumber(?int $phoneNumber): self
+    public function setPhoneNumber(int $phoneNumber): self
     {
         $this->phoneNumber = $phoneNumber;
 
         return $this;
     }
 
-
-    public function getRole(): Roles
+    public function getRole(): string
     {
         return $this->role;
     }
 
-    public function setRole(Roles $role): self
+    public function setRole(string $role): self
     {
         $this->role = $role;
 
@@ -212,23 +207,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     }
 
     /**
-     * @return string|null
-     */
-    public function getPlainPassword(): ?string
-    {
-        return $this->plainPassword;
-    }
-
-    /**
-     * @param string $plainPassword
-     */
-    public function setPlainPassword(string $plainPassword): void
-    {
-        $this->plainPassword = $plainPassword;
-    }
-
-
-    /**
      * Returning a salt is only needed, if you are not using a modern
      * hashing algorithm (e.g. bcrypt or sodium) in your security.yaml.
      *
@@ -245,7 +223,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function eraseCredentials()
     {
         // If you store any temporary, sensitive data on the user, clear it here
-        $this->plainPassword = "";
+        //$this->plainPassword = "";
     }
 
     public function getUsername(): string
