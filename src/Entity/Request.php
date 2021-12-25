@@ -47,7 +47,7 @@ class Request
     private User $requestor;
 
     /**
-     * @ORM\ManyToMany(targetEntity=User::class)
+     * @ORM\ManyToMany(targetEntity=User::class, inversedBy="requestsToAttend")
      */
     private Collection $attendees;
 

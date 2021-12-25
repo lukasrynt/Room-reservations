@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\User;
 use App\Form\Type\UserType;
+use App\Services\UserService;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
@@ -12,6 +13,19 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class RegistrationController extends AbstractController
 {
+
+    private UserService $userService;
+
+    /**
+     * RegistrationController constructor.
+     * @param UserService $userService
+     */
+    public function __construct(UserService $userService)
+    {
+        $this->userService = $userService;
+    }
+
+
     /**
      * @Route("/register", name="user_registration")
      */
@@ -24,22 +38,13 @@ class RegistrationController extends AbstractController
                 'label' => 'Register'
             ]);
 
-        // 2) handle the submit (will only happen on POST)
         $form->handleRequest($request);
+
         if ($form->isSubmitted() && $form->isValid()) {
-
-            // 3) Encode the password (you could also do this via Doctrine listener)
-            $password = $passwordEncoder->hashPassword($user, $user->getPlainPassword());
+            $password = $passwordEncoder->hashPassword($user, $form->get('password')->getData());
             $user->setPassword($password);
-            $user->eraseCredentials();
 
-            // 4) save the User!
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->persist($user);
-            $entityManager->flush();
-
-            // ... do any other work - like sending them an email, etc
-            // maybe set a "flash" success message for the user
+            $this->userService->save($user);
 
             return $this->redirectToRoute('login');
         }
