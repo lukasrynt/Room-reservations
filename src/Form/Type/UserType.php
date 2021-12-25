@@ -18,6 +18,8 @@ use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints\Length;
+use Symfony\Component\Validator\Constraints\NotBlank;
 
 class UserType extends AbstractType
 {
@@ -45,7 +47,21 @@ class UserType extends AbstractType
             ])
             ->add("username", TextType::class, [
                 'attr' => ['placeholder' => 'Username']
+            ])
+            ->add('password', PasswordType::class, [
+                'attr' => ['autocomplete' => 'new-password', 'placeholder' => 'Password'],
+                'constraints' => [
+                    new NotBlank([
+                        'message' => 'Please enter a password',
+                    ]),
+                    new Length([
+                        'min' => 6,
+                        'minMessage' => 'Your password should be at least {{ limit }} characters',
+                    ]),
+                ],
             ]);
+
+
     }
 
     public function configureOptions(OptionsResolver $resolver)
