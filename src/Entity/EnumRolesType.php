@@ -31,7 +31,7 @@ class EnumRolesType extends Type
     // This is executed when the value is written to the database. Make your conversions here, optionally using the $platform.
     public function convertToDatabaseValue($value, AbstractPlatform $platform): string
     {
-        if (!in_array($value, array("ROOM_MEMBER", "ROOM_ADMIN", "GROUP_MEMBER", "GROUP_ADMIN", "ADMIN"))) {
+        if (!in_array($value, array("COMMON_USER", "ROOM_ADMIN", "GROUP_ADMIN", "ADMIN"))) {
             throw new \InvalidArgumentException("Invalid role");
         }
         return (string) $value;
