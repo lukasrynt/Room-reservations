@@ -1,0 +1,23 @@
+{% extends 'base.html.twig' %}
+
+{% block title %} Dashboard {% endblock %}
+
+{% block main %}
+    <section>
+        <h1>Dashboard</h1>
+        <ul>
+            <li><a class="button-base {{ linkClassForUrl(app.request.pathInfo, 'rooms') }} button-with-icon" href="{{ path('rooms_index') }}">
+                    {{ source('@icons/classroom-icon.svg') }}
+                    <span>Classrooms</span></a></li>
+            <li><a class="button-base {{ linkClassForUrl(app.request.pathInfo, 'reservations') }} button-with-icon" href="#">
+                    {{ source('@icons/reservation-icon.svg') }}
+                    <span>Reservation</span></a></li>
+            <li><a class="button-base {{ linkClassForUrl(app.request.pathInfo, 'groups') }} button-with-icon" href="#">
+                    {{ source('@icons/group-icon.svg') }}
+                    <span>Groups</span></a></li>
+            <li><a class="button-base {{ linkClassForUrl(app.request.pathInfo, 'users') }} button-with-icon" href="{{ path('users_index') }}">
+                    {{ source('@icons/account-badge-icon.svg') }}
+                    <span>Users</span></a></li>
+        </ul>
+    </section>
+{% endblock %}
