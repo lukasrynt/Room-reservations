@@ -21,6 +21,11 @@ use Symfony\Component\Security\Core\User\UserInterface;
  */
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
+    const COMMON_USER = 'ROLE_USER';
+    const ADMIN = 'ROLE_ADMIN';
+    const GROUP_ADMIN = 'ROLE_GROUP_ADMIN';
+    const ROOM_ADMIN = 'ROLE_ROOM_ADMIN';
+
     /**
      * @ORM\Id
      * @ORM\GeneratedValue
@@ -69,11 +74,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      * @ORM\Column(type="string", length=100, nullable=false)
      */
     protected string $username;
-
-    /**
-     * @ORM\Column(type="enum_roles_type", length=255, nullable=true)
-     */
-    protected string $role;
 
     /**
      * @ORM\ManyToMany(targetEntity=Room::class, mappedBy="users")
@@ -166,18 +166,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setPhoneNumber(int $phoneNumber): self
     {
         $this->phoneNumber = $phoneNumber;
-
-        return $this;
-    }
-
-    public function getRole(): string
-    {
-        return $this->role;
-    }
-
-    public function setRole(string $role): self
-    {
-        $this->role = $role;
 
         return $this;
     }
@@ -350,22 +338,22 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     public function isAdmin(): Bool
     {
-        return $this->role == Roles::ADMIN;
+        return in_array(self::ADMIN, $this->roles);
     }
 
     public function isRoomAdmin(): Bool
     {
-        return $this->role == Roles::ROOM_ADMIN;
+        return in_array(self::ROOM_ADMIN, $this->roles);
     }
 
     public function isGroupAdmin(): Bool
     {
-        return $this->role == Roles::GROUP_ADMIN;
+        return in_array(self::GROUP_ADMIN, $this->roles);
     }
 
     public function isCommonUser(): Bool
     {
-        return $this->role == Roles::COMMON_USER;
+        return in_array(self::COMMON_USER, $this->roles);
     }
 
     /**

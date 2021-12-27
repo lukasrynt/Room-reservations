@@ -23,7 +23,6 @@ final class Version20211026173610 extends AbstractMigration
                                       last_name VARCHAR(255) NOT NULL,
                                       email VARCHAR(255) NOT NULL,
                                       phone_number INT DEFAULT NULL,
-                                      role VARCHAR(255) DEFAULT NULL,
                                       note VARCHAR(255) DEFAULT NULL,
                                       PRIMARY KEY(id))');
     }
