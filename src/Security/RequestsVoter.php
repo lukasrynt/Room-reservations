@@ -10,13 +10,13 @@ use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 
 class RequestsVoter extends Voter
 {
-    const RESERVE = 'reserve';
+    const BOOK = 'book';
     const APPROVE = 'approve';
     const REJECT = 'reject';
 
     protected function supports(string $attribute, $subject): bool
     {
-        if (!in_array($attribute, [self::RESERVE, self::APPROVE, self::REJECT])) {
+        if (!in_array($attribute, [self::BOOK, self::APPROVE, self::REJECT])) {
             return false;
         }
         if (!($subject instanceof Room || $subject instanceof Request)) {
@@ -35,7 +35,7 @@ class RequestsVoter extends Voter
         }
 
         switch($attribute) {
-            case self::RESERVE:
+            case self::BOOK:
                 return $this->canReserve($user, $subject);
             case self::APPROVE:
                 return $this->canApprove($user, $subject);
