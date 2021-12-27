@@ -24,7 +24,7 @@
         </dl>
         <footer>
             {% if hasUserRequestPermission(user, room) %}
-                <a class="button-base button-with-icon button-main" href={{ path('users_book_room_member', {'user_id': user.id, 'room_id': room.id}) }}>
+                <a class="button-base button-with-icon button-main" href={{ path('requests_book_room', {'roomId': room.id}) }}>
                     {{ source('@icons/create-reservation-icon.svg') }}
                     Request a reservation</a>
             {% elseif hasUserRegistrationPermission(user, room) %}

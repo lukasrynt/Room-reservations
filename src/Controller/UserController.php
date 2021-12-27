@@ -114,42 +114,6 @@ class UserController extends AbstractController
     }
 
     /**
-     * @Route("/{user_id}/book_room_member/{room_id}", name="book_room_member")
-     * @param Request $request
-     * @param int $user_id
-     * @param int $room_id
-     * @return Response
-     */
-    # TODO; move to request controller once we have authorization setup
-    public function bookRoomAsMember(Request $request, int $user_id, int $room_id): Response
-    {
-        $user = $this->userService->find($user_id);
-        $room = $this->roomService->find($room_id);
-
-        if (in_array($room, $user->getRooms()->getValues()) || $user->getGroup() === $room->getGroup()) {
-
-            $newRequest = $this->requestService->newWithRequestorAndRoom($user, $room);
-
-            $form = $this->createForm(RequestType::class, $newRequest)
-                ->add('Request', SubmitType::class);
-
-            $form->handleRequest($request);
-            if ($form->isSubmitted() && $form->isValid()) {
-                $this->requestService->save($form->getData());
-                return $this->redirectToRoute('requests_detail', ['id' => $newRequest->getId()]);
-            }
-
-            return $this->render('requests/new.html.twig', [
-                'room' => $room,
-                'user' => $user,
-                'form' => $form->createView()
-            ]);
-        } else {
-            return $this->render('permissions/denied.html.twig');
-        }
-    }
-
-    /**
      * @Route("/{id}/confirm_requests", name="confirm_requests")
      * @param int $id
      * @return Response
