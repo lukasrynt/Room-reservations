@@ -9,13 +9,14 @@ use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 
 class RoomsVoter extends Voter
 {
+    const VIEW_ALL = 'view_rooms';
     const VIEW = 'view_room';
     const EDIT = 'edit_room';
     const CREATE = 'create_room';
 
     protected function supports(string $attribute, $subject): bool
     {
-        if (!in_array($attribute, [self::VIEW, self::EDIT, self::CREATE])) {
+        if (!in_array($attribute, [self::VIEW, self::EDIT, self::CREATE, self::VIEW_ALL])) {
             return false;
         }
         if (!($subject instanceof Room || !$subject)) {
@@ -32,6 +33,8 @@ class RoomsVoter extends Voter
         }
 
         switch($attribute) {
+            case self::VIEW_ALL:
+                return $this->canViewAll();
             case self::VIEW:
                 return $this->canView($user, $subject);
             case self::EDIT:
@@ -42,6 +45,12 @@ class RoomsVoter extends Voter
                 return false;
         }
     }
+
+    private function canViewAll(): bool
+    {
+        return true;
+    }
+
 
     private function canView(?User $account, Room $room): bool
     {

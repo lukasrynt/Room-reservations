@@ -36,6 +36,7 @@ class RoomController extends AbstractController
      */
     public function index(): Response
     {
+        $this->denyAccessUnlessGranted('view_rooms');
         if (!$this->getUser()) {
             $rooms = $this->roomService->findAllPublic();
         } else {

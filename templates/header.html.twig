@@ -5,30 +5,38 @@
         <h1><a href="{{ path('landing_page') }}">HMS(t)R</a></h1>
     {% endif %}
 
-    {% if app.user %}
-        <nav>
-            <button onclick="hamburgerMenuInstance.hide()" class="hamburger-menu-close hamburger-menu-close-hidden">
-                {{ source('@icons/close-icon.svg') }}
-            </button>
-            <ul>
+    <nav>
+        <button onclick="hamburgerMenuInstance.hide()" class="hamburger-menu-close hamburger-menu-close-hidden">
+            {{ source('@icons/close-icon.svg') }}
+        </button>
+        <ul>
+            {% if is_granted('view_rooms') %}
                 <li><a class="button-base {{ linkClassForUrl(app.request.pathInfo, 'rooms') }} button-with-icon" href="{{ path('rooms_index') }}">
                         {{ source('@icons/classroom-icon.svg') }}
                         <span>Classrooms</span></a></li>
+            {% endif %}
+            {% if is_granted('view_requests') %}
                 <li><a class="button-base {{ linkClassForUrl(app.request.pathInfo, 'requests') }} button-with-icon" href="{{ path('requests_index') }}">
                         {{ source('@icons/reservation-icon.svg') }}
                         <span>Requests</span></a></li>
+            {% endif %}
+            {% if is_granted('view_reservations') %}
                 <li><a class="button-base {{ linkClassForUrl(app.request.pathInfo, 'reservations') }} button-with-icon" href="{{ path('reservations_index') }}">
                         {{ source('@icons/reservation-icon.svg') }}
                         <span>Reservation</span></a></li>
+            {% endif %}
+            {% if is_granted('view_groups') %}
                 <li><a class="button-base {{ linkClassForUrl(app.request.pathInfo, 'groups') }} button-with-icon" href="#">
-                        {{ source('@icons/group-icon.svg') }}
-                        <span>Groups</span></a></li>
+                    {{ source('@icons/group-icon.svg') }}
+                    <span>Groups</span></a></li>
+            {% endif %}
+            {% if is_granted('view_users') %}
                 <li><a class="button-base {{ linkClassForUrl(app.request.pathInfo, 'users') }} button-with-icon" href="{{ path('users_index') }}">
-                        {{ source('@icons/account-badge-icon.svg') }}
-                        <span>Users</span></a></li>
-            </ul>
-        </nav>
-    {% endif %}
+                    {{ source('@icons/account-badge-icon.svg') }}
+                    <span>Users</span></a></li>
+            {% endif %}
+        </ul>
+    </nav>
 
     <section class="user-links">
         <div class="dropdown">

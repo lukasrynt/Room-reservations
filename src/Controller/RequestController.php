@@ -43,6 +43,7 @@ class RequestController extends AbstractController
      */
     public function index(): Response
     {
+        $this->denyAccessUnlessGranted('view_requests');
         $requests = $this->requestService->findAllFor($this->getUser());
         return $this->render('requests/index.html.twig', ['requests' => $requests]);
     }
