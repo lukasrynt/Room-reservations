@@ -2,14 +2,24 @@
 
 {% block title %} Building detail {% endblock %}
 
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('styles/detail.css') }}" type="text/css">
+{% endblock %}
+
 {% block main %}
-    <section>
-        <h1>{{ building.name }}</h1>
-        <h2>Detail</h2>
+    <article id="detail">
+        <header>
+            <h1>{{ building.name }}</h1>
+        </header>
         <dl>
             <dd>Address</dd>
-            <dt>{{ building.address }}</dt>
+            <dt data-label="Address">{{ building.address }}</dt>
         </dl>
-        <a href={{ path('buildings_edit', { id: building.id }) }}>Edit</a>
-    </section>
+        <footer>
+            <a class="button-base button-with-icon button-main-outline" href={{ path('buildings_edit', { id: building.id }) }}>
+                {{ source('@icons/edit-icon.svg') }}
+                Edit</a>
+        </footer>
+    </article>
 {% endblock %}

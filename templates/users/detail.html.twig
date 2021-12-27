@@ -2,18 +2,28 @@
 
 {% block title %} User detail {% endblock %}
 
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('styles/detail.css') }}" type="text/css">
+{% endblock %}
+
 {% block main %}
-    <section>
-        <h1>{{ user.firstName }} {{ user.lastName }}</h1>
-        <h2>Detail</h2>
+    <article id="detail">
+        <header>
+            <h1>{{ user.firstName }} {{ user.lastName }}</h1>
+        </header>
         <dl>
             <dd>First name</dd>
-            <dt>{{ user.firstName }}</dt>
+            <dt data-label="First name">{{ user.firstName }}</dt>
             <dd>Last name</dd>
-            <dt>{{ user.lastName }}</dt>
+            <dt data-label="Last name">{{ user.lastName }}</dt>
             <dd>Username</dd>
-            <dt>{{ user.username }}</dt>
+            <dt data-label="Username">{{ user.username }}</dt>
         </dl>
-        <a href={{ path('users_edit', {'id': user.id}) }}>Edit</a>
-    </section>
+        <footer>
+            <a class="button-base button-with-icon button-main-outline" href={{ path('users_edit', {'id': user.id}) }}>
+                {{ source('@icons/edit-icon.svg') }}
+                Edit</a>
+        </footer>
+    </article>
 {% endblock %}
