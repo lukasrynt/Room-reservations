@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\RoomManager;
+use App\Entity\User;
 use App\Form\Type\LoginType;
 use App\Form\Type\RequestType;
 use App\Form\Type\UserSearchType;
@@ -19,6 +20,7 @@ use Symfony\Component\Form\Extension\Core\Type\ButtonType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -116,5 +118,34 @@ class UserController extends AbstractController
             'searchForm' => $searchForm->createView(),
             'usersCount' => $users ? count($users) : 0
         ]);
+    }
+
+    /**
+     * @Route("/register", name="registration")
+     */
+    public function register(Request $request, UserPasswordHasherInterface $passwordEncoder)
+    {
+        $user = new User();
+        $form = $this->createForm(UserType::class, $user)
+            ->add('save', SubmitType::class, [
+                'attr' => ['class' => 'button-base button-main'],
+                'label' => 'Register'
+            ]);
+
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $password = $passwordEncoder->hashPassword($user, $form->get('password')->getData());
+            $user->setPassword($password);
+
+            $this->userService->save($user);
+
+            return $this->redirectToRoute('login');
+        }
+
+        return $this->render(
+            'users/signup.html.twig',
+            array('form' => $form->createView())
+        );
     }
 }

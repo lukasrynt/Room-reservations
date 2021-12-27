@@ -44,9 +44,9 @@
             <div class="dropdown-content">
                 {% if not app.user %}
                     <a href={{ path('login') }}>Log in</a>
-                    <a href={{ path('user_registration') }}>Sign up</a>
+                    <a href={{ path('users_registration') }}>Sign up</a>
                 {% else %}
-                    <a href="#">Profile</a>
+                    <a href={{ path('users_detail', {id: app.user.id}) }}>Profile</a>
                     <a href={{ path('app_logout') }}>Log out</a>
                 {% endif %}
             </div>
