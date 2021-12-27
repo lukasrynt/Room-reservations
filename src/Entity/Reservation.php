@@ -57,9 +57,9 @@ class Reservation
         return $this->id;
     }
 
-    public function getDateTo(): ?\DateTimeInterface
+    public function getDateTo(): ?string
     {
-        return $this->dateTo;
+        return $this->dateTo->format('Y-m-d');
     }
 
     public function setDateTo(string $dateTo): self
@@ -73,9 +73,9 @@ class Reservation
         return $this;
     }
 
-    public function getDateFrom(): ?\DateTimeInterface
+    public function getDateFrom(): ?string
     {
-        return $this->dateFrom;
+        return $this->dateFrom->format('Y-m-d');
     }
 
     public function setDateFrom(string $dateFrom): self
