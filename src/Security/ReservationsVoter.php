@@ -8,18 +8,19 @@ use App\Entity\User;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 
-class RequestsVoter extends Voter
+class ReservationsVoter extends Voter
 {
-    const BOOK = 'book';
+    const REQUEST = 'request';
+    const RESERVE = 'reserve';
     const APPROVE = 'approve';
     const REJECT = 'reject';
 
     protected function supports(string $attribute, $subject): bool
     {
-        if (!in_array($attribute, [self::BOOK, self::APPROVE, self::REJECT])) {
+        if (!in_array($attribute, [self::REQUEST, self::APPROVE, self::REJECT, self::RESERVE])) {
             return false;
         }
-        if (!($subject instanceof Room || $subject instanceof Request)) {
+        if (!($subject instanceof Room || $subject instanceof Request || !$subject)) {
             return false;
         }
         return true;
@@ -35,18 +36,20 @@ class RequestsVoter extends Voter
         }
 
         switch($attribute) {
-            case self::BOOK:
-                return $this->canReserve($user, $subject);
+            case self::REQUEST:
+                return $this->canRequest($user, $subject);
             case self::APPROVE:
                 return $this->canApprove($user, $subject);
             case self::REJECT:
                 return $this->canReject($user, $subject);
+            case self::RESERVE:
+                return $this->canReserve($user);
             default:
                 return false;
         }
     }
 
-    private function canReserve(User $account, Room $room): bool
+    private function canRequest(User $account, Room $room): bool
     {
         if ($account->isAdmin()) {
             return true;
@@ -59,11 +62,16 @@ class RequestsVoter extends Voter
 
     private function canApprove(User $account, Request $request): bool
     {
-        return $this->canReserve($account, $request->getRoom());
+        return $this->canRequest($account, $request->getRoom());
     }
 
     private function canReject(User $account, Request $request): bool
     {
-        return $this->canReserve($account, $request->getRoom());
+        return $this->canRequest($account, $request->getRoom());
+    }
+
+    private function canReserve(User $account): bool
+    {
+        return $account->isAdmin() || $account->isRoomAdmin() || $account->isGroupAdmin();
     }
 }

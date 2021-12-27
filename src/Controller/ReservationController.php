@@ -12,6 +12,7 @@ use App\Services\RoomService;
 use App\Services\UserService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -22,59 +23,56 @@ class ReservationController extends AbstractController
 {
     private ReservationService $reservationService;
     private UserService $userService;
-    private RoomService $roomService;
 
     /**
      * ReservationController constructor.
      * @param ReservationService $reservationService
      * @param UserService $userService
-     * @param RoomService $roomService
      */
-    public function __construct(ReservationService $reservationService, UserService $userService, RoomService $roomService)
+    public function __construct(ReservationService $reservationService, UserService $userService)
     {
         $this->reservationService = $reservationService;
         $this->userService = $userService;
-        $this->roomService = $roomService;
     }
 
-
     /**
-     * @Route("/{id}", name="detail")
+     * @Route("/{id}", name="detail", requirements={"id": "\d+"})
      * @param int $id
      * @return Response
      */
     public function detail(int $id): Response
     {
         $reservation = $this->reservationService->find($id);
-        if (!$reservation)
+        if (!$reservation) {
             return $this->render('errors/404.html.twig');
+        }
         return $this->render('reservations/detail.html.twig', [
             'reservation' => $reservation
         ]);
     }
 
     /**
-     * @Route("/new/{id}", name="new")
-     * @param int $id
+     * @Route("/create", name="create")
+     * @param Request $request
      * @return Response
      */
-    public function createReservation(int $id): Response
+    public function create(Request $request): Response
     {
-        $user = $this->userService->find($id);
-
-        if ($user->isAdmin())
-            $rooms = $this->roomService->findAll();
-        else if ($user->isRoomAdmin())
-            $rooms = $this->userService->getManagedRoomsByRoomAdmin($user);
-        else if ($user->isGroupAdmin())
-            $rooms = $this->userService->getManagedRoomsByGroupAdmin($user);
-        else
-            return $this->render('permissions/denied.html.twig');
-
+        $user = $this->getUser();
+        $this->denyAccessUnlessGranted('reserve');
+        $rooms = $this->userService->getRoomsForUser($user);
         $form = $this->createForm(ReservationType::class, null, ['rooms' => $rooms ?? []])
             ->add('Reserve', SubmitType::class);
 
-        return $this->render('reservations/new.html.twig', [
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $reservation = $form->getData();
+            $this->reservationService->save($reservation);
+            $this->addFlash('success', "Reservation for room {$reservation->getRoom()->getName()} was successfully created.");
+            return $this->redirectToRoute('reservations_detail', ['id' => $reservation->getId()]);
+        }
+
+        return $this->render('reservations/create.html.twig', [
             'form' => $form->createView()
         ]);
     }

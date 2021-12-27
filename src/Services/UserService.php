@@ -5,6 +5,8 @@
 
 namespace App\Services;
 
+use App\Entity\GroupManager;
+use App\Entity\RoomManager;
 use App\Entity\User;
 use App\Repository\UserRepository;
 use Doctrine\Common\Collections\Collection;
@@ -14,28 +16,20 @@ class UserService
 {
     private UserRepository $userRepository;
     private EntityManagerInterface $entityManager;
-    private RoomManagerService $roomManagerService;
-    private GroupManagerService $groupManagerService;
     private RoomService $roomService;
 
     /**
      * UserService constructor.
      * @param UserRepository $userRepository
      * @param EntityManagerInterface $entityManager
-     * @param RoomManagerService $roomManagerService
-     * @param GroupManagerService $groupManagerService
      * @param RoomService $roomService
      */
     public function __construct(UserRepository $userRepository,
                                 EntityManagerInterface $entityManager,
-                                RoomManagerService $roomManagerService,
-                                GroupManagerService $groupManagerService,
                                 RoomService $roomService)
     {
         $this->userRepository = $userRepository;
         $this->entityManager = $entityManager;
-        $this->roomManagerService = $roomManagerService;
-        $this->groupManagerService = $groupManagerService;
         $this->roomService = $roomService;
     }
 
@@ -84,16 +78,27 @@ class UserService
         return $this->userRepository->search($searchParams);
     }
 
-    public function getManagedRoomsByRoomAdmin(User $user): Collection
+    public function getManagedRoomsByRoomAdmin(RoomManager $user): Collection
     {
-        $roomManager = $this->roomManagerService->find($user->getId());
-        return $roomManager->getManagedRooms();
+        return $user->getManagedRooms();
     }
 
-    public function getManagedRoomsByGroupAdmin(User $user): Collection
+    public function getManagedRoomsByGroupAdmin(GroupManager $user): Collection
     {
-        $groupManager = $this->groupManagerService->find($user->getId());
-        $groups = $groupManager->getGroups();
+        $groups = $user->getGroups();
         return $this->roomService->findByGroups($groups);
+    }
+
+    public function getRoomsForUser(User $user): array
+    {
+        if ($user->isAdmin()) {
+            return $this->roomService->findAll();
+        } elseif ($user->isRoomAdmin()) {
+            return $this->userService->getManagedRoomsByRoomAdmin($user);
+        } else if ($user->isGroupAdmin()) {
+            return $this->userService->getManagedRoomsByGroupAdmin($user);
+        } else {
+            return [];
+        }
     }
 }

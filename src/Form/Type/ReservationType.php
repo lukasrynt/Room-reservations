@@ -4,6 +4,7 @@
 namespace App\Form\Type;
 
 
+use App\Entity\Reservation;
 use App\Entity\Room;
 use App\Entity\User;
 use App\Repository\RoomRepository;
@@ -24,8 +25,12 @@ class ReservationType extends AbstractType
         $rooms = $options['rooms'];
 
         $builder
-            ->add('date_from', DateType::class)
-            ->add('date_to', DateType::class)
+            ->add('date_from', DateType::class, [
+                'input' => 'string'
+            ])
+            ->add('date_to', DateType::class, [
+                'input' => 'string'
+            ])
             ->add('user', EntityType::class, [
                 "class" => User::class
             ])
@@ -46,5 +51,8 @@ class ReservationType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setRequired(['rooms']);
+        $resolver->setDefaults([
+            'data_class' => Reservation::class,
+        ]);
     }
 }

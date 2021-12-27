@@ -75,7 +75,7 @@ class RequestController extends AbstractController
         if (!$room) {
             return $this->render('errors/404.html.twig');
         }
-        $this->denyAccessUnlessGranted('book', $room);
+        $this->denyAccessUnlessGranted('request', $room);
         $newRequest = $this->requestService->newWithRequestorAndRoom($user, $room);
 
         $form = $this->createForm(RequestType::class, $newRequest)
@@ -88,7 +88,7 @@ class RequestController extends AbstractController
             return $this->redirectToRoute('requests_detail', ['id' => $newRequest->getId()]);
         }
 
-        return $this->render('requests/new.html.twig', [
+        return $this->render('requests/create.html.twig', [
             'room' => $room,
             'user' => $user,
             'form' => $form->createView()
