@@ -28,30 +28,31 @@
         </form>
     </section>
 
-        <table>
-            <thead>
-                <tr>
-                    <th>Room name</th>
-                    <th>Building</th>
-                    <th>Floor</th>
-                    <th>Capacity</th>
-                    <th>Opened from - to</th>
-                </tr>
-            </thead>
+    <table>
+        <thead>
+            <tr>
+                <th>Room name</th>
+                <th>Building</th>
+                <th>Floor</th>
+                <th>Capacity</th>
+                <th>Opened from - to</th>
+            </tr>
+        </thead>
 
-            <tbody>
-                {% for room in rooms %}
-                <tr>
-                    <td data-label="Room name">{{ room.name }}</td>
-                    <td data-label="Building">{{ room.building }}</td>
-                    <td data-label="Floor">{{ room.floor }}</td>
-                    <td data-label="Capacity">{{ room.capacity }}</td>
-                    <td data-label="Opened from - to">{{ room.opened_from }} - {{ room.opened_to }}</td>
-                    <td class="table-buttons">
-                        <a class="button-base button-main" href={{ path('rooms_detail', {id: room.id }) }}>Detail</a>
-                    </td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
+        <tbody>
+            {% for room in rooms %}
+            <tr>
+                <td data-label="Room name">{{ room.name }}</td>
+                <td data-label="Building">{{ room.building }}</td>
+                <td data-label="Floor">{{ room.floor }}</td>
+                <td data-label="Capacity">{{ room.capacity }}</td>
+                <td data-label="Opened from - to">{{ room.opened_from }} - {{ room.opened_to }}</td>
+                <td class="table-buttons">
+                    <a class="button-base button-main" href={{ path('rooms_detail', { id: room.id }) }}>Detail</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <a class="button-base button-success-outline" href={{ path('rooms_create') }}>Add</a>
 {% endblock %}

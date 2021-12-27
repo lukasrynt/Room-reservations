@@ -4,6 +4,7 @@
 namespace App\Controller;
 
 
+use App\Entity\Room;
 use App\Services\UserService;
 use App\Services\RoomService;
 use App\Form\Type\RoomType;
@@ -81,6 +82,25 @@ class RoomController extends AbstractController
         }
 
         return $this->render('rooms/edit.html.twig', [
+            'form' => $form->createView()
+        ]);
+    }
+
+    /**
+     * @Route("/employees/create", name="create")
+     * @param Request $request
+     * @return Response
+     */
+    public function create(Request $request): Response {
+        $room = new Room;
+        $form = $this->createForm(RoomType::class, $room);
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()){
+            $this->roomService->save($form->getData());
+            return $this->redirectToRoute('rooms_detail', ['id' => $room->getId()]);
+        }
+
+        return $this->render('rooms/create.html.twig', [
             'form' => $form->createView()
         ]);
     }
