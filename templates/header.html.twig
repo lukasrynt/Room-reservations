@@ -30,13 +30,19 @@
                     {{ source('@icons/drop-down-menu.svg') }}
                     {{ source('@icons/profile-icon.svg') }}
                     {% if not app.user %}
-                        <span>User name</span></a>
+                        <span>Account</span>
                     {% else %}
-                        <span>{{ app.user.username }}</span></a>
+                        <span>{{ app.user.username }}</span>
                     {% endif %}
+                </a>
                 <div class="dropdown-content">
-                    <a href="#">Profile</a>
-                    <a href={{ path('app_logout') }}>Log out</a>
+                    {% if not app.user %}
+                        <a href={{ path('login') }}>Log in</a>
+                        <a href={{ path('user_registration') }}>Sign up</a>
+                    {% else %}
+                        <a href="#">Profile</a>
+                        <a href={{ path('app_logout') }}>Log out</a>
+                    {% endif %}
                 </div>
             </div>
         </section>
