@@ -75,7 +75,7 @@ class RequestController extends AbstractController
         if (!$room) {
             return $this->render('errors/404.html.twig');
         }
-        $this->denyAccessUnlessGranted('request', $room);
+        $this->denyAccessUnlessGranted('create_request', $room);
         $newRequest = $this->requestService->newWithRequestorAndRoom($user, $room);
 
         $form = $this->createForm(RequestType::class, $newRequest)
@@ -103,7 +103,7 @@ class RequestController extends AbstractController
     public function approve(int $id): Response
     {
         $request = $this->requestService->find($id);
-        $this->denyAccessUnlessGranted('approve', $request);
+        $this->denyAccessUnlessGranted('approve_request', $request);
         $request->setState(new States('APPROVED'));
         $this->requestService->save($request);
         $reservationId = $this->reservationService->saveFromRequest($request);
@@ -119,7 +119,7 @@ class RequestController extends AbstractController
     public function reject(int $id): Response
     {
         $request = $this->requestService->find($id);
-        $this->denyAccessUnlessGranted('approve', $request);
+        $this->denyAccessUnlessGranted('approve_request', $request);
         $request->setState(new States('REJECTED'));
         $this->requestService->save($request);
         $this->addFlash('success', "Request with id #{$request->getId()} for room {$request->getRoom()->getName()} was successfully rejected.");

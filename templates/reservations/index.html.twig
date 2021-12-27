@@ -44,6 +44,8 @@
         </tbody>
     </table>
     <a class="button-base button-success-outline" href={{ path('reservations_create') }}>
-        {{ source('@icons/create-reservation-icon.svg') }} Create new reservation
+        {% if is_granted('create_reservation') %}
+            {{ source('@icons/create-reservation-icon.svg') }} Create new reservation
+        {% endif %}
     </a>
 {% endblock %}

@@ -33,8 +33,12 @@
             <dt data-label="Requested to">{{ request.dateTo }}</dt>
         </dl>
         <footer>
-            <a class="button-base button-success-outline" href={{ path('requests_approve', { id: request.id }) }}>Approve</a>
-            <a class="button-base button-danger-outline" href={{ path('requests_reject', { id: request.id }) }}>Reject</a>
+            {% if is_granted('approve_request', request) %}
+                <a class="button-base button-success-outline" href={{ path('requests_approve', { id: request.id }) }}>Approve</a>
+            {% endif %}
+            {% if is_granted('reject_request', request) %}
+                <a class="button-base button-danger-outline" href={{ path('requests_reject', { id: request.id }) }}>Reject</a>
+            {% endif %}
         </footer>
     </article>
 {% endblock %}

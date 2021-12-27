@@ -10,10 +10,10 @@ use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 
 class ReservationsVoter extends Voter
 {
-    const REQUEST = 'request';
-    const RESERVE = 'reserve';
-    const APPROVE = 'approve';
-    const REJECT = 'reject';
+    const REQUEST = 'create_request';
+    const RESERVE = 'create_reservation';
+    const APPROVE = 'approve_request';
+    const REJECT = 'reject_request';
 
     protected function supports(string $attribute, $subject): bool
     {

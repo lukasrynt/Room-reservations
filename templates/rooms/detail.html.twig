@@ -31,7 +31,7 @@
             </dt>
         </dl>
         <footer>
-            {% if is_granted('request', room) %}
+            {% if is_granted('create_request', room) %}
                 <a class="button-base button-with-icon button-main" href={{ path('requests_book_room', {'roomId': room.id}) }}>
                     {{ source('@icons/create-reservation-icon.svg') }}
                     Request a reservation</a>

@@ -66,7 +66,7 @@ class ReservationController extends AbstractController
     public function create(Request $request): Response
     {
         $user = $this->getUser();
-        $this->denyAccessUnlessGranted('reserve');
+        $this->denyAccessUnlessGranted('create_reservation');
         $rooms = $this->userService->getRoomsForUser($user);
         $form = $this->createForm(ReservationType::class, null, ['rooms' => $rooms ?? []])
             ->add('Reserve', SubmitType::class);
