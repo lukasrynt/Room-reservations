@@ -48,4 +48,15 @@ class RoomRepository extends ServiceEntityRepository
             ->andWhere(Criteria::expr()->in('id', $groups->map(function($obj){return $obj->getId();})->getValues()));
         return $this->matching($criteria);
     }
+
+    /**
+     * @return array
+     */
+    public function findAllPublic(): array
+    {
+        return $this->matching(
+            Criteria::create()
+                ->andWhere(Criteria::expr()->eq('private', false))
+        )->toArray();
+    }
 }

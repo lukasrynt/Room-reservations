@@ -5,7 +5,6 @@ namespace App\Controller;
 
 
 use App\Entity\Room;
-use App\Services\UserService;
 use App\Services\RoomService;
 use App\Form\Type\RoomType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -20,17 +19,14 @@ use Symfony\Component\Routing\Annotation\Route;
 class RoomController extends AbstractController
 {
     private RoomService $roomService;
-    private UserService $userService;
 
     /**
      * RoomController constructor.
      * @param RoomService $roomService
-     * @param UserService $userService
      */
-    public function __construct(RoomService $roomService, UserService $userService)
+    public function __construct(RoomService $roomService)
     {
         $this->roomService = $roomService;
-        $this->userService = $userService;
     }
 
 
@@ -40,7 +36,11 @@ class RoomController extends AbstractController
      */
     public function index(): Response
     {
-        $rooms = $this->roomService->findAll();
+        if (!$this->getUser()) {
+            $rooms = $this->roomService->findAllPublic();
+        } else {
+            $rooms = $this->roomService->findAll();
+        }
         return $this->render('rooms/index.html.twig', ['rooms' => $rooms]);
     }
 
@@ -51,10 +51,11 @@ class RoomController extends AbstractController
      */
     public function detail(int $id): Response{
         $room = $this->roomService->find($id);
-        $user = $this->userService->find(2);
-        if (!$room)
+        $this->denyAccessUnlessGranted('view_room', $room);
+        if (!$room) {
             return $this->render('errors/404.html.twig');
-        return $this->render('rooms/detail.html.twig', ['room' => $room, 'user' => $user]);
+        }
+        return $this->render('rooms/detail.html.twig', ['room' => $room]);
     }
 
     /**
@@ -66,10 +67,11 @@ class RoomController extends AbstractController
     public function edit(Request $request, int $id): Response{
         $room = $this->roomService->find($id);
 
-        if (!$room)
+        if (!$room) {
             return $this->render('errors/404.html.twig');
+        }
 
-        $this->denyAccessUnlessGranted('edit', $room);
+        $this->denyAccessUnlessGranted('edit_room', $room);
         $form = $this->createForm(RoomType::class, $room)
             ->add('delete', ButtonType::class, [
                 'attr' => ['class' => 'button-base button-danger-outline'],
@@ -94,8 +96,8 @@ class RoomController extends AbstractController
      * @return Response
      */
     public function create(Request $request): Response {
+        $this->denyAccessUnlessGranted('create_room');
         $room = new Room;
-        $this->denyAccessUnlessGranted('create', $room);
         $form = $this->createForm(RoomType::class, $room);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()){

@@ -36,6 +36,7 @@
                 <th>Floor</th>
                 <th>Capacity</th>
                 <th>Opened from - to</th>
+                <th>Private</th>
             </tr>
         </thead>
 
@@ -47,6 +48,13 @@
                 <td data-label="Floor">{{ room.floor }}</td>
                 <td data-label="Capacity">{{ room.capacity }}</td>
                 <td data-label="Opened from - to">{{ room.opened_from }} - {{ room.opened_to }}</td>
+                <td data-label="Private">
+                    {% if room.private %}
+                        Private
+                    {% else %}
+                        Public
+                    {% endif %}
+                </td>
                 <td class="table-buttons">
                     <a class="button-base button-main" href={{ path('rooms_detail', { id: room.id }) }}>Detail</a>
                 </td>
@@ -54,5 +62,7 @@
             {% endfor %}
         </tbody>
     </table>
-    <a class="button-base button-success-outline" href={{ path('rooms_create') }}>Add</a>
+    {% if is_granted('edit_room') %}
+        <a class="button-base button-success-outline" href={{ path('rooms_create') }}>Add</a>
+    {% endif %}
 {% endblock %}

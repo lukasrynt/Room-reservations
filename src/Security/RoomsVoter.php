@@ -9,52 +9,61 @@ use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 
 class RoomsVoter extends Voter
 {
-    const VIEW = 'view';
-    const EDIT = 'edit';
-    const CREATE = 'create';
+    const VIEW = 'view_room';
+    const EDIT = 'edit_room';
+    const CREATE = 'create_room';
 
     protected function supports(string $attribute, $subject): bool
     {
-        if (!in_array($attribute, [self::VIEW, self::EDIT, self::CREATE]))
+        if (!in_array($attribute, [self::VIEW, self::EDIT, self::CREATE])) {
             return false;
-        if (!($subject instanceof Room))
+        }
+        if (!($subject instanceof Room || !$subject)) {
             return false;
+        }
         return true;
     }
 
     protected function voteOnAttribute(string $attribute, $subject, TokenInterface $token): bool
     {
         $user = $token->getUser();
-
-        // check if the user is logged at all
-        if (!$user)
-            return false;
+        if ($user === "") {
+            $user = null;
+        }
 
         switch($attribute) {
             case self::VIEW:
                 return $this->canView($user, $subject);
             case self::EDIT:
-                return $this->canEdit($user, $subject);
+                return $this->canEdit($user);
             case self::CREATE:
                 return $this->canCreate($user);
+            default:
+                return false;
         }
-        return false;
     }
 
-    private function canView(User $account, Room $room): bool
+    private function canView(?User $account, Room $room): bool
     {
-        if ($this->canEdit($account, $room))
-            return true;
+        if (!$account && $room->getPrivate()) {
+            return false;
+        }
         return true;
     }
 
-    private function canEdit(User $account, Room $room): bool
+    private function canEdit(?User $account): bool
     {
+        if (!$account) {
+            return false;
+        }
         return $this->canCreate($account);
     }
 
-    private function canCreate(User $account): bool
+    private function canCreate(?User $account): bool
     {
+        if (!$account) {
+            return false;
+        }
         return $account->isAdmin();
     }
 }

@@ -63,4 +63,9 @@ class RoomService
     {
         return $this->roomRepository->filterByGroups($groups);
     }
+
+    public function findAllPublic(): array
+    {
+        return $this->roomRepository->findAllPublic();
+    }
 }
