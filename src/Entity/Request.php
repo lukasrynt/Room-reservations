@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Repository\RequestRepository;
+use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -63,24 +64,38 @@ class Request
 
     public function getDateFrom(): ?string
     {
+        if (!$this->dateFrom) {
+            return null;
+        }
         return $this->dateFrom->format('Y-m-d');
     }
 
-    public function setDateFrom(\DateTimeInterface $dateFrom): self
+    public function setDateFrom(string $dateFrom): self
     {
-        $this->dateFrom = $dateFrom;
+        try {
+            $this->dateFrom = new DateTime($dateFrom);
+        } catch (\Exception $e) {
+            print($e);
+        }
 
         return $this;
     }
 
     public function getDateTo(): ?string
     {
+        if (!$this->dateTo) {
+            return null;
+        }
         return $this->dateTo->format('Y-m-d');
     }
 
-    public function setDateTo(\DateTimeInterface $dateTo): self
+    public function setDateTo(string $dateTo): self
     {
-        $this->dateTo = $dateTo;
+        try {
+            $this->dateTo = new DateTime($dateTo);
+        } catch (\Exception $e) {
+            print($e);
+        }
 
         return $this;
     }

@@ -14,8 +14,12 @@ class RequestType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('date_from', DateType::class)
-            ->add('date_to', DateType::class)
+            ->add('date_from', DateType::class, [
+                'input' => 'string'
+            ])
+            ->add('date_to', DateType::class, [
+                'input' => 'string'
+            ])
             ->add('attendees', EntityType::class, [
                 "class" => User::class,
                 'multiple'=> true,
