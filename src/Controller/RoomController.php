@@ -45,7 +45,7 @@ class RoomController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="detail")
+     * @Route("/{id}", name="detail", requirements={"id": "\d+"})
      * @param int $id
      * @return Response
      */
@@ -58,7 +58,7 @@ class RoomController extends AbstractController
     }
 
     /**
-     * @Route("/{id}/edit", name="edit")
+     * @Route("/{id}/edit", name="edit", requirements={"id": "\d+"})
      * @param Request $request
      * @param int $id
      * @return Response
@@ -87,12 +87,13 @@ class RoomController extends AbstractController
     }
 
     /**
-     * @Route("/employees/create", name="create")
+     * @Route("/create", name="create")
      * @param Request $request
      * @return Response
      */
     public function create(Request $request): Response {
         $room = new Room;
+        $this->denyAccessUnlessGranted('create', $room);
         $form = $this->createForm(RoomType::class, $room);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()){
