@@ -9,6 +9,7 @@
 {% endblock %}
 
 {% block main %}
+    {% if requests %}
     <table>
         <thead>
             <tr>
@@ -21,7 +22,6 @@
                 <th>Requested to</th>
             </tr>
         </thead>
-
         <tbody>
             {% for request in requests %}
             <tr>
@@ -47,4 +47,8 @@
             {% endfor %}
         </tbody>
     </table>
+    {% else %}
+        {# TODO style this a bit #}
+        There are currently no requests to approve for you.
+    {% endif %}
 {% endblock %}
