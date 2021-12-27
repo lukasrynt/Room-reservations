@@ -14,6 +14,11 @@ class AccessDeniedHandler extends AbstractController implements AccessDeniedHand
     {
         $referer = $request->headers->get('referer');
         $this->addFlash('warning', 'You are not authorized to access this site!');
+        if (!$referer && $this->getUser()) {
+            return $this->redirectToRoute('dashboard');
+        } elseif (!$referer) {
+            return $this->redirectToRoute('landing_page');
+        }
         return $this->redirect($referer);
     }
 }
