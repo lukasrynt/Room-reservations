@@ -60,7 +60,7 @@ class UserController extends AbstractController
      * @param int $id
      * @return Response
      */
-    public function editUser(Request $request, int $id): Response
+    public function editUser(Request $request, int $id, UserPasswordHasherInterface $passwordEncoder): Response
     {
         $user = $this->userService->find($id);
 
@@ -76,7 +76,10 @@ class UserController extends AbstractController
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()){
-            $this->userService->save($form->getData());
+            $user = $form->getData();
+            $password = $passwordEncoder->hashPassword($user, $form->get('password')->getData());
+            $user->setPassword($password);
+            $this->userService->save($user);
             return $this->redirectToRoute('users_detail', ['id' => $user->getId()]);
         }
 
