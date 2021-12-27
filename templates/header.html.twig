@@ -17,7 +17,7 @@
                 <li><a class="button-base {{ linkClassForUrl(app.request.pathInfo, 'requests') }} button-with-icon" href="{{ path('requests_index') }}">
                         {{ source('@icons/reservation-icon.svg') }}
                         <span>Requests</span></a></li>
-                <li><a class="button-base {{ linkClassForUrl(app.request.pathInfo, 'reservations') }} button-with-icon" href="#">
+                <li><a class="button-base {{ linkClassForUrl(app.request.pathInfo, 'reservations') }} button-with-icon" href="{{ path('reservations_index') }}">
                         {{ source('@icons/reservation-icon.svg') }}
                         <span>Reservation</span></a></li>
                 <li><a class="button-base {{ linkClassForUrl(app.request.pathInfo, 'groups') }} button-with-icon" href="#">

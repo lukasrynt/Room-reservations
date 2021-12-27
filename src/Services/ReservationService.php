@@ -7,6 +7,7 @@ namespace App\Services;
 use App\Entity\Request;
 use App\Entity\Reservation;
 use App\Entity\States;
+use App\Entity\User;
 use App\Repository\ReservationRepository;
 use Doctrine\ORM\EntityManagerInterface;
 
@@ -63,5 +64,10 @@ class ReservationService
 
         $this->save($reservation);
         return $reservation->getId();
+    }
+
+    public function findAllFor(User $user): array
+    {
+        return $this->reservationRepository->findAllForUser($user);
     }
 }

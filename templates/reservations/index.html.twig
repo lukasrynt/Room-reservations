@@ -1,0 +1,46 @@
+{% extends 'base.html.twig' %}
+
+{% block title %} Reservations {% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('styles/table.css') }}" type="text/css">
+    <link rel="stylesheet" href="{{ asset('styles/pagination.css') }}" type="text/css">
+{% endblock %}
+
+{% block main %}
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Room name</th>
+                <th>User name</th>
+                <th>Attendees</th>
+                <th>Reserved from</th>
+                <th>Reserved to</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            {% for reservation in reservations %}
+            <tr>
+                <td data-label="ID">{{ reservation.id }}</td>
+                <td data-label="Room name">{{ reservation.room.name }}</td>
+                <td data-label="User name">{{ reservation.user.username }}</td>
+                <td data-label="Attendees">
+                    <ul>
+                        {% for attendee in reservation.attendees %}
+                            <li>{{ attendee.username }}</li>
+                        {% endfor %}
+                    </ul>
+                </td>
+                <td data-label="Reserved from">{{ reservation.dateFrom }}</td>
+                <td data-label="Reserved to">{{ reservation.dateTo }}</td>
+                <td class="table-buttons">
+                    <a class="button-base button-main" href={{ path('reservations_detail', { id: reservation.id }) }}>Detail</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

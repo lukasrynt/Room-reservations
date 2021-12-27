@@ -4,11 +4,8 @@
 namespace App\Controller;
 
 
-use App\Entity\Reservation;
 use App\Form\Type\ReservationType;
-use App\Services\RequestService;
 use App\Services\ReservationService;
-use App\Services\RoomService;
 use App\Services\UserService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
@@ -33,6 +30,16 @@ class ReservationController extends AbstractController
     {
         $this->reservationService = $reservationService;
         $this->userService = $userService;
+    }
+
+    /**
+     * @Route("/", name="index")
+     * @return Response
+     */
+    public function index(): Response
+    {
+        $reservations = $this->reservationService->findAllFor($this->getUser());
+        return $this->render('reservations/index.html.twig', ['reservations' => $reservations]);
     }
 
     /**
