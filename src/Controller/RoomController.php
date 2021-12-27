@@ -69,6 +69,7 @@ class RoomController extends AbstractController
         if (!$room)
             return $this->render('errors/404.html.twig');
 
+        $this->denyAccessUnlessGranted('edit', $room);
         $form = $this->createForm(RoomType::class, $room)
             ->add('delete', ButtonType::class, [
                 'attr' => ['class' => 'button-base button-danger-outline'],
@@ -78,6 +79,7 @@ class RoomController extends AbstractController
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()){
             $this->roomService->save($form->getData());
+            $this->addFlash('success', "Room {$room->getName()} was successfully edited.");
             return $this->redirectToRoute('rooms_detail', ['id' => $room->getId()]);
         }
 
@@ -98,6 +100,7 @@ class RoomController extends AbstractController
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()){
             $this->roomService->save($form->getData());
+            $this->addFlash('success', "Room {$room->getName()} was successfully created.");
             return $this->redirectToRoute('rooms_detail', ['id' => $room->getId()]);
         }
 
