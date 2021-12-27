@@ -63,6 +63,20 @@ class RequestService
         return $this->requestRepository->findAll();
     }
 
+    public function findAllFor(User $user): array
+    {
+        $criteria = ['state' => 'PENDING'];
+        if ($user->isRoomAdmin()) {
+            $criteria['room_id'] = $user->getRooms();
+        }
+        # else if ($user->isGroupAdmin())
+        #   TODO: return only rooms for the group
+        else if ($user->isCommonUser()) {
+            return [];
+        }
+        return $this->requestRepository->findBy($criteria);
+    }
+
     /**
      * @param Request $request
      */

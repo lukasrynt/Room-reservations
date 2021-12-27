@@ -14,6 +14,9 @@
                 <li><a class="button-base {{ linkClassForUrl(app.request.pathInfo, 'rooms') }} button-with-icon" href="{{ path('rooms_index') }}">
                         {{ source('@icons/classroom-icon.svg') }}
                         <span>Classrooms</span></a></li>
+                <li><a class="button-base {{ linkClassForUrl(app.request.pathInfo, 'requests') }} button-with-icon" href="{{ path('requests_index') }}">
+                        {{ source('@icons/reservation-icon.svg') }}
+                        <span>Requests</span></a></li>
                 <li><a class="button-base {{ linkClassForUrl(app.request.pathInfo, 'reservations') }} button-with-icon" href="#">
                         {{ source('@icons/reservation-icon.svg') }}
                         <span>Reservation</span></a></li>

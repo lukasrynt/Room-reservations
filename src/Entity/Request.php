@@ -61,9 +61,9 @@ class Request
         return $this->id;
     }
 
-    public function getDateFrom(): ?\DateTimeInterface
+    public function getDateFrom(): ?string
     {
-        return $this->dateFrom;
+        return $this->dateFrom->format('Y-m-d');
     }
 
     public function setDateFrom(\DateTimeInterface $dateFrom): self
@@ -73,9 +73,9 @@ class Request
         return $this;
     }
 
-    public function getDateTo(): ?\DateTimeInterface
+    public function getDateTo(): ?string
     {
-        return $this->dateTo;
+        return $this->dateTo->format('Y-m-d');
     }
 
     public function setDateTo(\DateTimeInterface $dateTo): self

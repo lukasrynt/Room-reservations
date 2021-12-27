@@ -1,0 +1,48 @@
+{% extends 'base.html.twig' %}
+
+{% block title %} Classrooms {% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('styles/table.css') }}" type="text/css">
+    <link rel="stylesheet" href="{{ asset('styles/pagination.css') }}" type="text/css">
+{% endblock %}
+
+{% block main %}
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Room name</th>
+                <th>Requester name</th>
+                <th>State</th>
+                <th>Attendees</th>
+                <th>Requested from</th>
+                <th>Requested to</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            {% for request in requests %}
+            <tr>
+                <td data-label="ID">{{ request.id }}</td>
+                <td data-label="Room name">{{ request.room.name }}</td>
+                <td data-label="Requester name">{{ request.requestor.username }}</td>
+                <td data-label="State">{{ request.state }}</td>
+                <td data-label="Attendees">
+                    <ul>
+                        {% for attendee in request.attendees %}
+                            <li>{{ attendee.username }}</li>
+                        {% endfor %}
+                    </ul>
+                </td>
+                <td data-label="Requested from">{{ request.dateFrom }}</td>
+                <td data-label="Requested to">{{ request.dateTo }}</td>
+                <td class="table-buttons">
+                    <a class="button-base button-main" href={{ path('requests_detail', { id: request.id }) }}>Detail</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}
