@@ -41,6 +41,7 @@ class UserController extends AbstractController
         if (!$user) {
             return $this->render('errors/404.html.twig');
         }
+        $this->denyAccessUnlessGranted('view_users', $user);
         return $this->render('users/detail.html.twig', ['user' => $user]);
     }
 
@@ -48,11 +49,16 @@ class UserController extends AbstractController
      * @Route("/{id}/edit", name="edit")
      * @param Request $request
      * @param int $id
+     * @param UserPasswordHasherInterface $passwordEncoder
      * @return Response
      */
     public function editUser(Request $request, int $id, UserPasswordHasherInterface $passwordEncoder): Response
     {
         $user = $this->userService->find($id);
+        if (!$user) {
+            return $this->render('errors/404.html.twig');
+        }
+        $this->denyAccessUnlessGranted('edit_user', $user);
 
         $form = $this->createForm(UserType::class, $user)
             ->add('edit', SubmitType::class, [
@@ -85,6 +91,7 @@ class UserController extends AbstractController
      */
     public function index(Request $request): Response
     {
+        $this->denyAccessUnlessGranted('view_users');
         $searchForm = $this->createForm(UserSearchType::class);
         $count = count($this->userService->findAll());
         $users = $this->userService->filter($request->query->all());
@@ -101,6 +108,7 @@ class UserController extends AbstractController
      * @return Response
      */
     public function search(Request $request): Response {
+        $this->denyAccessUnlessGranted('view_users');
         $searchForm = $this->createForm(UserSearchType::class);
         $searchForm->handleRequest($request);
         if ($searchForm->isSubmitted() && $searchForm->isValid()) {
