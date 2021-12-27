@@ -36,6 +36,11 @@ class Room
     private int $floor;
 
     /**
+     * @ORM\Column(type="boolean")
+     */
+    private bool $private = true;
+
+    /**
      * @ORM\Column(type="time")
      */
     private \DateTime $openedFrom;
@@ -279,6 +284,18 @@ class Room
     public function setGroup(?Group $group): self
     {
         $this->group = $group;
+
+        return $this;
+    }
+
+    public function getPrivate(): ?bool
+    {
+        return $this->private;
+    }
+
+    public function setPrivate(bool $private): self
+    {
+        $this->private = $private;
 
         return $this;
     }
