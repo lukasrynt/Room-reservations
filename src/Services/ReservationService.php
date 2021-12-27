@@ -56,10 +56,10 @@ class ReservationService
         $reservation->setDateFrom($request->getDateFrom());
         $reservation->setDateTo($request->getDateTo());
         $reservation->setUser($request->getRequestor());
-        $request->setState(new States("APPROVED"));
 
-        foreach ($request->getAttendees() as $attendee)
+        foreach ($request->getAttendees() as $attendee) {
             $reservation->addAttendee($attendee);
+        }
 
         $this->save($reservation);
         return $reservation->getId();

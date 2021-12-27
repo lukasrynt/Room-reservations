@@ -27,30 +27,16 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class UserController extends AbstractController
 {
-
     private UserService $userService;
-    private RoomService $roomService;
-    private RequestService $requestService;
-    private RoomManagerService $roomManagerService;
-    private GroupManagerService $groupManagerService;
 
     /**
      * UserController constructor.
      * @param UserService $userService
-     * @param RoomService $roomService
-     * @param RequestService $requestService
-     * @param RoomManagerService $roomManagerService
-     * @param GroupManagerService $groupManagerService
      */
-    public function __construct(UserService $userService, RoomService $roomService, RequestService $requestService, RoomManagerService $roomManagerService, GroupManagerService $groupManagerService)
+    public function __construct(UserService $userService)
     {
         $this->userService = $userService;
-        $this->roomService = $roomService;
-        $this->requestService = $requestService;
-        $this->roomManagerService = $roomManagerService;
-        $this->groupManagerService = $groupManagerService;
     }
-
 
     /**
      * @Route("/{id}", name="detail", requirements={"id": "\d+"})
@@ -60,8 +46,9 @@ class UserController extends AbstractController
     public function detail(int $id): Response
     {
         $user = $this->userService->find($id);
-        if (!$user)
+        if (!$user) {
             return $this->render('errors/404.html.twig');
+        }
         return $this->render('users/detail.html.twig', ['user' => $user]);
     }
 
@@ -114,21 +101,6 @@ class UserController extends AbstractController
     }
 
     /**
-     * @Route("/{id}/confirm_requests", name="confirm_requests")
-     * @param int $id
-     * @return Response
-     */
-    # TODO; move to request controller once we have authorization setup
-    public function confirmRequest(int $id)
-    {
-        $user = $this->userService->find($id);
-        if ($user->isCommonUser())
-            return $this->render('permissions/denied.html.twig');
-        $requests = $this->requestService->getRequestsToConfirmFor($user);
-        return $this->render('users/confirm_requests.html.twig', ['requests' => $requests]);
-    }
-
-    /**
      * @Route("/search", name="search")
      * @param Request $request
      * @return Response
@@ -136,8 +108,9 @@ class UserController extends AbstractController
     public function search(Request $request): Response {
         $searchForm = $this->createForm(UserSearchType::class);
         $searchForm->handleRequest($request);
-        if ($searchForm->isSubmitted() && $searchForm->isValid())
+        if ($searchForm->isSubmitted() && $searchForm->isValid()) {
             $users = $this->userService->search($searchForm->getData());
+        }
         return $this->render('users/index.html.twig', [
             'users' => $users ?? [],
             'searchForm' => $searchForm->createView(),

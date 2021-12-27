@@ -2,6 +2,7 @@
 
 namespace App\Security;
 
+use App\Entity\Request;
 use App\Entity\Room;
 use App\Entity\User;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
@@ -10,15 +11,15 @@ use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 class ReservationsVoter extends Voter
 {
     const RESERVE = 'reserve';
-    const EDIT = 'edit';
-    const CREATE = 'create';
+    const APPROVE = 'approve';
+    const REJECT = 'reject';
 
     protected function supports(string $attribute, $subject): bool
     {
-        if ($attribute != self::RESERVE) {
+        if (!in_array($attribute, [self::RESERVE, self::APPROVE, self::REJECT])) {
             return false;
         }
-        if (!($subject instanceof Room)) {
+        if (!($subject instanceof Room || $subject instanceof Request)) {
             return false;
         }
         return true;
@@ -36,6 +37,10 @@ class ReservationsVoter extends Voter
         switch($attribute) {
             case self::RESERVE:
                 return $this->canReserve($user, $subject);
+            case self::APPROVE:
+                return $this->canApprove($user, $subject);
+            case self::REJECT:
+                return $this->canReject($user, $subject);
             default:
                 return false;
         }
@@ -50,5 +55,15 @@ class ReservationsVoter extends Voter
             return true;
         }
         return false;
+    }
+
+    private function canApprove(User $account, Request $request): bool
+    {
+        return $this->canReserve($account, $request->getRoom());
+    }
+
+    private function canReject(User $account, Request $request): bool
+    {
+        return $this->canReserve($account, $request->getRoom());
     }
 }

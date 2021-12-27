@@ -23,21 +23,18 @@ class ReservationController extends AbstractController
     private ReservationService $reservationService;
     private UserService $userService;
     private RoomService $roomService;
-    private RequestService $requestService;
 
     /**
      * ReservationController constructor.
      * @param ReservationService $reservationService
      * @param UserService $userService
      * @param RoomService $roomService
-     * @param RequestService $requestService
      */
-    public function __construct(ReservationService $reservationService, UserService $userService, RoomService $roomService, RequestService $requestService)
+    public function __construct(ReservationService $reservationService, UserService $userService, RoomService $roomService)
     {
         $this->reservationService = $reservationService;
         $this->userService = $userService;
         $this->roomService = $roomService;
-        $this->requestService = $requestService;
     }
 
 
@@ -54,19 +51,6 @@ class ReservationController extends AbstractController
         return $this->render('reservations/detail.html.twig', [
             'reservation' => $reservation
         ]);
-    }
-
-
-    /**
-     * @Route("/new_from_request/{id}", name="new_from_request")
-     * @param int $id
-     * @return Response
-     */
-    public function createReservationFromRequest(int $id): Response
-    {
-        $request = $this->requestService->find($id);
-        $reservationId = $this->reservationService->saveFromRequest($request);
-        return $this->redirectToRoute('reservations_detail', ['id' => $reservationId]);
     }
 
     /**

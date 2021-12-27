@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %} Classrooms {% endblock %}
+{% block title %} Approve requests {% endblock %}
 
 {% block stylesheets %}
     {{ parent() }}
@@ -40,6 +40,8 @@
                 <td data-label="Requested to">{{ request.dateTo }}</td>
                 <td class="table-buttons">
                     <a class="button-base button-main" href={{ path('requests_detail', { id: request.id }) }}>Detail</a>
+                    <a class="button-base button-success-outline" href={{ path('requests_approve', { id: request.id }) }}>Approve</a>
+                    <a class="button-base button-danger-outline" href={{ path('requests_reject', { id: request.id }) }}>Reject</a>
                 </td>
             </tr>
             {% endfor %}

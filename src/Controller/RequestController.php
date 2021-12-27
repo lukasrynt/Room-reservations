@@ -2,10 +2,11 @@
 
 namespace App\Controller;
 
+use App\Entity\States;
 use App\Form\Type\RequestType;
 use App\Services\RequestService;
+use App\Services\ReservationService;
 use App\Services\RoomService;
-use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\Request;
@@ -19,16 +20,21 @@ class RequestController extends AbstractController
 {
     private RequestService $requestService;
     private RoomService $roomService;
+    private ReservationService $reservationService;
 
     /**
      * RequestController constructor.
      * @param RequestService $requestService
      * @param RoomService $roomService
+     * @param ReservationService $reservationService
      */
-    public function __construct(RequestService $requestService, RoomService $roomService)
+    public function __construct(RequestService $requestService,
+                                RoomService $roomService,
+                                ReservationService $reservationService)
     {
         $this->requestService = $requestService;
         $this->roomService = $roomService;
+        $this->reservationService = $reservationService;
     }
 
     /**
@@ -42,15 +48,16 @@ class RequestController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="detail")
+     * @Route("/{id}", name="detail", requirements={"id": "\d+"})
      * @param int $id
      * @return Response
      */
     public function detail(int $id): Response
     {
         $request = $this->requestService->find($id);
-        if (!$request)
+        if (!$request) {
             return $this->render('errors/404.html.twig');
+        }
         return $this->render('requests/detail.html.twig', ['request' => $request]);
 
     }
@@ -65,8 +72,9 @@ class RequestController extends AbstractController
     {
         $user = $this->getUser();
         $room = $this->roomService->find($roomId);
-        if (!$room)
+        if (!$room) {
             return $this->render('errors/404.html.twig');
+        }
         $this->denyAccessUnlessGranted('reserve', $room);
         $newRequest = $this->requestService->newWithRequestorAndRoom($user, $room);
 
@@ -85,5 +93,36 @@ class RequestController extends AbstractController
             'user' => $user,
             'form' => $form->createView()
         ]);
+    }
+
+    /**
+     * @Route("/{id}/approve", name="approve")
+     * @param int $id
+     * @return Response
+     */
+    public function approve(int $id): Response
+    {
+        $request = $this->requestService->find($id);
+        $this->denyAccessUnlessGranted('approve', $request);
+        $request->setState(new States('APPROVED'));
+        $this->requestService->save($request);
+        $reservationId = $this->reservationService->saveFromRequest($request);
+        $this->addFlash('success', "Reservation for room {$request->getRoom()->getName()} was successfully created from request #{$request->getId()}.");
+        return $this->redirectToRoute('reservations_detail', ['id' => $reservationId]);
+    }
+
+    /**
+     * @Route("/{id}/reject", name="reject")
+     * @param int $id
+     * @return Response
+     */
+    public function reject(int $id): Response
+    {
+        $request = $this->requestService->find($id);
+        $this->denyAccessUnlessGranted('approve', $request);
+        $request->setState(new States('REJECTED'));
+        $this->requestService->save($request);
+        $this->addFlash('success', "Request with id #{$request->getId()} for room {$request->getRoom()->getName()} was successfully rejected.");
+        return $this->redirectToRoute('requests_index');
     }
 }

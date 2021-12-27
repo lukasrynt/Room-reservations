@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Repository\ReservationRepository;
+use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -61,9 +62,13 @@ class Reservation
         return $this->dateTo;
     }
 
-    public function setDateTo(\DateTimeInterface $dateTo): self
+    public function setDateTo(string $dateTo): self
     {
-        $this->dateTo = $dateTo;
+        try {
+            $this->dateTo = new DateTime($dateTo);
+        } catch (\Exception $e) {
+            print($e);
+        }
 
         return $this;
     }
@@ -73,9 +78,13 @@ class Reservation
         return $this->dateFrom;
     }
 
-    public function setDateFrom(\DateTimeInterface $dateFrom): self
+    public function setDateFrom(string $dateFrom): self
     {
-        $this->dateFrom = $dateFrom;
+        try {
+            $this->dateFrom = new DateTime($dateFrom);
+        } catch (\Exception $e) {
+            print($e);
+        }
 
         return $this;
     }
