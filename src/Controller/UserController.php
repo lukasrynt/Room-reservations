@@ -2,18 +2,9 @@
 
 namespace App\Controller;
 
-use App\Entity\RoomManager;
 use App\Entity\User;
-use App\Form\Type\LoginType;
-use App\Form\Type\RequestType;
 use App\Form\Type\UserSearchType;
 use App\Form\Type\UserType;
-use App\Repository\GroupManagerRepository;
-use App\Repository\RoomManagerRepository;
-use App\Services\GroupManagerService;
-use App\Services\RequestService;
-use App\Services\RoomManagerService;
-use App\Services\RoomService;
 use App\Services\UserService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\ButtonType;
@@ -21,7 +12,6 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
-use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**

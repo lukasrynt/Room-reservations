@@ -7,9 +7,7 @@ namespace App\TwigExtensions;
 use App\Entity\Room;
 use App\Entity\User;
 use App\Services\GroupManagerService;
-use App\Services\GroupMemberService;
 use App\Services\RoomManagerService;
-use App\Services\RoomUserService;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFunction;
 
