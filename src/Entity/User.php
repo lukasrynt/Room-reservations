@@ -21,6 +21,11 @@ use Symfony\Component\Security\Core\User\UserInterface;
  */
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
+    const COMMON_USER = 'ROLE_USER';
+    const ADMIN = 'ROLE_ADMIN';
+    const GROUP_ADMIN = 'ROLE_GROUP_ADMIN';
+    const ROOM_ADMIN = 'ROLE_ROOM_ADMIN';
+
     /**
      * @ORM\Id
      * @ORM\GeneratedValue
@@ -71,24 +76,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     protected string $username;
 
     /**
-     * @ORM\Column(type="enum_roles_type", length=255, nullable=true)
-     */
-    protected string $role;
-
-    /**
      * @ORM\ManyToMany(targetEntity=Room::class, mappedBy="users")
      */
     protected Collection $rooms;
-
-    /**
-     * @ORM\ManyToMany(targetEntity=Request::class, mappedBy="attendees")
-     */
-    private Collection $requestsToAttend;
-
-    /**
-     * @ORM\OneToMany(targetEntity=Request::class, mappedBy="requestor")
-     */
-    protected Collection $requests;
 
     /**
      * @ORM\OneToMany(targetEntity=Reservation::class, mappedBy="user")
@@ -108,9 +98,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function __construct()
     {
         $this->rooms = new ArrayCollection();
-        $this->requests = new ArrayCollection();
         $this->reservations = new ArrayCollection();
-        $this->requestsToAttend = new ArrayCollection();
         $this->reservationsToAttend = new ArrayCollection();
     }
 
@@ -166,18 +154,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setPhoneNumber(int $phoneNumber): self
     {
         $this->phoneNumber = $phoneNumber;
-
-        return $this;
-    }
-
-    public function getRole(): string
-    {
-        return $this->role;
-    }
-
-    public function setRole(string $role): self
-    {
-        $this->role = $role;
 
         return $this;
     }
@@ -285,64 +261,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    /**
-     * @return Collection
-     */
-    public function getRequestsToAttend(): Collection
-    {
-        return $this->requestsToAttend;
-    }
-
-    public function addRequestsToAttend(Request $request): self
-    {
-        if (!$this->requestsToAttend->contains($request)) {
-            $this->requestsToAttend[] = $request;
-            $request->addAttendee($this);
-        }
-
-        return $this;
-    }
-
-    public function removeRequestsToAttend(Request $request): self
-    {
-        if ($this->requestsToAttend->removeElement($request)) {
-            $request->removeAttendee($this);
-        }
-
-        return $this;
-    }
-
-
-    /**
-     * @return Collection
-     */
-    public function getRequests(): Collection
-    {
-        return $this->requests;
-    }
-
-    public function addRequest(Request $request): self
-    {
-        if (!$this->requests->contains($request)) {
-            $this->requests[] = $request;
-            $request->setRequestor($this);
-        }
-
-        return $this;
-    }
-
-    public function removeRequest(Request $request): self
-    {
-        if ($this->requests->removeElement($request)) {
-            // set the owning side to null (unless already changed)
-            if ($request->getRequestor() === $this) {
-                $request->setRequestor(null);
-            }
-        }
-
-        return $this;
-    }
-
     public function __toString()
     {
         return $this->firstName . " " . $this->lastName;
@@ -350,22 +268,22 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     public function isAdmin(): Bool
     {
-        return $this->role == Roles::ADMIN;
+        return in_array(self::ADMIN, $this->roles);
     }
 
     public function isRoomAdmin(): Bool
     {
-        return $this->role == Roles::ROOM_ADMIN;
+        return in_array(self::ROOM_ADMIN, $this->roles);
     }
 
     public function isGroupAdmin(): Bool
     {
-        return $this->role == Roles::GROUP_ADMIN;
+        return in_array(self::GROUP_ADMIN, $this->roles);
     }
 
     public function isCommonUser(): Bool
     {
-        return $this->role == Roles::COMMON_USER;
+        return in_array(self::COMMON_USER, $this->roles);
     }
 
     /**

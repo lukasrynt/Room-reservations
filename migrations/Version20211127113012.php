@@ -25,18 +25,11 @@ final class Version20211127113012 extends AbstractMigration
         $this->addSql('CREATE INDEX IDX_42C8495554177093 ON reservation (room_id)');
         $this->addSql('ALTER TABLE reservation ADD CONSTRAINT FK_42C84955A76ED395 FOREIGN KEY (user_id) REFERENCES "user" (id) NOT DEFERRABLE INITIALLY IMMEDIATE');
         $this->addSql('ALTER TABLE reservation ADD CONSTRAINT FK_42C8495554177093 FOREIGN KEY (room_id) REFERENCES room (id) NOT DEFERRABLE INITIALLY IMMEDIATE');
-        $this->addSql('ALTER TABLE "user" ALTER role TYPE VARCHAR(20)');
-        $this->addSql('ALTER TABLE "user" ALTER role DROP DEFAULT');
-        $this->addSql('ALTER TABLE "user" ALTER role TYPE VARCHAR(20)');
-        $this->addSql('COMMENT ON COLUMN "user".role IS \'(DC2Type:enum_roles_type)\'');
     }
 
     public function down(Schema $schema): void
     {
         $this->addSql('DROP SEQUENCE reservation_id_seq CASCADE');
         $this->addSql('DROP TABLE reservation');
-        $this->addSql('ALTER TABLE "user" ALTER role TYPE VARCHAR(20)');
-        $this->addSql('ALTER TABLE "user" ALTER role DROP DEFAULT');
-        $this->addSql('COMMENT ON COLUMN "user".role IS NULL');
     }
 }

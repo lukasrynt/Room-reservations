@@ -1,0 +1,54 @@
+{% extends 'base.html.twig' %}
+
+{% block title %} Reservations {% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('styles/table.css') }}" type="text/css">
+    <link rel="stylesheet" href="{{ asset('styles/pagination.css') }}" type="text/css">
+{% endblock %}
+
+{% block main %}
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Room name</th>
+                <th>Requester</th>
+                <th>State</th>
+                <th>Attendees</th>
+                <th>Date</th>
+                <th>Reserved from - to</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            {% for reservation in reservations %}
+            <tr>
+                <td data-label="ID">{{ reservation.id }}</td>
+                <td data-label="Room name">{{ reservation.room.name }}</td>
+                <td data-label="Requester">{{ reservation.user.username }}</td>
+                <td data-label="State">{{ reservation.state }}</td>
+                <td data-label="Attendees">
+                    <ul>
+                        {% for attendee in reservation.attendees %}
+                            <li>{{ attendee.username }}</li>
+                        {% endfor %}
+                    </ul>
+                </td>
+                <td data-label="Date">{{ reservation.date }}</td>
+                <td data-label="Reserved from - to">{{ reservation.timeFrom }} - {{ reservation.timeTo }}</td>
+                <td class="table-buttons">
+                    <a class="button-base button-main" href={{ path('reservations_detail', { id: reservation.id }) }}>Detail</a>
+                    {% include 'reservations/buttons.html.twig' %}
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% if is_granted('create_reservation') %}
+    <a class="button-base button-success-outline" href={{ path('reservations_create') }}>
+        {{ source('@icons/create-reservation-icon.svg') }} Create new reservation
+    </a>
+    {% endif %}
+{% endblock %}

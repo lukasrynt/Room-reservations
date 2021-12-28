@@ -19,4 +19,13 @@ class AppController extends AbstractController
     {
         return $this->render('landingPage.html.twig');
     }
+
+    /**
+     * @Route("/dashboard", name="dashboard")
+     * @return Response
+     */
+    public function dashboard(): Response
+    {
+        return $this->render('dashboard.html.twig');
+    }
 }

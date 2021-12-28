@@ -26,7 +26,11 @@
             <tr>
                 <td data-label="Name">{{ user.firstName }} {{ user.lastName }}</td>
                 <td data-label="Email">{{ user.email }}</td>
-                <td data-label="Role">{{ user.role }}</td>
+                <td data-label="Role">
+                    {% for role in user.roles %}
+                        {{ role }}
+                    {% endfor %}
+                </td>
                 <td data-label="Phone number">{{ user.phoneNumber }}</td>
                 <td class="table-buttons">
                     <a class="button-base button-main" href={{ path('users_detail', {id: user.id}) }}>Detail</a>

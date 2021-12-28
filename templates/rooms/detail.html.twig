@@ -20,21 +20,18 @@
             <dd>Capacity</dd>
             <dt data-label="Capacity">{{ room.capacity }}</dt>
             <dd>Opened from - to</dd>
-            <dt data-label="Opened from - to">{{ room.opened_from }} - {{ room.opened_to }}</dt>
+            <dt data-label="Opened from - to">{{ room.openedFrom }} - {{ room.openedTo }}</dt>
+            <dd>Private</dd>
+            <dt data-label="Private">
+                {% if room.private %}
+                    Private
+                {% else %}
+                    Public
+                {% endif %}
+            </dt>
         </dl>
         <footer>
-            {% if hasUserRequestPermission(user, room) %}
-                <a class="button-base button-with-icon button-main" href={{ path('users_book_room_member', {'user_id': user.id, 'room_id': room.id}) }}>
-                    {{ source('@icons/create-reservation-icon.svg') }}
-                    Request a reservation</a>
-            {% elseif hasUserRegistrationPermission(user, room) %}
-                <a class="button-base button-with-icon button-main" href={{ path('reservations_new', {'id': user.id}) }}>
-                    {{ source('@icons/create-reservation-icon.svg') }}
-                    Make a reservation</a>
-            {% endif %}
-            <a class="button-base button-with-icon button-main-outline" href={{ path('rooms_edit', {'id': room.id}) }}>
-                {{ source('@icons/edit-icon.svg') }}
-                Edit</a>
+            {% include 'rooms/buttons.html.twig' %}
         </footer>
     </article>
 {% endblock %}

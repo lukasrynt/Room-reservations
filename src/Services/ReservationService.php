@@ -6,7 +6,9 @@ namespace App\Services;
 
 use App\Entity\Request;
 use App\Entity\Reservation;
+use App\Entity\Room;
 use App\Entity\States;
+use App\Entity\User;
 use App\Repository\ReservationRepository;
 use Doctrine\ORM\EntityManagerInterface;
 
@@ -49,19 +51,36 @@ class ReservationService
         $this->entityManager->flush();
     }
 
-    public function saveFromRequest(Request $request): int
+    public function filterAll(array $queryParams): array
     {
-        $reservation = new Reservation();
-        $reservation->setRoom($request->getRoom());
-        $reservation->setDateFrom($request->getDateFrom());
-        $reservation->setDateTo($request->getDateTo());
-        $reservation->setUser($request->getRequestor());
-        $request->setState(new States("APPROVED"));
+        return $this->reservationRepository->filterAll(
+            ParamsParser::getFilters($queryParams, 'filter_by'),
+            ParamsParser::getFilters($queryParams, 'order_by'),
+            ParamsParser::getFilters($queryParams, 'paginate')
+        );
+    }
 
-        foreach ($request->getAttendees() as $attendee)
-            $reservation->addAttendee($attendee);
+    /**
+     * @param User $user
+     * @param array $queryParams
+     * @return array
+     */
+    public function filterAllForUser(User $user, array $queryParams): array
+    {
+        return $this->reservationRepository->filterAllForUser(
+            $user,
+            ParamsParser::getFilters($queryParams, 'filter_by'),
+            ParamsParser::getFilters($queryParams, 'order_by'),
+            ParamsParser::getFilters($queryParams, 'paginate')
+        );
+    }
 
-        $this->save($reservation);
-        return $reservation->getId();
+    public function newWithRequesterAndRoom(User $user, Room $room) : Reservation
+    {
+        $request = new Reservation();
+        $request->setUser($user);
+        $request->setState(new States("PENDING"));
+        $request->setRoom($room);
+        return $request;
     }
 }

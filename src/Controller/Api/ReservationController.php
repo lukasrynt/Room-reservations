@@ -5,37 +5,39 @@
 
 namespace App\Controller\Api;
 
-use App\Repository\RequestRepository;
+use App\Services\ReservationService;
 use FOS\RestBundle\Controller\AbstractFOSRestController;
 use FOS\RestBundle\Controller\Annotations as Rest;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
  * @package App\Controller\Api
  *
- * @Route("/api/requests", name="api_requests_")
+ * @Route("/api/reservations", name="api_reservations_")
  */
-class RequestController extends AbstractFOSRestController
+class ReservationController extends AbstractFOSRestController
 {
-    private RequestRepository $requestRepository;
+    private ReservationService $reservationService;
 
     /**
-     * @param RequestRepository $requestRepository
+     * @param ReservationService $reservationService
      */
-    public function __construct(RequestRepository $requestRepository)
+    public function __construct(ReservationService $reservationService)
     {
-        $this->requestRepository = $requestRepository;
+        $this->reservationService = $reservationService;
     }
 
 
     /**
      * @Rest\Get("/",  name="list")
+     * @param Request $request
      * @return Response
      */
-    public function all(): Response
+    public function all(Request $request): Response
     {
-        $requests = $this->requestRepository->findAll();
+        $requests = $this->reservationService->filterAll($request->query->all());
         $view = $this->view($requests, Response::HTTP_OK);
         return $this->handleView($view);
     }
@@ -47,7 +49,7 @@ class RequestController extends AbstractFOSRestController
      */
     public function detail(int $id): Response
     {
-        $request = $this->requestRepository->find($id);
+        $request = $this->reservationService->find($id);
         $view = $this->view($request, Response::HTTP_OK);
         return $this->handleView($view);
     }

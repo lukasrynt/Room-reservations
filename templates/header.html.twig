@@ -1,48 +1,62 @@
-{% block header %}
-    <header class="main-header">
-        {# TODO : if user is logged href to dashboard #}
+<header class="main-header">
+    {% if app.user %}
+        <h1><a href="{{ path('dashboard') }}">HMS(t)R</a></h1>
+    {% else %}
         <h1><a href="{{ path('landing_page') }}">HMS(t)R</a></h1>
+    {% endif %}
 
-        {# TODO: Add condition for hide when no user is logged in #}
-        <nav>
-            <button onclick="hamburgerMenuInstance.hide()" class="hamburger-menu-close hamburger-menu-close-hidden">
-                {{ source('@icons/close-icon.svg') }}
-            </button>
-            <ul>
-                <li><a class="button-base button-main button-with-icon" href="{{ path('rooms_index') }}">
+    <nav>
+        <button onclick="hamburgerMenuInstance.hide()" class="hamburger-menu-close hamburger-menu-close-hidden">
+            {{ source('@icons/close-icon.svg') }}
+        </button>
+        <ul>
+            {% if is_granted('view_rooms') %}
+                <li><a class="button-base {{ linkClassForUrl(app.request.pathInfo, 'rooms') }} button-with-icon" href="{{ path('rooms_index') }}">
                         {{ source('@icons/classroom-icon.svg') }}
                         <span>Classrooms</span></a></li>
-                <li><a class="button-base button-secondary-outline button-with-icon" href="#">
+            {% endif %}
+            {% if is_granted('view_reservations') %}
+                <li><a class="button-base {{ linkClassForUrl(app.request.pathInfo, 'reservations') }} button-with-icon" href="{{ path('reservations_index') }}">
                         {{ source('@icons/reservation-icon.svg') }}
                         <span>Reservation</span></a></li>
-                <li><a class="button-base button-secondary-outline button-with-icon" href="#">
-                        {{ source('@icons/group-icon.svg') }}
-                        <span>Groups</span></a></li>
-                <li><a class="button-base button-secondary-outline button-with-icon" href="{{ path('users_index') }}">
-                        {{ source('@icons/account-badge-icon.svg') }}
-                        <span>Users</span></a></li>
-            </ul>
-        </nav>
+            {% endif %}
+            {% if is_granted('view_groups') %}
+                <li><a class="button-base {{ linkClassForUrl(app.request.pathInfo, 'groups') }} button-with-icon" href="#">
+                    {{ source('@icons/group-icon.svg') }}
+                    <span>Groups</span></a></li>
+            {% endif %}
+            {% if is_granted('view_users') %}
+                <li><a class="button-base {{ linkClassForUrl(app.request.pathInfo, 'users') }} button-with-icon" href="{{ path('users_index') }}">
+                    {{ source('@icons/account-badge-icon.svg') }}
+                    <span>Users</span></a></li>
+            {% endif %}
+        </ul>
+    </nav>
 
-        <section class="user-links">
-            <div class="dropdown">
-                <a class="button-base button-main button-with-icon">
-                    {{ source('@icons/drop-down-menu.svg') }}
-                    {{ source('@icons/profile-icon.svg') }}
-                    {% if not app.user %}
-                        <span>User name</span></a>
-                    {% else %}
-                        <span>{{ app.user.username }}</span></a>
-                    {% endif %}
-                <div class="dropdown-content">
-                    <a href="#">Profile</a>
+    <section class="user-links">
+        <div class="dropdown">
+            <a class="button-base button-main button-with-icon">
+                {{ source('@icons/drop-down-menu.svg') }}
+                {{ source('@icons/profile-icon.svg') }}
+                {% if not app.user %}
+                    <span>Account</span>
+                {% else %}
+                    <span>{{ app.user.username }}</span>
+                {% endif %}
+            </a>
+            <div class="dropdown-content">
+                {% if not app.user %}
+                    <a href={{ path('login') }}>Log in</a>
+                    <a href={{ path('users_registration') }}>Sign up</a>
+                {% else %}
+                    <a href={{ path('users_detail', {id: app.user.id}) }}>Profile</a>
                     <a href={{ path('app_logout') }}>Log out</a>
-                </div>
+                {% endif %}
             </div>
-        </section>
+        </div>
+    </section>
 
-        <button onclick="hamburgerMenuInstance.show()" class="button-base button-main hamburger-menu-open button-with-icon">
-            {{ source('@icons/hamburger-menu-icon.svg') }}
-        </button>
-    </header>
-{% endblock %}
+    <button onclick="hamburgerMenuInstance.show()" class="button-base button-main hamburger-menu-open button-with-icon">
+        {{ source('@icons/hamburger-menu-icon.svg') }}
+    </button>
+</header>

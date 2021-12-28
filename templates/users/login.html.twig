@@ -1,4 +1,4 @@
-{% extends '/base.html.twig' %}
+{% extends '/layout.html.twig' %}
 
 {% block title %} Log in {% endblock %}
 
@@ -38,8 +38,7 @@
                 <button class="button-base button-main" type="submit">Continue</button>
             </form>
 
-            {# TODO : add signup href #}
-            <a class="button-base button-main-outline" href="{{ path('user_registration') }}">Sign Up</a>
+            <a class="button-base button-main-outline" href="{{ path('users_registration') }}">Sign Up</a>
         </section>
     </article>
 {% endblock %}

@@ -38,10 +38,6 @@ class UserType extends AbstractType
             ->add("phone_number", TelType::class, [
                 'attr' => ['placeholder' => 'Phone number']
             ])
-            ->add("role", ChoiceType::class, [
-                'placeholder' => 'Vyberte roli uživatele',
-                'choices' => Roles::getAll()
-            ])
             ->add("note", TextareaType::class, [
                 'attr' => ['placeholder' => 'Note']
             ])

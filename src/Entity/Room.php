@@ -36,6 +36,11 @@ class Room
     private int $floor;
 
     /**
+     * @ORM\Column(type="boolean")
+     */
+    private bool $private = true;
+
+    /**
      * @ORM\Column(type="time")
      */
     private \DateTime $openedFrom;
@@ -58,11 +63,6 @@ class Room
     private Collection $users;
 
     /**
-     * @ORM\OneToMany(targetEntity=Request::class, mappedBy="room")
-     */
-    private Collection $requests;
-
-    /**
      * @ORM\OneToMany(targetEntity=Reservation::class, mappedBy="room")
      */
     private Collection $reservations;
@@ -80,7 +80,6 @@ class Room
     public function __construct()
     {
         $this->users = new ArrayCollection();
-        $this->requests = new ArrayCollection();
         $this->reservations = new ArrayCollection();
     }
 
@@ -125,36 +124,33 @@ class Room
         return $this;
     }
 
-    public function getOpened_from():string
+    public function getOpenedFrom(): string
     {
         return $this->openedFrom->format("H:i");
     }
 
-    public function getOpenedFrom(): \DateTime
+    public function setOpenedFrom(string $openedFrom): self
     {
-        return $this->openedFrom;
-    }
-
-    public function setOpenedFrom(\DateTime $openedFrom): self
-    {
-        $this->openedFrom = $openedFrom;
+        try {
+            $this->openedFrom = new DateTime($openedFrom);
+        } catch (\Exception $e) {
+            print($e);
+        }
         return $this;
     }
 
-    public function getOpened_to(): string
+    public function getOpenedTo(): string
     {
         return $this->openedTo->format("H:i");
     }
 
-    public function getOpenedTo(): \DateTime
+    public function setOpenedTo(string $openedTo): self
     {
-        return $this->openedTo;
-    }
-
-    public function setOpenedTo(\DateTime $openedTo): self
-    {
-        $this->openedTo = $openedTo;
-
+        try {
+            $this->openedTo = new DateTime($openedTo);
+        } catch (\Exception $e) {
+            print($e);
+        }
         return $this;
     }
 
@@ -190,36 +186,6 @@ class Room
     public function removeUser(User $user): self
     {
         $this->users->removeElement($user);
-
-        return $this;
-    }
-
-    /**
-     * @return Collection|Request[]
-     */
-    public function getRequests(): Collection
-    {
-        return $this->requests;
-    }
-
-    public function addRequest(Request $request): self
-    {
-        if (!$this->requests->contains($request)) {
-            $this->requests[] = $request;
-            $request->setRoom($this);
-        }
-
-        return $this;
-    }
-
-    public function removeRequest(Request $request): self
-    {
-        if ($this->requests->removeElement($request)) {
-            // set the owning side to null (unless already changed)
-            if ($request->getRoom() === $this) {
-                $request->setRoom(null);
-            }
-        }
 
         return $this;
     }
@@ -279,6 +245,18 @@ class Room
     public function setGroup(?Group $group): self
     {
         $this->group = $group;
+
+        return $this;
+    }
+
+    public function getPrivate(): ?bool
+    {
+        return $this->private;
+    }
+
+    public function setPrivate(bool $private): self
+    {
+        $this->private = $private;
 
         return $this;
     }

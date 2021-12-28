@@ -4,15 +4,14 @@
 namespace App\Form\Type;
 
 
+use App\Entity\Reservation;
 use App\Entity\Room;
 use App\Entity\User;
 use App\Repository\RoomRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
-use Symfony\Component\Form\Extension\Core\Type\IntegerType;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\TimeType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -24,8 +23,15 @@ class ReservationType extends AbstractType
         $rooms = $options['rooms'];
 
         $builder
-            ->add('date_from', DateType::class)
-            ->add('date_to', DateType::class)
+            ->add('date', DateType::class, [
+                'input' => 'string'
+            ])
+            ->add('time_from', TimeType::class, [
+                'input' => 'string'
+            ])
+            ->add('time_to', TimeType::class, [
+                'input' => 'string'
+            ])
             ->add('user', EntityType::class, [
                 "class" => User::class
             ])
@@ -46,5 +52,8 @@ class ReservationType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setRequired(['rooms']);
+        $resolver->setDefaults([
+            'data_class' => Reservation::class,
+        ]);
     }
 }

@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Repository\ReservationRepository;
+use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -22,12 +23,22 @@ class Reservation
     /**
      * @ORM\Column(type="datetime")
      */
-    private $dateTo;
+    private $date;
 
     /**
-     * @ORM\Column(type="datetime")
+     * @ORM\Column(type="time")
      */
-    private $dateFrom;
+    private $timeTo;
+
+    /**
+     * @ORM\Column(type="time")
+     */
+    private $timeFrom;
+
+    /**
+     * @ORM\Column(type="enum_state_type", options={"default": "PENDING"}, length=255, nullable=false)
+     */
+    private States $state;
 
     /**
      * @ORM\ManyToOne(targetEntity=User::class, inversedBy="reservations")
@@ -54,30 +65,6 @@ class Reservation
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    public function getDateTo(): ?\DateTimeInterface
-    {
-        return $this->dateTo;
-    }
-
-    public function setDateTo(\DateTimeInterface $dateTo): self
-    {
-        $this->dateTo = $dateTo;
-
-        return $this;
-    }
-
-    public function getDateFrom(): ?\DateTimeInterface
-    {
-        return $this->dateFrom;
-    }
-
-    public function setDateFrom(\DateTimeInterface $dateFrom): self
-    {
-        $this->dateFrom = $dateFrom;
-
-        return $this;
     }
 
     public function getUser(): User
@@ -125,6 +112,87 @@ class Reservation
     {
         $this->attendees->removeElement($attendee);
 
+        return $this;
+    }
+
+    public function getState(): States
+    {
+        return $this->state;
+    }
+
+    public function setState($state): self
+    {
+        $this->state = $state;
+
+        return $this;
+    }
+
+    public function isPending(): bool
+    {
+        return $this->state == States::PENDING;
+    }
+
+    public function isApproved(): bool
+    {
+        return $this->state == States::APPROVED;
+    }
+
+    public function isRejected(): bool
+    {
+        return $this->state == States::REJECTED;
+    }
+
+    public function getDate(): ?string
+    {
+        if (!$this->date) {
+            return null;
+        }
+        return $this->date->format('Y-m-d');
+    }
+
+    public function setDate(string $date): self
+    {
+        try {
+            $this->date = new DateTime($date);
+        } catch (\Exception $e) {
+            print($e);
+        }
+        return $this;
+    }
+
+    public function getTimeTo(): ?string
+    {
+        if (!$this->timeTo) {
+            return null;
+        }
+        return $this->timeTo->format('H:i');
+    }
+
+    public function setTimeTo(string $timeTo): self
+    {
+        try {
+            $this->timeTo = new DateTime($timeTo);
+        } catch (\Exception $e) {
+            print($e);
+        }
+        return $this;
+    }
+
+    public function getTimeFrom(): ?string
+    {
+        if (!$this->timeFrom) {
+            return null;
+        }
+        return $this->timeFrom->format('H:i');
+    }
+
+    public function setTimeFrom(string $timeFrom): self
+    {
+        try {
+            $this->timeFrom = new DateTime($timeFrom);
+        } catch (\Exception $e) {
+            print($e);
+        }
         return $this;
     }
 }

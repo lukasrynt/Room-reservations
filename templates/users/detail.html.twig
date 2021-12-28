@@ -21,9 +21,11 @@
             <dt data-label="Username">{{ user.username }}</dt>
         </dl>
         <footer>
-            <a class="button-base button-with-icon button-main-outline" href={{ path('users_edit', {'id': user.id}) }}>
-                {{ source('@icons/edit-icon.svg') }}
-                Edit</a>
+            {% if is_granted('edit_user', user) %}
+                <a class="button-base button-with-icon button-main-outline" href={{ path('users_edit', {'id': user.id}) }}>
+                    {{ source('@icons/edit-icon.svg') }}
+                    Edit</a>
+            {% endif %}
         </footer>
     </article>
 {% endblock %}

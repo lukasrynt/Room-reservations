@@ -2,8 +2,38 @@
 
 {% block title %} Reservation detail {% endblock %}
 
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('styles/detail.css') }}" type="text/css">
+{% endblock %}
+
 {% block main %}
-    Reservation
-    <br>
-    Requestor: {{ reservation.user }}, Room: {{ reservation.room }}
+    <article id="detail">
+        <header>
+            <h1>Reservation #{{ reservation.id }}</h1>
+        </header>
+        <dl>
+            <dd>Requester</dd>
+            <dt data-label="Requester">{{ reservation.user.username }}</dt>
+            <dd>Room</dd>
+            <dt data-label="Last name">{{ reservation.room.name }}</dt>
+            <dd>State</dd>
+            <dt data-label="State">{{ reservation.state }}</dt>
+            <dd>Attendees</dd>
+            <dt data-label="Attendees">
+                <ul>
+                    {% for attendee in reservation.attendees %}
+                        <li>{{ attendee.username }}</li>
+                    {% endfor %}
+                </ul>
+            </dt>
+            <dd>Date</dd>
+            <dt data-label="Date">{{ reservation.date }}</dt>
+            <dd>Reserved from - to</dd>
+            <dt data-label="Reserved from - to">{{ reservation.timeFrom }} - {{ reservation.timeTo }}</dt>
+        </dl>
+        <footer>
+            {% include 'reservations/buttons.html.twig' %}
+        </footer>
+    </article>
 {% endblock %}
