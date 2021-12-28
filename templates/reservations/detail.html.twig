@@ -27,10 +27,10 @@
                     {% endfor %}
                 </ul>
             </dt>
-            <dd>Reserved from</dd>
-            <dt data-label="Requested from">{{ reservation.dateFrom }}</dt>
-            <dd>Reserved to</dd>
-            <dt data-label="Requested to">{{ reservation.dateTo }}</dt>
+            <dd>Date</dd>
+            <dt data-label="Date">{{ reservation.date }}</dt>
+            <dd>Reserved from - to</dd>
+            <dt data-label="Reserved from - to">{{ reservation.timeFrom }} - {{ reservation.timeTo }}</dt>
         </dl>
         <footer>
             {% include 'reservations/buttons.html.twig' %}

@@ -23,12 +23,17 @@ class Reservation
     /**
      * @ORM\Column(type="datetime")
      */
-    private $dateTo;
+    private $date;
 
     /**
-     * @ORM\Column(type="datetime")
+     * @ORM\Column(type="time")
      */
-    private $dateFrom;
+    private $timeTo;
+
+    /**
+     * @ORM\Column(type="time")
+     */
+    private $timeFrom;
 
     /**
      * @ORM\Column(type="enum_state_type", options={"default": "PENDING"}, length=255, nullable=false)
@@ -60,43 +65,6 @@ class Reservation
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    public function getDateTo(): ?string
-    {
-        if (!$this->dateTo) {
-            return null;
-        }
-        return $this->dateTo->format('Y-m-d H:i');
-    }
-
-    public function setDateTo(string $dateTo): self
-    {
-        try {
-            $this->dateTo = new DateTime($dateTo);
-        } catch (\Exception $e) {
-            print($e);
-        }
-        return $this;
-    }
-
-    public function getDateFrom(): ?string
-    {
-        if (!$this->dateFrom) {
-            return null;
-        }
-        return $this->dateFrom->format('Y-m-d H:i');
-    }
-
-    public function setDateFrom(string $dateFrom): self
-    {
-        try {
-            $this->dateFrom = new DateTime($dateFrom);
-        } catch (\Exception $e) {
-            print($e);
-        }
-
-        return $this;
     }
 
     public function getUser(): User
@@ -172,5 +140,59 @@ class Reservation
     public function isRejected(): bool
     {
         return $this->state == States::REJECTED;
+    }
+
+    public function getDate(): ?string
+    {
+        if (!$this->date) {
+            return null;
+        }
+        return $this->date->format('Y-m-d');
+    }
+
+    public function setDate(string $date): self
+    {
+        try {
+            $this->date = new DateTime($date);
+        } catch (\Exception $e) {
+            print($e);
+        }
+        return $this;
+    }
+
+    public function getTimeTo(): ?string
+    {
+        if (!$this->timeTo) {
+            return null;
+        }
+        return $this->timeTo->format('H:i');
+    }
+
+    public function setTimeTo(string $timeTo): self
+    {
+        try {
+            $this->timeTo = new DateTime($timeTo);
+        } catch (\Exception $e) {
+            print($e);
+        }
+        return $this;
+    }
+
+    public function getTimeFrom(): ?string
+    {
+        if (!$this->timeFrom) {
+            return null;
+        }
+        return $this->timeFrom->format('H:i');
+    }
+
+    public function setTimeFrom(string $timeFrom): self
+    {
+        try {
+            $this->timeFrom = new DateTime($timeFrom);
+        } catch (\Exception $e) {
+            print($e);
+        }
+        return $this;
     }
 }

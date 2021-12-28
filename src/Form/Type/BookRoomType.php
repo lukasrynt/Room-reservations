@@ -7,6 +7,7 @@ use App\Entity\User;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
+use Symfony\Component\Form\Extension\Core\Type\TimeType;
 use Symfony\Component\Form\FormBuilderInterface;
 
 class BookRoomType extends AbstractType
@@ -14,10 +15,13 @@ class BookRoomType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('date_from', DateType::class, [
+            ->add('date', DateType::class, [
                 'input' => 'string'
             ])
-            ->add('date_to', DateType::class, [
+            ->add('time_from', TimeType::class, [
+                'input' => 'string'
+            ])
+            ->add('time_to', TimeType::class, [
                 'input' => 'string'
             ])
             ->add('attendees', EntityType::class, [

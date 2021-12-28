@@ -17,8 +17,8 @@
                 <th>Requester</th>
                 <th>State</th>
                 <th>Attendees</th>
-                <th>Reserved from</th>
-                <th>Reserved to</th>
+                <th>Date</th>
+                <th>Reserved from - to</th>
             </tr>
         </thead>
 
@@ -36,8 +36,8 @@
                         {% endfor %}
                     </ul>
                 </td>
-                <td data-label="Reserved from">{{ reservation.dateFrom }}</td>
-                <td data-label="Reserved to">{{ reservation.dateTo }}</td>
+                <td data-label="Date">{{ reservation.date }}</td>
+                <td data-label="Reserved from - to">{{ reservation.timeFrom }} - {{ reservation.timeTo }}</td>
                 <td class="table-buttons">
                     <a class="button-base button-main" href={{ path('reservations_detail', { id: reservation.id }) }}>Detail</a>
                     {% include 'reservations/buttons.html.twig' %}

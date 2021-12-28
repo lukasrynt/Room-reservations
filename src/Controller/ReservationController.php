@@ -72,6 +72,7 @@ class ReservationController extends AbstractController
      */
     public function create(Request $request): Response
     {
+        # TODO: auto approve requests if logged in as admin of the room/group/sysadmin - should be done using voters
         $user = $this->getUser();
         $this->denyAccessUnlessGranted('create_reservation');
         $rooms = $this->userService->getRoomsForUser($user);
@@ -81,7 +82,8 @@ class ReservationController extends AbstractController
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $reservation = $form->getData();
-            $this->reservationService->save($reservation);
+            $reservation->setState(new States("PENDING"));
+            $this->reservationService->save($form->getData());
             $this->addFlash('success', "Reservation for room {$reservation->getRoom()->getName()} was successfully created.");
             return $this->redirectToRoute('reservations_detail', ['id' => $reservation->getId()]);
         }
@@ -99,6 +101,7 @@ class ReservationController extends AbstractController
      */
     public function bookRoom(Request $request, int $roomId): Response
     {
+        # TODO: auto approve requests if logged in as admin of the room/group/sysadmin - should be done using voters
         $user = $this->getUser();
         $room = $this->roomService->find($roomId);
         if (!$room) {
