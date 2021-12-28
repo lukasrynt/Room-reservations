@@ -31,6 +31,11 @@ class Reservation
     private $dateFrom;
 
     /**
+     * @ORM\Column(type="enum_state_type", options={"default": "PENDING"}, length=255, nullable=false)
+     */
+    private States $state;
+
+    /**
      * @ORM\ManyToOne(targetEntity=User::class, inversedBy="reservations")
      * @ORM\JoinColumn(nullable=false)
      */
@@ -59,7 +64,10 @@ class Reservation
 
     public function getDateTo(): ?string
     {
-        return $this->dateTo->format('Y-m-d');
+        if (!$this->dateTo) {
+            return null;
+        }
+        return $this->dateTo->format('Y-m-d H:i');
     }
 
     public function setDateTo(string $dateTo): self
@@ -75,7 +83,10 @@ class Reservation
 
     public function getDateFrom(): ?string
     {
-        return $this->dateFrom->format('Y-m-d');
+        if (!$this->dateFrom) {
+            return null;
+        }
+        return $this->dateFrom->format('Y-m-d H:i');
     }
 
     public function setDateFrom(string $dateFrom): self
@@ -135,5 +146,32 @@ class Reservation
         $this->attendees->removeElement($attendee);
 
         return $this;
+    }
+
+    public function getState(): States
+    {
+        return $this->state;
+    }
+
+    public function setState($state): self
+    {
+        $this->state = $state;
+
+        return $this;
+    }
+
+    public function isPending(): bool
+    {
+        return $this->state == States::PENDING;
+    }
+
+    public function isApproved(): bool
+    {
+        return $this->state == States::APPROVED;
+    }
+
+    public function isRejected(): bool
+    {
+        return $this->state == States::REJECTED;
     }
 }

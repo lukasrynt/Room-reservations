@@ -10,6 +10,7 @@ use App\Entity\User;
 use App\Repository\RoomRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -21,10 +22,10 @@ class ReservationType extends AbstractType
         $rooms = $options['rooms'];
 
         $builder
-            ->add('date_from', DateType::class, [
+            ->add('date_from', DateTimeType::class, [
                 'input' => 'string'
             ])
-            ->add('date_to', DateType::class, [
+            ->add('date_to', DateTimeType::class, [
                 'input' => 'string'
             ])
             ->add('user', EntityType::class, [

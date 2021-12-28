@@ -15,11 +15,6 @@
                         {{ source('@icons/classroom-icon.svg') }}
                         <span>Classrooms</span></a></li>
             {% endif %}
-            {% if is_granted('view_requests') %}
-                <li><a class="button-base {{ linkClassForUrl(app.request.pathInfo, 'requests') }} button-with-icon" href="{{ path('requests_index') }}">
-                        {{ source('@icons/reservation-icon.svg') }}
-                        <span>Requests</span></a></li>
-            {% endif %}
             {% if is_granted('view_reservations') %}
                 <li><a class="button-base {{ linkClassForUrl(app.request.pathInfo, 'reservations') }} button-with-icon" href="{{ path('reservations_index') }}">
                         {{ source('@icons/reservation-icon.svg') }}

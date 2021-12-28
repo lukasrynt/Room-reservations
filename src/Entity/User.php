@@ -81,16 +81,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     protected Collection $rooms;
 
     /**
-     * @ORM\ManyToMany(targetEntity=Request::class, mappedBy="attendees")
-     */
-    private Collection $requestsToAttend;
-
-    /**
-     * @ORM\OneToMany(targetEntity=Request::class, mappedBy="requestor")
-     */
-    protected Collection $requests;
-
-    /**
      * @ORM\OneToMany(targetEntity=Reservation::class, mappedBy="user")
      */
     protected Collection $reservations;
@@ -108,9 +98,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function __construct()
     {
         $this->rooms = new ArrayCollection();
-        $this->requests = new ArrayCollection();
         $this->reservations = new ArrayCollection();
-        $this->requestsToAttend = new ArrayCollection();
         $this->reservationsToAttend = new ArrayCollection();
     }
 
@@ -268,64 +256,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         if ($this->rooms->removeElement($room)) {
             $room->removeUser($this);
-        }
-
-        return $this;
-    }
-
-    /**
-     * @return Collection
-     */
-    public function getRequestsToAttend(): Collection
-    {
-        return $this->requestsToAttend;
-    }
-
-    public function addRequestsToAttend(Request $request): self
-    {
-        if (!$this->requestsToAttend->contains($request)) {
-            $this->requestsToAttend[] = $request;
-            $request->addAttendee($this);
-        }
-
-        return $this;
-    }
-
-    public function removeRequestsToAttend(Request $request): self
-    {
-        if ($this->requestsToAttend->removeElement($request)) {
-            $request->removeAttendee($this);
-        }
-
-        return $this;
-    }
-
-
-    /**
-     * @return Collection
-     */
-    public function getRequests(): Collection
-    {
-        return $this->requests;
-    }
-
-    public function addRequest(Request $request): self
-    {
-        if (!$this->requests->contains($request)) {
-            $this->requests[] = $request;
-            $request->setRequestor($this);
-        }
-
-        return $this;
-    }
-
-    public function removeRequest(Request $request): self
-    {
-        if ($this->requests->removeElement($request)) {
-            // set the owning side to null (unless already changed)
-            if ($request->getRequestor() === $this) {
-                $request->setRequestor(null);
-            }
         }
 
         return $this;

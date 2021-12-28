@@ -57,6 +57,7 @@
                 </td>
                 <td class="table-buttons">
                     <a class="button-base button-main" href={{ path('rooms_detail', { id: room.id }) }}>Detail</a>
+                    {% include 'rooms/buttons.html.twig' %}
                 </td>
             </tr>
             {% endfor %}

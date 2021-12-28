@@ -1,0 +1,8 @@
+{% if reservation.isPending %}
+    {% if is_granted('approve_reservation', reservation) %}
+        <a class="button-base button-success-outline" href={{ path('reservations_approve', { id: reservation.id }) }}>Approve</a>
+    {% endif %}
+    {% if is_granted('reject_reservation', reservation) %}
+        <a class="button-base button-danger-outline" href={{ path('reservations_reject', { id: reservation.id }) }}>Reject</a>
+    {% endif %}
+{% endif %}

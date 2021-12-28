@@ -6,6 +6,7 @@ namespace App\Services;
 
 use App\Entity\Request;
 use App\Entity\Reservation;
+use App\Entity\Room;
 use App\Entity\States;
 use App\Entity\User;
 use App\Repository\ReservationRepository;
@@ -69,5 +70,14 @@ class ReservationService
     public function findAllFor(User $user): array
     {
         return $this->reservationRepository->findAllForUser($user);
+    }
+
+    public function newWithRequesterAndRoom(User $user, Room $room) : Reservation
+    {
+        $request = new Reservation();
+        $request->setUser($user);
+        $request->setState(new States("PENDING"));
+        $request->setRoom($room);
+        return $request;
     }
 }

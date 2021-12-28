@@ -17,6 +17,8 @@
             <dt data-label="Requester">{{ reservation.user.username }}</dt>
             <dd>Room</dd>
             <dt data-label="Last name">{{ reservation.room.name }}</dt>
+            <dd>State</dd>
+            <dt data-label="State">{{ reservation.state }}</dt>
             <dd>Attendees</dd>
             <dt data-label="Attendees">
                 <ul>
@@ -31,6 +33,7 @@
             <dt data-label="Requested to">{{ reservation.dateTo }}</dt>
         </dl>
         <footer>
+            {% include 'reservations/buttons.html.twig' %}
         </footer>
     </article>
 {% endblock %}

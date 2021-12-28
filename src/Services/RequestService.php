@@ -64,14 +64,6 @@ class RequestService
         $this->entityManager->flush();
     }
 
-    public function newWithRequestorAndRoom(User $user, Room $room) : Request
-    {
-        $newRequest = new Request();
-        $newRequest->setRequestor($user);
-        $newRequest->setState(new States("PENDING"));
-        $newRequest->setRoom($room);
-        return $newRequest;
-    }
 
     /**
      * @param User $user
