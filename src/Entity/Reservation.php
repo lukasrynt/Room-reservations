@@ -77,7 +77,6 @@ class Reservation
         } catch (\Exception $e) {
             print($e);
         }
-
         return $this;
     }
 

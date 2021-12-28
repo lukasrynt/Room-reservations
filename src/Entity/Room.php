@@ -124,36 +124,33 @@ class Room
         return $this;
     }
 
-    public function getOpened_from():string
+    public function getOpenedFrom(): string
     {
         return $this->openedFrom->format("H:i");
     }
 
-    public function getOpenedFrom(): \DateTime
+    public function setOpenedFrom(string $openedFrom): self
     {
-        return $this->openedFrom;
-    }
-
-    public function setOpenedFrom(\DateTime $openedFrom): self
-    {
-        $this->openedFrom = $openedFrom;
+        try {
+            $this->openedFrom = new DateTime($openedFrom);
+        } catch (\Exception $e) {
+            print($e);
+        }
         return $this;
     }
 
-    public function getOpened_to(): string
+    public function getOpenedTo(): string
     {
         return $this->openedTo->format("H:i");
     }
 
-    public function getOpenedTo(): \DateTime
+    public function setOpenedTo(string $openedTo): self
     {
-        return $this->openedTo;
-    }
-
-    public function setOpenedTo(\DateTime $openedTo): self
-    {
-        $this->openedTo = $openedTo;
-
+        try {
+            $this->openedTo = new DateTime($openedTo);
+        } catch (\Exception $e) {
+            print($e);
+        }
         return $this;
     }
 
