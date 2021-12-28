@@ -40,12 +40,13 @@ class ReservationController extends AbstractController
 
     /**
      * @Route("/", name="index")
+     * @param Request $request
      * @return Response
      */
-    public function index(): Response
+    public function index(Request $request): Response
     {
         $this->denyAccessUnlessGranted('view_reservations');
-        $reservations = $this->reservationService->findAllFor($this->getUser());
+        $reservations = $this->reservationService->filterAllForUser($this->getUser(), $request->query->all());
         return $this->render('reservations/index.html.twig', ['reservations' => $reservations]);
     }
 

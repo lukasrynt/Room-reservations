@@ -51,25 +51,28 @@ class ReservationService
         $this->entityManager->flush();
     }
 
-    public function saveFromRequest(Request $request): int
+    public function filterAll(array $queryParams): array
     {
-        $reservation = new Reservation();
-        $reservation->setRoom($request->getRoom());
-        $reservation->setDateFrom($request->getDateFrom());
-        $reservation->setDateTo($request->getDateTo());
-        $reservation->setUser($request->getRequestor());
-
-        foreach ($request->getAttendees() as $attendee) {
-            $reservation->addAttendee($attendee);
-        }
-
-        $this->save($reservation);
-        return $reservation->getId();
+        return $this->reservationRepository->filterAll(
+            ParamsParser::getFilters($queryParams, 'filter_by'),
+            ParamsParser::getFilters($queryParams, 'order_by'),
+            ParamsParser::getFilters($queryParams, 'paginate')
+        );
     }
 
-    public function findAllFor(User $user): array
+    /**
+     * @param User $user
+     * @param array $queryParams
+     * @return array
+     */
+    public function filterAllForUser(User $user, array $queryParams): array
     {
-        return $this->reservationRepository->findAllForUser($user);
+        return $this->reservationRepository->filterAllForUser(
+            $user,
+            ParamsParser::getFilters($queryParams, 'filter_by'),
+            ParamsParser::getFilters($queryParams, 'order_by'),
+            ParamsParser::getFilters($queryParams, 'paginate')
+        );
     }
 
     public function newWithRequesterAndRoom(User $user, Room $room) : Reservation

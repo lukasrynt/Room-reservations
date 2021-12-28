@@ -32,15 +32,16 @@ class RoomController extends AbstractController
 
     /**
      * @Route("/", name="index")
+     * @param Request $request
      * @return Response
      */
-    public function index(): Response
+    public function index(Request $request): Response
     {
         $this->denyAccessUnlessGranted('view_rooms');
         if (!$this->getUser()) {
             $rooms = $this->roomService->findAllPublic();
         } else {
-            $rooms = $this->roomService->findAll();
+            $rooms = $this->roomService->filter($request->query->all());
         }
         return $this->render('rooms/index.html.twig', ['rooms' => $rooms]);
     }

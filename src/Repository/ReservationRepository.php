@@ -7,6 +7,9 @@ use App\Entity\Reservation;
 use App\Entity\RoomManager;
 use App\Entity\States;
 use App\Entity\User;
+use App\Services\Filter;
+use App\Services\Orderer;
+use App\Services\Paginator;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Collections\Criteria;
 use Doctrine\Persistence\ManagerRegistry;
@@ -27,11 +30,24 @@ class ReservationRepository extends ServiceEntityRepository
         $this->roomRepository = $roomRepository;
     }
 
-    /**
-     * @param User $user
-     * @return array
-     */
-    public function findAllForUser(User $user): array
+    public function filterAll(?array $findFilters, ?array $orderByFilters, ?array $paginationFilters): array
+    {
+        $criteria = (new Filter())->getFilterCriteria($findFilters);
+        $criteria = (new Orderer($criteria))->getOrderCriteria($orderByFilters);
+        $criteria = (new Paginator($criteria))->getCriteriaForPage($paginationFilters);
+        return $this->matching($criteria)->toArray();
+    }
+
+    public function filterAllForUser(User $user, ?array $findFilters, ?array $orderByFilters, ?array $paginationFilters): array
+    {
+        $criteria = $this->getAllForUserCrit($user);
+        $criteria = (new Filter($criteria))->getFilterCriteria($findFilters);
+        $criteria = (new Orderer($criteria))->getOrderCriteria($orderByFilters);
+        $criteria = (new Paginator($criteria))->getCriteriaForPage($paginationFilters);
+        return $this->matching($criteria)->toArray();
+    }
+
+    private function getAllForUserCrit(User $user): Criteria
     {
         $criteria = Criteria::create();
         if ($user->isAdmin()) {
@@ -41,8 +57,7 @@ class ReservationRepository extends ServiceEntityRepository
         } elseif ($user->isGroupAdmin()) {
             $criteria = $this->getPendingByGroupsCrit($user, $criteria);
         }
-        $criteria = $this->getForUserCrit($user, $criteria);
-        return $this->matching($criteria)->toArray();
+        return $this->getForUserCrit($user, $criteria);
     }
 
     private function getForUserCrit(User $user, Criteria $criteria = null): Criteria
