@@ -32,11 +32,13 @@ class RoomType extends AbstractType
                 ])
             ->add('opened_from', TimeType::class, [
                 'widget' => 'single_text',
-                'label' => 'From :'
+                'label' => 'From :',
+                'input' => 'string'
             ])
             ->add('opened_to', TimeType::class, [
                 'widget' => 'single_text',
-                'label' => 'To :'
+                'label' => 'To :',
+                'input' => 'string'
             ])->add('edit', SubmitType::class, [
                 'attr' => ['class' => 'button-base button-success'],
                 'label' => 'Save'
