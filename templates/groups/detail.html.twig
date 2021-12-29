@@ -1,0 +1,22 @@
+{% extends 'base.html.twig' %}
+
+{% block title %} Group detail {% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('styles/detail.css') }}" type="text/css">
+{% endblock %}
+
+{% block main %}
+    <article id="detail">
+        <header>
+            <h1>{{ group.name }}</h1>
+        </header>
+        <dl>
+            <dd>Group Manager</dd>
+            <dt data-label="Group Manager">{{ group.groupManager }}</dt>
+        </dl>
+        <footer>
+        </footer>
+    </article>
+{% endblock %}
