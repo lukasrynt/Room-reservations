@@ -7,6 +7,8 @@ use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Validator\Mapping\ClassMetadata;
 
 /**
  * @ORM\Entity(repositoryClass=ReservationRepository::class)
@@ -54,6 +56,10 @@ class Reservation
 
     /**
      * @ORM\ManyToMany(targetEntity=User::class, inversedBy="reservationsToAttend")
+     * @Assert\Expression(
+     *     "this.getRoom().getCapacity() >= this.getAttendees().count()",
+     *     message="The capacity of selected room is exceeded!",
+     * )
      */
     private Collection $attendees;
 
