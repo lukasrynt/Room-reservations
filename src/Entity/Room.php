@@ -7,6 +7,7 @@ use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=RoomRepository::class)
@@ -47,6 +48,10 @@ class Room
 
     /**
      * @ORM\Column(type="time")
+     * @Assert\Expression(
+     *     "this.getOpenedTo() >= this.getOpenedFrom()",
+     *     message="The start of opening hours must be before its end!",
+     * )
      */
     private \DateTime $openedTo;
 
