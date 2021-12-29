@@ -78,7 +78,9 @@ class ReservationController extends AbstractController
         $this->denyAccessUnlessGranted('create_reservation');
         $rooms = $this->userService->getRoomsForUser($user);
         $form = $this->createForm(ReservationType::class, null, ['rooms' => $rooms ?? []])
-            ->add('Reserve', SubmitType::class);
+            ->add('Reserve', SubmitType::class, [
+                'attr' => ['class' => 'button-base button-success']
+            ]);
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
@@ -112,7 +114,10 @@ class ReservationController extends AbstractController
         $reservation = $this->reservationService->newWithRequesterAndRoom($user, $room);
 
         $form = $this->createForm(BookRoomType::class, $reservation)
-            ->add('Reserve', SubmitType::class);
+            ->add('Reserve', SubmitType::class, [
+                    'attr' => ['class' => 'button-base button-success']
+                ]
+            );
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {

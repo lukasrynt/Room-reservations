@@ -37,6 +37,11 @@ form input, form select, form textarea {
     border-radius: .438rem;
     border: unset;
     box-shadow: inset 0 0 0 0.078rem var(--gray-light);
+    cursor: pointer;
+}
+
+form input:disabled, form select:disabled, form textarea:disabled {
+    cursor: default;
 }
 
 form input:focus-visible, form select:focus-visible, form textarea:focus-visible {
