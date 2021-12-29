@@ -10,7 +10,9 @@ use App\Entity\Room;
 use App\Entity\States;
 use App\Entity\User;
 use App\Repository\ReservationRepository;
+use Doctrine\Common\Collections\Criteria;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\Validator\Constraints\Date;
 
 class ReservationService
 {
@@ -82,5 +84,16 @@ class ReservationService
         $request->setState(new States("PENDING"));
         $request->setRoom($room);
         return $request;
+    }
+
+    public function filterCurrentReservation(Room $room) : \Doctrine\ORM\LazyCriteriaCollection
+    {
+        $today = new \DateTime();
+        $criteria = Criteria::create()
+            ->andWhere(Criteria::expr()->lte('timeFrom', new \DateTime($today->format('H:i'))))
+            ->andWhere(Criteria::expr()->gte('timeTo', new \DateTime($today->format('H:i'))))
+            ->andWhere(Criteria::expr()->eq('room', $room))
+            ->andWhere(Criteria::expr()->eq('state', States::APPROVED));
+        return $this->reservationRepository->matching($criteria);
     }
 }

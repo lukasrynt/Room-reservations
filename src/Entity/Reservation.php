@@ -29,11 +29,23 @@ class Reservation
 
     /**
      * @ORM\Column(type="time")
+     * @Assert\Expression(
+     *     "this.getTimeTo() <= this.getRoom().getOpenedTo()",
+     *     message="Not room is not opened to this time!",
+     * )
+     * @Assert\Expression(
+     *     "this.getTimeTo() >= this.getTimeFrom()",
+     *     message="The end of reservation time must be before its start!",
+     * )
      */
     private $timeTo;
 
     /**
      * @ORM\Column(type="time")
+     * @Assert\Expression(
+     *     "this.getTimeFrom() >= this.getRoom().getOpenedFrom()",
+     *     message="The room is not opened from this time!",
+     * )
      */
     private $timeFrom;
 

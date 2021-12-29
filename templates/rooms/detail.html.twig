@@ -29,6 +29,15 @@
                     Public
                 {% endif %}
             </dt>
+            <dd>State</dd>
+            <dt data-label="State">
+                {% set reservedUntil = reservedUntil(room) %}
+                {% if reservedUntil %}
+                    Currently reserved - until {{ reservedUntil }}
+                {% else %}
+                    Currently not reserved
+                {% endif %}
+            </dt>
         </dl>
         <footer>
             {% include 'rooms/buttons.html.twig' %}
