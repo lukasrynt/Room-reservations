@@ -183,7 +183,7 @@ class Reservation
         if (!$this->timeTo) {
             return null;
         }
-        return $this->timeTo->format('H:i');
+        return $this->timeTo->format('H:i:s');
     }
 
     public function setTimeTo(string $timeTo): self
@@ -201,7 +201,7 @@ class Reservation
         if (!$this->timeFrom) {
             return null;
         }
-        return $this->timeFrom->format('H:i');
+        return $this->timeFrom->format('H:i:s');
     }
 
     public function setTimeFrom(string $timeFrom): self

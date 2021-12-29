@@ -126,7 +126,7 @@ class Room
 
     public function getOpenedFrom(): string
     {
-        return $this->openedFrom->format("H:i");
+        return $this->openedFrom->format("H:i:s");
     }
 
     public function setOpenedFrom(string $openedFrom): self
@@ -141,7 +141,7 @@ class Room
 
     public function getOpenedTo(): string
     {
-        return $this->openedTo->format("H:i");
+        return $this->openedTo->format("H:i:s");
     }
 
     public function setOpenedTo(string $openedTo): self
