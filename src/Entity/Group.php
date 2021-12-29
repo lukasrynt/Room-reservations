@@ -47,10 +47,24 @@ class Group
      */
     private Collection $rooms;
 
+    /**
+     * One Group has Many SubGroups.
+     * @ORM\OneToMany(targetEntity="Group", mappedBy="parent")
+     */
+    private Collection $children;
+
+
+    /**
+     * Many subgroups have One group.
+     * @ORM\ManyToOne(targetEntity="Group", inversedBy="children")
+     */
+    private ?Group $parent;
+
     public function __construct()
     {
         $this->members = new ArrayCollection();
         $this->rooms = new ArrayCollection();
+        $this->children = new ArrayCollection();
     }
 
 
@@ -142,4 +156,36 @@ class Group
 
         return $this;
     }
+
+
+    public function getChildren(): Collection
+    {
+        return $this->children;
+    }
+
+
+    public function addChild(Group $child): self
+    {
+        if (!$this->children->contains($child)) {
+            $this->children[] = $child;
+        }
+
+        return $this;
+    }
+
+
+    public function getParent(): ?Group
+    {
+        return $this->parent;
+    }
+
+
+    public function setParent(Group $parent): self
+    {
+        $this->parent = $parent;
+
+        return $this;
+    }
+
+
 }
