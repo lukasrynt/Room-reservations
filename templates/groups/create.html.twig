@@ -1,0 +1,18 @@
+{% extends 'base.html.twig' %}
+
+{% block title %} Group create form {% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('styles/form.css') }}" type="text/css">
+{% endblock %}
+
+{% block main %}
+    <h1>Group create form</h1>
+
+    <article id="form">
+        {{ form_start(form) }}
+        {{ form_row(form.name) }}
+        {{ form_end(form) }}
+    </article>
+{% endblock %}
