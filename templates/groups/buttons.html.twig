@@ -1,0 +1,5 @@
+{% if is_granted('edit_group', group) %}
+    <a class="button-base button-with-icon button-main-outline" href={{ path('groups_edit', {'id': group.id}) }}>
+        {{ source('@icons/edit-icon.svg') }}
+        Edit</a>
+{% endif %}
