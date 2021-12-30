@@ -1,0 +1,25 @@
+{% extends 'base.html.twig' %}
+
+{% block title %} Book a room {% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('styles/form.css') }}" type="text/css">
+{% endblock %}
+
+{% block main %}
+    <h1>Edit reservation</h1>
+
+    <article id="form">
+        {{ form_start(form) }}
+        <div>
+            <label for="user">User</label>
+            <input type="text" id="user" value="{{ user }}" disabled="disabled">
+        </div>
+        <div>
+            <label for="user">Room</label>
+            <input type="text" id="user" value="{{ room }}" disabled="disabled">
+        </div>
+        {{ form_end(form) }}
+    </article>
+{% endblock %}

@@ -1,3 +1,8 @@
+{% if is_granted('edit_reservation', reservation) %}
+    <a class="button-base button-with-icon button-main-outline" href={{ path('reservations_edit', { id: reservation.id }) }}>
+        {{ source('@icons/edit-icon.svg') }} Edit
+    </a>
+{% endif %}
 {% if reservation.isPending %}
     {% if is_granted('approve_reservation', reservation) %}
         <a class="button-base button-with-icon button-success-outline" href={{ path('reservations_approve', { id: reservation.id }) }}>
