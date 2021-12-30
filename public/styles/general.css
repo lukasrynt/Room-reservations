@@ -223,3 +223,39 @@ li.ajax-list-item {
     font-family: 'Source Sans Pro', sans-serif;
     font-weight: 400;
 }
+
+.add-modal {
+    position: fixed;
+    padding: 1em;
+    border-radius: .438rem;
+    box-shadow: inset 0 0 0 .078rem var(--green-dark);
+    background: var(--white);
+    border: 0;
+}
+
+.add-modal ul {
+    display: flex;
+    flex-direction: column;
+}
+
+.add-modal a {
+    color: var(--gray);
+    margin-bottom: 0.2em;
+    cursor: pointer;
+}
+
+.add-modal a:hover {
+    color: var(--gray-dark);
+}
+
+.hidden {
+    display: none;
+}
+
+#ajax-template {
+    display: none;
+}
+
+#modal-template {
+    display: none;
+}

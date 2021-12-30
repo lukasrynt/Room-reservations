@@ -8,6 +8,15 @@
 {% endblock %}
 
 {% block main %}
+    <li class="ajax-list-item" id="ajax-template">
+        <a class="list-button button-danger button-with-icon remove-reservation-user">
+            {{ source('@icons/user-minus-icon.svg') }}
+        </a>
+    </li>
+    <dialog class="add-modal" id="modal-template">
+        <ul id="users-list"></ul>
+        <button class="button-base button-success">Close</button>
+    </dialog>
     <article id="detail">
         <header>
             <h1>Reservation #{{ reservation.id }}</h1>
@@ -35,7 +44,8 @@
                     {% endfor %}
                     {% if is_granted('edit_reservation', reservation) %}
                         <li class="ajax-list-item">
-                            <a class="list-button button-success button-with-icon add-reservation-user">
+                            <a class="list-button button-success button-with-icon" id="add-reservation-user"
+                               data-reservation-id="{{ reservation.id }}">
                                 {{ source('@icons/user-plus-icon.svg') }}
                             </a>
                         </li>
