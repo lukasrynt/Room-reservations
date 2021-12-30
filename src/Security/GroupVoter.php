@@ -56,7 +56,15 @@ class GroupVoter extends Voter
             return true;
         }
 
+        while($group->getParent() != null) {
+            if ($group->getGroupManager() === $account) {
+                return true;
+            }
+            $group = $group->getParent();
+        }
+
         return $account === $group->getGroupManager();
+
     }
 
     private function canEdit(User $account, Group $group): bool
