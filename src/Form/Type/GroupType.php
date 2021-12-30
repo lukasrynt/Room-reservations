@@ -33,6 +33,7 @@ class GroupType extends AbstractType
                 'label' => 'Room :',
                 'required' => false,
                 'multiple' => true,
+                'expanded' => true,
             ])
             ->add('parent', EntityType::class, [
                 "class" => Group::class,
