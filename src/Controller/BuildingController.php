@@ -45,8 +45,9 @@ class BuildingController extends AbstractController
     public function detail(int $id): Response
     {
         $building = $this->buildingService->find($id);
-        if (!$building)
+        if (!$building) {
             return $this->render('errors/404.html.twig');
+        }
         return $this->render('buildings/detail.html.twig', ['building' => $building]);
     }
 
@@ -60,17 +61,14 @@ class BuildingController extends AbstractController
     {
         $building = $this->buildingService->find($id);
 
-        if (!$building)
+        if (!$building) {
             return $this->render('errors/404.html.twig');
+        }
 
         $form = $this->createForm(BuildingType::class, $building)
             ->add('edit', SubmitType::class, [
                 'attr' => ['class' => 'button-base button-success'],
                 'label' => 'Save'
-            ])
-            ->add('delete', ButtonType::class, [
-                'attr' => ['class' => 'button-base button-danger-outline'],
-                'label' => 'Delete'
             ]);
 
         $form->handleRequest($request);

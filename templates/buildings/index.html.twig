@@ -9,8 +9,6 @@
 {% endblock %}
 
 {% block main %}
-    <h1>Buildings</h1>
-
     <table>
         <thead>
         <tr>
@@ -30,4 +28,5 @@
         {% endfor %}
         </tbody>
     </table>
+{#    {% include 'pagination.html.twig' with { itemsCount: buildingsCount, indexPath: 'buildings_index' } %}#}
 {% endblock %}
