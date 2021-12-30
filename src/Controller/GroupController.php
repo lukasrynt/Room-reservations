@@ -6,6 +6,7 @@ use App\Entity\Group;
 use App\Form\Type\GroupType;
 use App\Services\GroupService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Form\Extension\Core\Type\ButtonType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -54,7 +55,36 @@ class GroupController extends AbstractController
         return $this->render('groups/detail.html.twig', ['group' => $group]);
     }
 
-    public function edit(Request $request) {
+    /**
+     * @Route("/{id}/edit", name="edit", requirements={"id": "\d+"})
+     * @param Request $request
+     * @param int $id
+     * @return Response
+     */
+    public function edit(Request $request, int $id): Response
+    {
+        $group = $this->groupService->find($id);
+        if (!$group) {
+            return $this->render('errors/404.html.twig');
+        }
+
+        $this->denyAccessUnlessGranted('edit_group', $group);
+        $form = $this->createForm(GroupType::class, $group)
+            ->add('delete', ButtonType::class, [
+                'attr' => ['class' => 'button-base button-danger-outline'],
+                'label' => 'Delete'
+            ]);
+
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $this->groupService->save($form->getData());
+            $this->addFlash('success', "Group {$group->getName()} was successfully edited.");
+            return $this->redirectToRoute('groups_detail', ['id' => $group->getId()]);
+        }
+
+        return $this->render('groups/edit.html.twig', [
+            'form' => $form->createView()
+        ]);
 
     }
 
