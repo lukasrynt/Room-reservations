@@ -16,10 +16,12 @@ class ReservationsVoter extends Voter
     const BOOK_ROOM = 'book_room';
     const APPROVE = 'approve_reservation';
     const REJECT = 'reject_reservation';
+    const DELETE = 'delete_reservation';
+    const EDIT = 'edit_reservation';
 
     protected function supports(string $attribute, $subject): bool
     {
-        if (!in_array($attribute, [self::VIEW_ALL, self::CREATE, self::BOOK_ROOM, self::APPROVE, self::REJECT])) {
+        if (!in_array($attribute, [self::VIEW_ALL, self::CREATE, self::BOOK_ROOM,self::APPROVE, self::REJECT, self::DELETE, self::EDIT])) {
             return false;
         }
         if (!($subject instanceof Room || $subject instanceof Reservation || !$subject)) {
@@ -48,6 +50,10 @@ class ReservationsVoter extends Voter
                 return $this->canApprove($user, $subject);
             case self::REJECT:
                 return $this->canReject($user, $subject);
+            case self::DELETE:
+                return $this->canDelete($user, $subject);
+            case self::EDIT:
+                return $this->canEdit($user, $subject);
             default:
                 return false;
         }
@@ -83,5 +89,15 @@ class ReservationsVoter extends Voter
     private function canReject(User $account, Reservation $reservation): bool
     {
         return $this->canBookRoom($account, $reservation->getRoom());
+    }
+
+    private function canDelete(User $account, Reservation $reservation): bool
+    {
+        return $this->canReject($account, $reservation) && $reservation->isRejected();
+    }
+
+    private function canEdit(User $account, Reservation $reservation): bool
+    {
+        return $this->canReject($account, $reservation) && $reservation->isPending();
     }
 }

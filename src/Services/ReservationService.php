@@ -53,6 +53,12 @@ class ReservationService
         $this->entityManager->flush();
     }
 
+    public function delete(Reservation $reservation): void
+    {
+        $this->entityManager->remove($reservation);
+        $this->entityManager->flush();
+    }
+
     public function filterAll(array $queryParams): array
     {
         return $this->reservationRepository->filterAll(

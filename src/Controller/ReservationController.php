@@ -51,7 +51,7 @@ class ReservationController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="detail", requirements={"id": "\d+"})
+     * @Route("/{id}", name="detail", methods="GET", requirements={"id": "\d+"})
      * @param int $id
      * @return Response
      */
@@ -67,13 +67,30 @@ class ReservationController extends AbstractController
     }
 
     /**
+     * @Route("/{id}", name="delete", methods="DELETE", requirements={"id": "\d+"})
+     * @param int $id
+     * @return Response
+     */
+    public function delete(int $id): Response
+    {
+        $reservation = $this->reservationService->find($id);
+        $this->denyAccessUnlessGranted('delete_reservation', $reservation);
+        if (!$reservation) {
+            return $this->render('errors/404.html.twig');
+        } else {
+            $this->reservationService->delete($reservation);
+            $this->addFlash('success', "Reservation #{$id} for room {$reservation->getRoom()->getName()} was successfully deleted.");
+            return $this->redirectToRoute('reservations_index');
+        }
+    }
+
+    /**
      * @Route("/create", name="create")
      * @param Request $request
      * @return Response
      */
     public function create(Request $request): Response
     {
-        # TODO: auto approve requests if logged in as admin of the room/group/sysadmin - should be done using voters
         $user = $this->getUser();
         $this->denyAccessUnlessGranted('create_reservation');
         $rooms = $this->userService->getRoomsForUser($user);
@@ -101,6 +118,41 @@ class ReservationController extends AbstractController
         ]);
     }
 
+
+    /**
+     * @Route("/{id}/edit", name="edit", requirements={"id": "\d+"})
+     * @param Request $request
+     * @param int $id
+     * @return Response
+     */
+    public function edit(Request $request, int $id): Response{
+        $reservation = $this->reservationService->find($id);
+
+        if (!$reservation) {
+            return $this->render('errors/404.html.twig');
+        }
+
+        $this->denyAccessUnlessGranted('edit_reservation', $reservation);
+        $form = $this->createForm(BookRoomType::class, $reservation)
+            ->add('Edit', SubmitType::class, [
+                    'attr' => ['class' => 'button-base button-success']
+                ]
+            );
+
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()){
+            $this->reservationService->save($form->getData());
+            $this->addFlash('success', "Reservation #{$reservation->getId()} was successfully edited.");
+            return $this->redirectToRoute('reservations_detail', ['id' => $reservation->getId()]);
+        }
+
+        return $this->render('reservations/bookRoom.html.twig', [
+            'form' => $form->createView(),
+            'room' => $reservation->getRoom(),
+            'user' => $reservation->getUser()
+        ]);
+    }
+
     /**
      * @Route("/book_room/{roomId}", name="book_room")
      * @param Request $request
@@ -109,7 +161,6 @@ class ReservationController extends AbstractController
      */
     public function bookRoom(Request $request, int $roomId): Response
     {
-        # TODO: auto approve requests if logged in as admin of the room/group/sysadmin - should be done using voters
         $user = $this->getUser();
         $room = $this->roomService->find($roomId);
         if (!$room) {

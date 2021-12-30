@@ -1,0 +1,16 @@
+{% set pageCnt = pagesCount(params, itemsCount) %}
+{% if pageCnt > 1 %}
+    <div id="pagination">
+        <a class="button-base button-main button-pagination {{ currentPage(params) > 1 ? "" : "dummy" }}"
+           href={{ currentPage(params) > 1 ? path(indexPath, prevPageParams(params)) : "" }}>
+            {{ source('@icons/arrow-left.svg') }}
+        </a>
+        <button class="button-base button-secondary-outline button-pagination">
+            {{ currentPage(params) }}
+        </button>
+        <a class="button-base button-main button-pagination {{ currentPage(params) < pageCnt ? "" : "dummy" }}"
+           href={{ path(indexPath, nextPageParams(params, pageCnt)) }}>
+            {{ source('@icons/arrow-right.svg') }}
+        </a>
+    </div>
+{% endif %}
