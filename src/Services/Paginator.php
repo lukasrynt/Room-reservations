@@ -11,6 +11,7 @@ use PhpParser\Node\Param;
 class Paginator
 {
     const DEFAULT_PAGE_SIZE = 5;
+    const URL_KEY = 'paginate';
 
     private Criteria $criteria;
 
@@ -34,18 +35,18 @@ class Paginator
     public static function getCurrentPageFromParams(array $params): int
     {
         $page = 1;
-        if (array_key_exists('paginate', $params)) {
-            $page = $params['paginate']['page'] ?? 1;
+        if (array_key_exists(self::URL_KEY, $params)) {
+            $page = $params[self::URL_KEY]['page'] ?? 1;
         }
         return $page;
     }
 
     public static function updateQueryParams(array $params, bool $next, int $limit = 0): array
     {
-        if (array_key_exists('paginate', $params)) {
-            $params['paginate'] = self::updateParams($params['paginate'], $next, $limit);
+        if (array_key_exists(self::URL_KEY, $params)) {
+            $params[self::URL_KEY] = self::updateParams($params[self::URL_KEY], $next, $limit);
         } else {
-            $params['paginate'] = ['page' => self::getPage(null, $next, $limit)];
+            $params[self::URL_KEY] = ['page' => self::getPage(null, $next, $limit)];
         }
         return self::filterOutParams($params);
     }
@@ -54,7 +55,7 @@ class Paginator
     {
         $res = [];
         foreach ($queries as $key => $val) {
-            if ($key == 'filter_by' || $key == 'paginate' || $key == 'order_by') {
+            if ($key == 'filter_by' || $key == self::URL_KEY || $key == 'order_by') {
                 $res[$key] = $val;
             }
         }
@@ -64,8 +65,8 @@ class Paginator
     public static function getPagesCount(array $params, int $entitiesCount): int
     {
         $pageSize = self::DEFAULT_PAGE_SIZE;
-        if (array_key_exists('paginate', $params)) {
-            $pageSize = $params['paginate']['page_size'] ?? self::DEFAULT_PAGE_SIZE;
+        if (array_key_exists(self::URL_KEY, $params)) {
+            $pageSize = $params[self::URL_KEY]['page_size'] ?? self::DEFAULT_PAGE_SIZE;
         }
         if ($pageSize <= 0) {
             $pageSize = self::DEFAULT_PAGE_SIZE;

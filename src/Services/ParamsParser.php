@@ -22,19 +22,20 @@ class ParamsParser
 
     public static function getParamsFromUrl(array $queryParams, array $searchParams = null): array
     {
+        dump($queryParams);
         $res = [];
-        $paginateParams = self::getFilters($queryParams, 'paginate');
+        $paginateParams = self::getFilters($queryParams, Paginator::URL_KEY);
         if (!array_key_exists('page_size', $paginateParams)) {
             $paginateParams['page_size'] = Paginator::DEFAULT_PAGE_SIZE;
         }
-        $res['paginate'] = $paginateParams;
+        $res[Paginator::URL_KEY] = $paginateParams;
         if ($searchParams) {
             $filters = array_filter($searchParams, fn($val) => $val !== null);
         } else {
-            $filters = array_filter(self::getFilters($queryParams, 'filter_by'), fn($val) => $val !== null);
+            $filters = array_filter(self::getFilters($queryParams, Filter::URL_KEY), fn($val) => $val !== null);
         }
-        $res['filter_by'] = $filters;
-        $res['order_by'] = self::getFilters($queryParams, 'order_by');
+        $res[Filter::URL_KEY] = $filters;
+        $res[Orderer::URL_KEY] = self::getFilters($queryParams, Orderer::URL_KEY);
         return $res;
     }
 
