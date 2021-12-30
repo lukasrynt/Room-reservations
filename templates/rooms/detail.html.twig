@@ -14,7 +14,9 @@
         </header>
         <dl>
             <dd>Building</dd>
-            <dt data-label="Building">{{ room.building }}</dt>
+            <dt data-label="Building">
+                <a href="{{ path('buildings_detail', { id: room.building.id }) }}">{{ room.building }}</a>
+            </dt>
             <dd>Floor</dd>
             <dt data-label="Floor">{{ room.floor }}</dt>
             <dd>Capacity</dd>

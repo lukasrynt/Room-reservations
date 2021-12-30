@@ -15,6 +15,18 @@
         <dl>
             <dd>Address</dd>
             <dt data-label="Address">{{ building.address }}</dt>
+            <dd>Rooms</dd>
+            <dt data-label="Rooms">
+                <ul class="detail-list">
+                    {% for room in building.rooms %}
+                        {% if is_granted('view_room', room) %}
+                            <li>
+                                <a href="{{ path('rooms_detail', { id: room.id }) }}">{{ room.name }}</a>
+                            </li>
+                        {% endif %}
+                    {% endfor %}
+                </ul>
+            </dt>
         </dl>
         <footer>
             {% include 'buildings/buttons.html.twig' %}
