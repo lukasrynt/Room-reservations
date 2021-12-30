@@ -21,10 +21,20 @@
             <dt data-label="State">{{ reservation.state }}</dt>
             <dd>Attendees</dd>
             <dt data-label="Attendees">
-                <ul>
+                <ul class="detail-list">
                     {% for attendee in reservation.attendees %}
-                        <li>{{ attendee.username }}</li>
+                        <li class="ajax-list-item">
+                            <a class="list-button button-danger button-with-icon remove-reservation-user">
+                                {{ source('@icons/user-minus-icon.svg') }}
+                            </a>
+                            {{ attendee.username }}
+                        </li>
                     {% endfor %}
+                    <li class="ajax-list-item">
+                        <a class="list-button button-success button-with-icon add-reservation-user">
+                            {{ source('@icons/user-plus-icon.svg') }}
+                        </a>
+                    </li>
                 </ul>
             </dt>
             <dd>Date</dd>

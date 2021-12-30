@@ -205,3 +205,21 @@ footer {
 section.alerts {
     margin: 0.1em
 }
+
+li.ajax-list-item {
+    margin-top: 0.1em;
+    display: flex;
+    align-items: center;
+}
+
+.list-button {
+    padding: .425rem .425rem .425rem .425rem;
+    margin-right: 0.3em;
+    font-size: 1.125rem;
+    border-radius: .438rem;
+    display: block;
+    border: unset;
+    cursor: pointer;
+    font-family: 'Source Sans Pro', sans-serif;
+    font-weight: 400;
+}
