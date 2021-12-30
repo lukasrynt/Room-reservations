@@ -1,5 +1,6 @@
 main {
     display: flex;
+    flex-flow: column;
     justify-content: center;
     align-items: center;
 }
@@ -85,4 +86,12 @@ form > *:not(:last-child), form > div > *:not(:last-child) {
 textarea {
     min-height: 5rem;
     resize: vertical;
+}
+
+.login-error {
+    position: absolute;
+    bottom: 0;
+    margin-bottom: 1rem;
+    width: 80%;
+    text-align: center;
 }

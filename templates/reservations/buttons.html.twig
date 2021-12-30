@@ -1,8 +1,12 @@
 {% if reservation.isPending %}
     {% if is_granted('approve_reservation', reservation) %}
-        <a class="button-base button-success-outline" href={{ path('reservations_approve', { id: reservation.id }) }}>Approve</a>
+        <a class="button-base button-with-icon button-success-outline" href={{ path('reservations_approve', { id: reservation.id }) }}>
+            {{ source('@icons/checkmark-icon.svg') }}
+            Approve</a>
     {% endif %}
     {% if is_granted('reject_reservation', reservation) %}
-        <a class="button-base button-danger-outline" href={{ path('reservations_reject', { id: reservation.id }) }}>Reject</a>
+        <a class="button-base button-with-icon button-danger-outline" href={{ path('reservations_reject', { id: reservation.id }) }}>
+            {{ source('@icons/close-icon.svg') }}
+            Reject</a>
     {% endif %}
 {% endif %}

@@ -18,7 +18,7 @@
             {% if is_granted('view_reservations') %}
                 <li><a class="button-base {{ linkClassForUrl(app.request.pathInfo, 'reservations') }} button-with-icon" href="{{ path('reservations_index') }}">
                         {{ source('@icons/reservation-icon.svg') }}
-                        <span>Reservation</span></a></li>
+                        <span>Reservations</span></a></li>
             {% endif %}
             {% if is_granted('view_groups') %}
                 <li><a class="button-base {{ linkClassForUrl(app.request.pathInfo, 'groups') }} button-with-icon" href="#">

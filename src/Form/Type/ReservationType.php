@@ -24,12 +24,15 @@ class ReservationType extends AbstractType
 
         $builder
             ->add('date', DateType::class, [
+                'widget' => 'single_text',
                 'input' => 'string'
             ])
             ->add('time_from', TimeType::class, [
+                'widget' => 'single_text',
                 'input' => 'string'
             ])
             ->add('time_to', TimeType::class, [
+                'widget' => 'single_text',
                 'input' => 'string'
             ])
             ->add('user', EntityType::class, [

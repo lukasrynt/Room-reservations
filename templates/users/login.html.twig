@@ -8,11 +8,6 @@
 {% endblock %}
 
 {% block main %}
-    {# TODO : style error message - give it an class so it can be styled? #}
-    {% if error %}
-        <div>{{ error.messageKey|trans(error.messageData, 'security') }}</div>
-    {% endif %}
-
     <article id="login-form">
         <section>
             <h1>
@@ -41,4 +36,8 @@
             <a class="button-base button-main-outline" href="{{ path('users_registration') }}">Sign Up</a>
         </section>
     </article>
+
+    {% if error %}
+        <div class="login-error alert button-base button-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+    {% endif %}
 {% endblock %}

@@ -2,32 +2,33 @@
 
 {% block title %} Dashboard {% endblock %}
 
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('styles/dashboard.css') }}" type="text/css">
+{% endblock %}
+
+
 {% block main %}
     <section>
         <h1>Dashboard</h1>
         <ul>
             {% if is_granted('view_rooms') %}
-                <li><a class="button-base {{ linkClassForUrl(app.request.pathInfo, 'rooms') }} button-with-icon" href="{{ path('rooms_index') }}">
+                <li><a class="" href="{{ path('rooms_index') }}">
                         {{ source('@icons/classroom-icon.svg') }}
                         <span>Classrooms</span></a></li>
             {% endif %}
-            {% if is_granted('view_requests') %}
-                <li><a class="button-base {{ linkClassForUrl(app.request.pathInfo, 'requests') }} button-with-icon" href="{{ path('requests_index') }}">
-                        {{ source('@icons/reservation-icon.svg') }}
-                        <span>Requests</span></a></li>
-            {% endif %}
             {% if is_granted('view_reservations') %}
-                <li><a class="button-base {{ linkClassForUrl(app.request.pathInfo, 'reservations') }} button-with-icon" href="{{ path('reservations_index') }}">
+                <li><a class="" href="{{ path('reservations_index') }}">
                         {{ source('@icons/reservation-icon.svg') }}
-                        <span>Reservation</span></a></li>
+                        <span>Reservations</span></a></li>
             {% endif %}
             {% if is_granted('view_groups') %}
-                <li><a class="button-base {{ linkClassForUrl(app.request.pathInfo, 'groups') }} button-with-icon" href="#">
+                <li><a class="" href="#">
                         {{ source('@icons/group-icon.svg') }}
                         <span>Groups</span></a></li>
             {% endif %}
             {% if is_granted('view_users') %}
-                <li><a class="button-base {{ linkClassForUrl(app.request.pathInfo, 'users') }} button-with-icon" href="{{ path('users_index') }}">
+                <li><a class="" href="{{ path('users_index') }}">
                         {{ source('@icons/account-badge-icon.svg') }}
                         <span>Users</span></a></li>
             {% endif %}

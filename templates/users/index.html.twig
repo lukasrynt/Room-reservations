@@ -6,10 +6,37 @@
     {{ parent() }}
     <link rel="stylesheet" href="{{ asset('styles/table.css') }}" type="text/css">
     <link rel="stylesheet" href="{{ asset('styles/pagination.css') }}" type="text/css">
+    <link rel="stylesheet" href="{{ asset('styles/filters.css') }}" type="text/css">
+    <link rel="stylesheet" href="{{ asset('styles/form.css') }}" type="text/css">
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script src="{{ asset('javascript/filters.js') }}"></script>
+    <script>
+        let filtersInstance;
+
+        document.addEventListener("DOMContentLoaded", function() {
+            let filterButton = document.getElementsByClassName('filters-button')[0];
+            let filterContent = document.getElementsByClassName('filters-content')[0];
+            filtersInstance = new Filters(filterButton, filterContent);
+            filtersInstance.watch();
+        });
+    </script>
 {% endblock %}
 
 {% block main %}
-    {{ form(searchForm) }}
+    <button type="button" onclick="filtersInstance.trigger()" class="filters-button">
+        {{ source('@icons/drop-down-menu.svg') }}
+        Filters</button>
+    <div class="filters-content">
+        {{ form_start(searchForm) }}
+        {{ form_row(searchForm.firstName) }}
+        {{ form_row(searchForm.lastName) }}
+        {{ form_row(searchForm.email) }}
+        {{ form_row(searchForm.phoneNumber) }}
+        {{ form_end(searchForm) }}
+    </div>
 
     <table>
         <thead>

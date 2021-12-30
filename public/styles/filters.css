@@ -1,0 +1,64 @@
+.filters-button {
+    padding: .625rem 1.875rem .625rem 1.875rem;
+    font-size: 1.125rem;
+    border-radius: .438rem;
+    border: unset;
+    cursor: pointer;
+    font-family: 'Source Sans Pro', sans-serif;
+    font-weight: 400;
+    width: 90%;
+    background-color: var(--main);
+    color: var(--white);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.active {
+    border-radius: .438rem .438rem 0 0;
+}
+
+.active, .filters-button:hover {
+    background-color: var(--main-darker);
+    color: var(--white);
+}
+
+.active .button-icon {
+    transform: rotate(180deg);
+}
+
+.filters-content {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.2s ease-out;
+    background-color: var(--white);
+    width: 90%;
+    display: flex;
+    justify-content: center;
+    border-radius: 0 0 .438rem .438rem;
+    box-shadow: 0 2px 8px 0 rgba(0,0,0,0.1);
+}
+
+.filters-content > form {
+    margin: 2rem 0 2rem 0;
+}
+
+@media screen and (min-width: 790px) {
+    .filters-content > form {
+        display: flex;
+        flex-flow: row;
+        flex-wrap: wrap;
+        justify-content: space-between;
+    }
+
+    .filters-content > form div:not(:last-child) {
+        flex-grow: 1;
+        margin-left: .5rem;
+        margin-right: .5rem;
+    }
+
+    .filters-content > form div:last-of-type {
+        width: 100%;
+        max-width: unset
+    }
+}
