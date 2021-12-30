@@ -1,0 +1,38 @@
+# Create reservation
+POST http://localhost:8080/api/reservations/
+Content-Type: application/json
+
+{
+  "user_id": 1,
+  "room_id": 1,
+  "state": "PENDING",
+  "date": "2021-11-17",
+  "time_from": "18:00:00",
+  "time_to": "22:00:00"
+}
+
+###
+# Update reservation
+PUT http://localhost:8080/api/reservations/9
+Content-Type: application/json
+
+{
+  "user_id": 1,
+  "room_id": 1,
+  "state": "PENDING",
+  "date": "2021-11-17",
+  "time_from": "18:00:00",
+  "time_to": "22:00:00"
+}
+
+###
+
+# Remove reservation
+DELETE localhost:8080/api/reservations/3
+
+###
+
+GET localhost:8080/api/reservations/1
+
+###
+
