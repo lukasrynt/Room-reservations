@@ -47,7 +47,7 @@ class RoomController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="detail", requirements={"id": "\d+"})
+     * @Route("/{id}", name="detail", methods="GET", requirements={"id": "\d+"})
      * @param int $id
      * @return Response
      */
@@ -90,6 +90,24 @@ class RoomController extends AbstractController
         return $this->render('rooms/edit.html.twig', [
             'form' => $form->createView()
         ]);
+    }
+
+    /**
+     * @Route("/{id}", name="delete", methods="DELETE", requirements={"id": "\d+"})
+     * @param int $id
+     * @return Response
+     */
+    public function delete(int $id): Response
+    {
+        $room = $this->roomService->find($id);
+        $this->denyAccessUnlessGranted('delete_room', $room);
+        if (!$room) {
+            return $this->render('errors/404.html.twig');
+        } else {
+            $this->roomService->delete($room);
+            $this->addFlash('success', "Room {$room->getName()} was successfully deleted.");
+            return $this->redirectToRoute('rooms_index');
+        }
     }
 
     /**

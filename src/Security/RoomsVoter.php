@@ -13,10 +13,11 @@ class RoomsVoter extends Voter
     const VIEW = 'view_room';
     const EDIT = 'edit_room';
     const CREATE = 'create_room';
+    const DELETE = 'delete_room';
 
     protected function supports(string $attribute, $subject): bool
     {
-        if (!in_array($attribute, [self::VIEW, self::EDIT, self::CREATE, self::VIEW_ALL])) {
+        if (!in_array($attribute, [self::VIEW, self::EDIT, self::CREATE, self::VIEW_ALL, self::DELETE])) {
             return false;
         }
         if (!($subject instanceof Room || !$subject)) {
@@ -41,6 +42,8 @@ class RoomsVoter extends Voter
                 return $this->canEdit($user);
             case self::CREATE:
                 return $this->canCreate($user);
+            case self::DELETE:
+                return $this->canDelete($user);
             default:
                 return false;
         }
@@ -60,19 +63,21 @@ class RoomsVoter extends Voter
         return true;
     }
 
-    private function canEdit(?User $account): bool
-    {
-        if (!$account) {
-            return false;
-        }
-        return $this->canCreate($account);
-    }
-
     private function canCreate(?User $account): bool
     {
         if (!$account) {
             return false;
         }
         return $account->isAdmin();
+    }
+
+    private function canEdit(?User $account): bool
+    {
+        return $this->canCreate($account);
+    }
+
+    private function canDelete(?User $account): bool
+    {
+        return $this->canCreate($account);
     }
 }

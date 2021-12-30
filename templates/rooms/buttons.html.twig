@@ -8,3 +8,9 @@
         {{ source('@icons/edit-icon.svg') }}
         Edit</a>
 {% endif %}
+{% if is_granted('delete_room', room) %}
+    <form method="post" action="{{ path('rooms_delete', { id: room.id }) }}">
+        <input type="hidden" name="_method" value="DELETE">
+        <button type="submit" class="button-base button-danger-outline">Delete</button>
+    </form>
+{% endif %}
