@@ -24,17 +24,22 @@
                 <ul class="detail-list">
                     {% for attendee in reservation.attendees %}
                         <li class="ajax-list-item">
-                            <a class="list-button button-danger button-with-icon remove-reservation-user">
-                                {{ source('@icons/user-minus-icon.svg') }}
-                            </a>
+                            {% if is_granted('edit_reservation', reservation) %}
+                                <a class="list-button button-danger button-with-icon remove-reservation-user"
+                                   data-reservation-id="{{ reservation.id }}" data-user-id="{{ attendee.id }}">
+                                    {{ source('@icons/user-minus-icon.svg') }}
+                                </a>
+                            {% endif %}
                             {{ attendee.username }}
                         </li>
                     {% endfor %}
-                    <li class="ajax-list-item">
-                        <a class="list-button button-success button-with-icon add-reservation-user">
-                            {{ source('@icons/user-plus-icon.svg') }}
-                        </a>
-                    </li>
+                    {% if is_granted('edit_reservation', reservation) %}
+                        <li class="ajax-list-item">
+                            <a class="list-button button-success button-with-icon add-reservation-user">
+                                {{ source('@icons/user-plus-icon.svg') }}
+                            </a>
+                        </li>
+                    {% endif %}
                 </ul>
             </dt>
             <dd>Date</dd>
