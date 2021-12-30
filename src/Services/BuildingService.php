@@ -45,6 +45,12 @@ class BuildingService
         $this->entityManager->flush();
     }
 
+    public function delete(Building $room): void
+    {
+        $this->entityManager->remove($room);
+        $this->entityManager->flush();
+    }
+
     /**
      * @param array $queryParams
      * @return array

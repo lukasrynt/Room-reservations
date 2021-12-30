@@ -40,7 +40,6 @@ class BuildingController extends AbstractController
         $params = ParamsParser::getParamsFromUrl($request->query->all());
         $count = $this->buildingService->countForParams($params);
         $buildings = $this->buildingService->filter($params);
-        dump($count);
         return $this->render('buildings/index.html.twig', [
             'buildings' => $buildings,
             'buildingsCount' => $count,
@@ -49,7 +48,7 @@ class BuildingController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="detail", requirements={"id": "\d+"})
+     * @Route("/{id}", name="detail", requirements={"id": "\d+"}, methods="GET")
      * @param int $id
      * @return Response
      */
@@ -116,5 +115,23 @@ class BuildingController extends AbstractController
         return $this->render('buildings/create.html.twig', [
             'form' => $form->createView()
         ]);
+    }
+
+    /**
+     * @Route("/{id}", name="delete", methods="DELETE", requirements={"id": "\d+"})
+     * @param int $id
+     * @return Response
+     */
+    public function delete(int $id): Response
+    {
+        $building = $this->buildingService->find($id);
+        $this->denyAccessUnlessGranted('delete_building', $building);
+        if (!$building) {
+            return $this->render('errors/404.html.twig');
+        } else {
+            $this->buildingService->delete($building);
+            $this->addFlash('success', "Building {$building->getName()} was successfully deleted.");
+            return $this->redirectToRoute('buildings_index');
+        }
     }
 }
