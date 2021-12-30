@@ -31,7 +31,7 @@ class Reservation
      * @ORM\Column(type="time")
      * @Assert\Expression(
      *     "this.getTimeTo() <= this.getRoom().getOpenedTo()",
-     *     message="Not room is not opened to this time!",
+     *     message="The room is not opened at this time!",
      * )
      * @Assert\Expression(
      *     "this.getTimeTo() >= this.getTimeFrom()",
@@ -44,7 +44,7 @@ class Reservation
      * @ORM\Column(type="time")
      * @Assert\Expression(
      *     "this.getTimeFrom() >= this.getRoom().getOpenedFrom()",
-     *     message="The room is not opened from this time!",
+     *     message="The room is not opened at this time!",
      * )
      */
     private $timeFrom;
