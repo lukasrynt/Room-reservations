@@ -9,6 +9,9 @@
 {% endblock %}
 
 {% block main %}
+    {% if is_granted('create_building') %}
+        <a class="button-base button-success-outline" href={{ path('buildings_create') }}>Add</a>
+    {% endif %}
     <table>
         <thead>
         <tr>

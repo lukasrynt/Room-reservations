@@ -27,7 +27,9 @@
             <button type="submit">Ikonka</button>
         </form>
     </section>
-
+    {% if is_granted('create_room') %}
+        <a class="button-base button-success-outline top-button" href={{ path('rooms_create') }}>Add</a>
+    {% endif %}
     <table>
         <thead>
             <tr>
@@ -63,7 +65,4 @@
             {% endfor %}
         </tbody>
     </table>
-    {% if is_granted('create_room') %}
-        <a class="button-base button-success-outline" href={{ path('rooms_create') }}>Add</a>
-    {% endif %}
 {% endblock %}

@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Building;
 use App\Form\Type\BuildingType;
 use App\Services\BuildingService;
 use App\Services\ParamsParser;
@@ -48,7 +49,7 @@ class BuildingController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="detail")
+     * @Route("/{id}", name="detail", requirements={"id": "\d+"})
      * @param int $id
      * @return Response
      */
@@ -63,7 +64,7 @@ class BuildingController extends AbstractController
     }
 
     /**
-     * @Route("/{id}/edit", name="edit")
+     * @Route("/{id}/edit", name="edit", requirements={"id": "\d+"})
      * @param Request $request
      * @param int $id
      * @return Response
@@ -79,7 +80,7 @@ class BuildingController extends AbstractController
         $form = $this->createForm(BuildingType::class, $building)
             ->add('edit', SubmitType::class, [
                 'attr' => ['class' => 'button-base button-success'],
-                'label' => 'Save'
+                'label' => 'Edit'
             ]);
 
         $form->handleRequest($request);
@@ -89,6 +90,30 @@ class BuildingController extends AbstractController
         }
 
         return $this->render('buildings/edit.html.twig', [
+            'form' => $form->createView()
+        ]);
+    }
+
+    /**
+     * @Route("/create", name="create")
+     * @param Request $request
+     * @return Response
+     */
+    public function create(Request $request): Response {
+        $this->denyAccessUnlessGranted('create_building');
+        $building = new Building();
+        $form = $this->createForm(BuildingType::class, $building) ->add('edit', SubmitType::class, [
+            'attr' => ['class' => 'button-base button-success'],
+            'label' => 'Create'
+        ]);
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()){
+            $this->buildingService->save($form->getData());
+            $this->addFlash('success', "Building {$building->getName()} was successfully created.");
+            return $this->redirectToRoute('buildings_detail', ['id' => $building->getId()]);
+        }
+
+        return $this->render('buildings/create.html.twig', [
             'form' => $form->createView()
         ]);
     }

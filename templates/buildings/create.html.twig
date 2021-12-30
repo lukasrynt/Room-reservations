@@ -1,0 +1,17 @@
+{% extends 'base.html.twig' %}
+
+{% block title %} Create building {% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('styles/form.css') }}" type="text/css">
+{% endblock %}
+
+{% block main %}
+    <h1>Create building</h1>
+
+    <article id="form">
+        {{ form_start(form) }}
+        {{ form_end(form) }}
+    </article>
+{% endblock %}
