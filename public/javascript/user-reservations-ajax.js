@@ -84,7 +84,7 @@ document.addEventListener("DOMContentLoaded", function() {
     dialog.close();
     hide(addBtn);
     fetchAvailableAttendees(reservationId).then((users) => {
-        if (!users.length)
+        if (users.length)
             show(addBtn);
     });
     addBtn.addEventListener('click', () => {
