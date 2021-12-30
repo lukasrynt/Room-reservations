@@ -40,3 +40,11 @@ PUT localhost:8080/api/reservations/10/approve
 ###
 # Reject reservation
 PUT localhost:8080/api/reservations/11/reject
+
+###
+# Add attendee
+PUT localhost:8080/api/reservations/10/attendees/1
+
+###
+# Remove attendee
+DELETE localhost:8080/api/reservations/10/attendees/1

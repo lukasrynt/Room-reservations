@@ -9,6 +9,7 @@ use App\Entity\Reservation;
 use App\Entity\States;
 use App\Form\Type\ReservationRestType;
 use App\Services\ReservationService;
+use App\Services\UserService;
 use FOS\RestBundle\Controller\AbstractFOSRestController;
 use FOS\RestBundle\Controller\Annotations as Rest;
 use Symfony\Component\HttpFoundation\Request;
@@ -24,13 +25,16 @@ use FOS\RestBundle\View\View;
 class ReservationController extends AbstractFOSRestController
 {
     private ReservationService $reservationService;
+    private UserService $userService;
 
     /**
      * @param ReservationService $reservationService
+     * @param UserService $userService
      */
-    public function __construct(ReservationService $reservationService)
+    public function __construct(ReservationService $reservationService, UserService $userService)
     {
         $this->reservationService = $reservationService;
+        $this->userService = $userService;
     }
 
 
@@ -141,6 +145,48 @@ class ReservationController extends AbstractFOSRestController
             return $this->handleView($this->view('Reservation must be pending to be rejected', Response::HTTP_FORBIDDEN));
         }
         $reservation->setState(new States(States::REJECTED));
+        $this->reservationService->save($reservation);
+        return $this->handleView($this->view($reservation, Response::HTTP_OK));
+    }
+
+    /**
+     * @Rest\Put("/{rid}/attendees/{uid}", name="add_attendee", requirements={"rid": "\d+", "uid": "\d+"})
+     * @param int $rid reservation ID
+     * @param int $uid user ID
+     * @return Response
+     */
+    public function addAttendee(int $rid, int $uid): Response
+    {
+        $reservation = $this->reservationService->find($rid);
+        $user = $this->userService->find($uid);
+        if (!$reservation || !$user) {
+            return $this->handleView($this->view([], Response::HTTP_NOT_FOUND));
+        }
+        if (!$reservation->isPending()) {
+            return $this->handleView($this->view('Reservation must be pending to accept any more attendees', Response::HTTP_FORBIDDEN));
+        }
+        $reservation->addAttendee($user);
+        $this->reservationService->save($reservation);
+        return $this->handleView($this->view($reservation, Response::HTTP_OK));
+    }
+
+    /**
+     * @Rest\Delete("/{rid}/attendees/{uid}", name="remove_attendee", requirements={"rid": "\d+", "uid": "\d+"})
+     * @param int $rid reservation ID
+     * @param int $uid user ID
+     * @return Response
+     */
+    public function removeAttendee(int $rid, int $uid): Response
+    {
+        $reservation = $this->reservationService->find($rid);
+        $user = $this->userService->find($uid);
+        if (!$reservation || !$user) {
+            return $this->handleView($this->view([], Response::HTTP_NOT_FOUND));
+        }
+        if (!$reservation->isPending()) {
+            return $this->handleView($this->view('Reservation must be pending to remove any attendees', Response::HTTP_FORBIDDEN));
+        }
+        $reservation->removeAttendee($user);
         $this->reservationService->save($reservation);
         return $this->handleView($this->view($reservation, Response::HTTP_OK));
     }
