@@ -61,26 +61,11 @@
                 <td data-label="Phone number">{{ user.phoneNumber }}</td>
                 <td class="table-buttons">
                     <a class="button-base button-main" href={{ path('users_detail', {id: user.id}) }}>Detail</a>
+                    {% include 'users/buttons.html.twig' %}
                 </td>
             </tr>
         {% endfor %}
         </tbody>
     </table>
-
-    {% set pageCnt = pagesCount(params, usersCount) %}
-        {% if pageCnt > 1 %}
-            <div id="pagination">
-                <a class="button-base button-main button-pagination {{ currentPage(params) > 1 ? "" : "dummy" }}"
-                   href={{ currentPage(params) > 1 ? path('users_index', prevPageParams(params)) : "" }}>
-                    {{ source('@icons/arrow-left.svg') }}
-                </a>
-                <button class="button-base button-secondary-outline button-pagination">
-                    {{ currentPage(params) }}
-                </button>
-                <a class="button-base button-main button-pagination {{ currentPage(params) < pageCnt ? "" : "dummy" }}"
-                   href={{ path('users_index', nextPageParams(params, pageCnt)) }}>
-                    {{ source('@icons/arrow-right.svg') }}
-                </a>
-            </div>
-        {% endif %}
+    {% include 'pagination.html.twig' with { itemsCount: usersCount, indexPath: 'users_index' } %}
 {% endblock %}
