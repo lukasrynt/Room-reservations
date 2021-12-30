@@ -6,6 +6,7 @@
 namespace App\TwigExtensions;
 
 use App\Services\Paginator;
+use App\Services\ParamsParser;
 use Symfony\Component\HttpFoundation\Request;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFunction;
@@ -22,23 +23,27 @@ class ParamsExtension extends AbstractExtension
         ];
     }
 
-    public function nextPageParams(Request $request, int $entitiesCount, ?array $searchParams): array
+    public function nextPageParams(array $params, int $entitiesCount): array
     {
-        return Paginator::updateQueryParams($request->query->all(), true, $searchParams, $entitiesCount);
+        return ParamsParser::convertToUrlParams(
+            Paginator::updateQueryParams($params, true, $entitiesCount)
+        );
     }
 
-    public function prevPageParams(Request $request, ?array $searchParams): array
+    public function prevPageParams(array $params): array
     {
-        return Paginator::updateQueryParams($request->query->all(), false, $searchParams);
+        return ParamsParser::convertToUrlParams(
+            Paginator::updateQueryParams($params, false)
+        );
     }
 
-    public function currentPage(Request $request): int
+    public function currentPage(array $params): int
     {
-        return Paginator::getCurrentPageFromParams($request->query->all());
+        return Paginator::getCurrentPageFromParams($params);
     }
 
-    public function pagesCount(Request $request, int $entitiesCount): int
+    public function pagesCount(array $params, int $entitiesCount): int
     {
-        return Paginator::getPagesCount($request->query->all(), $entitiesCount);
+        return Paginator::getPagesCount($params, $entitiesCount);
     }
 }

@@ -67,10 +67,15 @@ class UserService
     public function filter(array $queryParams): array
     {
         return $this->userRepository->filter(
-            ParamsParser::getFilters($queryParams, 'filter_by'),
-            ParamsParser::getFilters($queryParams, 'order_by'),
-            ParamsParser::getFilters($queryParams, 'paginate')
+            $queryParams['filter_by'],
+            $queryParams['order_by'],
+            $queryParams['paginate']
         );
+    }
+
+    public function countForParams(array $queryParams): int
+    {
+        return count($this->userRepository->filter($queryParams['filter_by']));
     }
 
     public function search(array $searchParams): array

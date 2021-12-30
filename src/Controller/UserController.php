@@ -94,13 +94,14 @@ class UserController extends AbstractController
     {
         $this->denyAccessUnlessGranted('view_users');
         $searchForm = $this->createForm(UserSearchType::class);
-        $count = count($this->userService->findAll());
-        $users = $this->userService->filter($request->query->all());
+        $params = ParamsParser::getParamsFromUrl($request->query->all());
+        $count = $this->userService->countForParams($params);
+        $users = $this->userService->filter($params);
         return $this->render('users/index.html.twig', [
             'users' => $users,
             'searchForm' => $searchForm->createView(),
             'usersCount' => $count,
-            'searchParams' => []
+            'params' => $params
         ]);
     }
 
@@ -113,19 +114,14 @@ class UserController extends AbstractController
         $this->denyAccessUnlessGranted('view_users');
         $searchForm = $this->createForm(UserSearchType::class);
         $searchForm->handleRequest($request);
-        if ($searchForm->isSubmitted() && $searchForm->isValid()) {
-            $users = $this->userService->search($searchForm->getData());
-        }
-        $usersCnt = $users ? count($users) : 0;
-        $filters = $request->query->all();
-        $filters['filter_by'] = ParamsParser::mapArrayToParams($searchForm->getData());
-        dump($filters);
-        $users = $this->userService->filter($filters);
+        $params = ParamsParser::getParamsFromUrl($request->query->all(), $searchForm->getData());
+        $users = $this->userService->filter($params);
+        $count = $this->userService->countForParams($params);
         return $this->render('users/index.html.twig', [
-            'users' => $users ?? [],
+            'users' => $users,
             'searchForm' => $searchForm->createView(),
-            'usersCount' => $usersCnt,
-            'searchParams' => $searchForm->getData()
+            'usersCount' => $count,
+            'params' => $params
         ]);
     }
 

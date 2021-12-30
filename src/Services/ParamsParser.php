@@ -11,6 +11,33 @@ namespace App\Services;
  */
 class ParamsParser
 {
+    public static function convertToUrlParams(array $params): array
+    {
+        $res = [];
+        foreach ($params as $key => $value) {
+            $res[$key] = self::mapArrayToParams($value);
+        }
+        return $res;
+    }
+
+    public static function getParamsFromUrl(array $queryParams, array $searchParams = null): array
+    {
+        $res = [];
+        $paginateParams = self::getFilters($queryParams, 'paginate');
+        if (!array_key_exists('page_size', $paginateParams)) {
+            $paginateParams['page_size'] = Paginator::DEFAULT_PAGE_SIZE;
+        }
+        $res['paginate'] = $paginateParams;
+        if ($searchParams) {
+            $filters = array_filter($searchParams, fn($val) => $val !== null);
+        } else {
+            $filters = array_filter(self::getFilters($queryParams, 'filter_by'), fn($val) => $val !== null);
+        }
+        $res['filter_by'] = $filters;
+        $res['order_by'] = self::getFilters($queryParams, 'order_by');
+        return $res;
+    }
+
     /**
      * Parse params in format ?order_by=first_order:ASC,second_order:DESC or for any other
      * @param array $params
@@ -19,14 +46,16 @@ class ParamsParser
      */
     public static function getFilters(array $params, string $type): ?array
     {
-        if (!array_key_exists($type, $params))
-            return null;
+        if (!array_key_exists($type, $params)) {
+            return [];
+        }
         $filters = explode(',', $params[$type]);
         $mapped = [];
         foreach ($filters as $filter) {
             $expl = explode(':', $filter);
-            if (count($expl) == 2)
+            if (count($expl) == 2) {
                 $mapped[$expl[0]] = $expl[1];
+            }
         }
         return $mapped;
     }
@@ -46,20 +75,4 @@ class ParamsParser
         }
         return $res;
     }
-
-    public static function getSearchUrl(array $array, string $basePath): string
-    {
-        $func = function ($key, $value) {
-            if ($value) {
-                return "$key:$value";
-            } else {
-                return "";
-            }
-        };
-        $array = array_map($func, array_keys($array), $array);
-        $array = array_filter($array, fn($val) => $val !== "");
-        $imploded = implode(',', $array);
-        return "$basePath?filter_by=$imploded";
-    }
-
 }
