@@ -13,6 +13,9 @@
     <article id="form">
         {{ form_start(form) }}
         {{ form_row(form.name) }}
+        {{ form_row(form.groupManager) }}
+        {{ form_row(form.parent) }}
+        {{ form_row(form.rooms) }}
         {{ form_end(form) }}
     </article>
 {% endblock %}
