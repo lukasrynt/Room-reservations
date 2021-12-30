@@ -3,8 +3,8 @@ POST http://localhost:8080/api/reservations/
 Content-Type: application/json
 
 {
-  "user_id": 1,
-  "room_id": 1,
+  "user": 1,
+  "room": 1,
   "state": "PENDING",
   "date": "2021-11-17",
   "time_from": "18:00:00",
@@ -13,12 +13,12 @@ Content-Type: application/json
 
 ###
 # Update reservation
-PUT http://localhost:8080/api/reservations/9
+PUT http://localhost:8080/api/reservations/11
 Content-Type: application/json
 
 {
-  "user_id": 1,
-  "room_id": 1,
+  "user": 1,
+  "room": 1,
   "state": "PENDING",
   "date": "2021-11-17",
   "time_from": "18:00:00",
