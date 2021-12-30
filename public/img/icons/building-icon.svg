@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg class="button-icon" width="1em" height="1em" aria-hidden="true" role="img" viewBox="8 0 240 240" xmlns="http://www.w3.org/2000/svg">
+    <path d="M240 208h-8V104a16 16 0 0 0-16-16h-64V40a16 16 0 0 0-16-16H40a16 16 0 0 0-16 16v168h-8a8 8 0 0 0 0 16h224a8 8 0 0 0 0-16zm-120-72a8 8 0 0 1-8 8H80a8 8 0 0 1 0-16h32a8 8 0 0 1 8 8zM64 64h32a8 8 0 0 1 0 16H64a8 8 0 0 1 0-16zm0 104h32a8 8 0 0 1 0 16H64a8 8 0 0 1 0-16zm88-64h64v104h-64zm48 72a8 8 0 0 1-8 8h-16a8 8 0 0 1 0-16h16a8 8 0 0 1 8 8zm-32-40a8 8 0 0 1 8-8h16a8 8 0 0 1 0 16h-16a8 8 0 0 1-8-8z" fill="currentColor"/>
+</svg>
