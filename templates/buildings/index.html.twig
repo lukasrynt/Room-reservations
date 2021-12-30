@@ -9,8 +9,9 @@
 {% endblock %}
 
 {% block main %}
-    <h1>Buildings</h1>
-
+    {% if is_granted('create_building') %}
+        <a class="button-base button-success-outline" href={{ path('buildings_create') }}>Add</a>
+    {% endif %}
     <table>
         <thead>
         <tr>
@@ -25,9 +26,11 @@
                 <td data-label="Address">{{ building.address }}</td>
                 <td class="table-buttons">
                     <a class="button-base button-main" href={{ path('buildings_detail', { id: building.id }) }}>Detail</a>
+                    {% include 'buildings/buttons.html.twig' %}
                 </td>
             </tr>
         {% endfor %}
         </tbody>
     </table>
+    {% include 'pagination.html.twig' with { itemsCount: buildingsCount, indexPath: 'buildings_index' } %}
 {% endblock %}

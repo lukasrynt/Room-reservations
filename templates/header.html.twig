@@ -15,6 +15,11 @@
                         {{ source('@icons/classroom-icon.svg') }}
                         <span>Classrooms</span></a></li>
             {% endif %}
+            {% if is_granted('view_buildings') %}
+                <li><a class="button-base {{ linkClassForUrl(app.request.pathInfo, 'buildings') }} button-with-icon" href="{{ path('buildings_index') }}">
+                        {{ source('@icons/building-icon.svg') }}
+                        <span>Buildings</span></a></li>
+            {% endif %}
             {% if is_granted('view_reservations') %}
                 <li><a class="button-base {{ linkClassForUrl(app.request.pathInfo, 'reservations') }} button-with-icon" href="{{ path('reservations_index') }}">
                         {{ source('@icons/reservation-icon.svg') }}

@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %} Building edit form {% endblock %}
+{% block title %} Edit building {% endblock %}
 
 {% block stylesheets %}
     {{ parent() }}
@@ -8,17 +8,10 @@
 {% endblock %}
 
 {% block main %}
-    <h1>Building edit form</h1>
+    <h1>Edit building</h1>
 
     <article id="form">
         {{ form_start(form) }}
-        {{ form_row(form.name) }}
-        {{ form_row(form.address) }}
-        <div id="form-buttons">
-            {# TODO : add delete functionality #}
-            {{ form_widget(form.delete) }}
-            {{ form_widget(form.edit) }}
-        </div>
         {{ form_end(form) }}
     </article>
 {% endblock %}

@@ -168,6 +168,14 @@ footer {
     color: var(--main-darker);
 }
 
+.top-button {
+    margin-top: 1em;
+}
+
+.detail-list {
+    margin-left: 1em;
+}
+
 .alert {
     position: relative;
     padding: 0.75rem 1.25rem;
