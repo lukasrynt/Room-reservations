@@ -35,9 +35,9 @@ class BuildingsVoter extends Voter
 
         switch($attribute) {
             case self::VIEW_ALL:
-                return $this->canViewAll($user);
+                return $this->canViewAll();
             case self::VIEW:
-                return $this->canView($user);
+                return $this->canView();
             case self::EDIT:
                 return $this->canEdit($user);
             case self::CREATE:
@@ -49,28 +49,28 @@ class BuildingsVoter extends Voter
         }
     }
 
-    private function canViewAll(User $account): bool
+    private function canViewAll(): bool
     {
-        return $account->isAdmin();
+        return true;
     }
 
-    private function canView(User $account): bool
+    private function canView(): bool
     {
-        return $this->canViewAll($account);
+        return true;
     }
 
     private function canCreate(User $account): bool
     {
-        return $this->canViewAll($account);
+        return  $account->isAdmin();
     }
 
     private function canEdit(User $account): bool
     {
-        return $this->canViewAll($account);
+        return $this->canCreate($account);
     }
 
     private function canDelete(User $account): bool
     {
-        return $this->canViewAll($account);
+        return $this->canCreate($account);
     }
 }
