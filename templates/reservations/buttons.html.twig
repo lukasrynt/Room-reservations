@@ -10,3 +10,9 @@
             Reject</a>
     {% endif %}
 {% endif %}
+{% if is_granted('delete_reservation', reservation) %}
+    <form method="post" action="{{ path('reservations_delete', { id: reservation.id }) }}">
+        <input type="hidden" name="_method" value="DELETE">
+        <button type="submit" class="button-base button-danger-outline">Delete</button>
+    </form>
+{% endif %}
