@@ -15,6 +15,8 @@ use Doctrine\Common\Collections\Criteria;
  */
 class Filter
 {
+    const URL_KEY = 'filter_by';
+
     private Criteria $criteria;
     private bool $andMode;
 

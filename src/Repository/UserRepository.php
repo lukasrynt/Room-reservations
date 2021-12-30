@@ -30,15 +30,17 @@ class UserRepository extends ServiceEntityRepository
      * @param array|null $paginationFilters
      * @return array
      */
-    public function filter(?array $findFilters, ?array $orderByFilters, ?array $paginationFilters): array
+    public function filter(?array $findFilters, ?array $orderByFilters = null, ?array $paginationFilters = null): array
     {
         $criteria = (new Filter())->getFilterCriteria($findFilters);
         $criteria = (new Orderer($criteria))->getOrderCriteria($orderByFilters);
-        $criteria = (new Paginator($criteria))->getCriteriaForPage($paginationFilters);
+        if ($paginationFilters) {
+            $criteria = (new Paginator($criteria))->getCriteriaForPage($paginationFilters);
+        }
         return $this->matching($criteria)->toArray();
     }
 
-    public function search(?array $findFilters): Collection
+    public function search(?array $findFilters): array
     {
         $criteria = (new Filter())->getFilterCriteria($findFilters);
         return $this->matching($criteria)->toArray();

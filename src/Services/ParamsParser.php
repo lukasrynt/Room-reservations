@@ -11,6 +11,34 @@ namespace App\Services;
  */
 class ParamsParser
 {
+    public static function convertToUrlParams(array $params): array
+    {
+        $res = [];
+        foreach ($params as $key => $value) {
+            $res[$key] = self::mapArrayToParams($value);
+        }
+        return $res;
+    }
+
+    public static function getParamsFromUrl(array $queryParams, array $searchParams = null): array
+    {
+        dump($queryParams);
+        $res = [];
+        $paginateParams = self::getFilters($queryParams, Paginator::URL_KEY);
+        if (!array_key_exists('page_size', $paginateParams)) {
+            $paginateParams['page_size'] = Paginator::DEFAULT_PAGE_SIZE;
+        }
+        $res[Paginator::URL_KEY] = $paginateParams;
+        if ($searchParams) {
+            $filters = array_filter($searchParams, fn($val) => $val !== null);
+        } else {
+            $filters = array_filter(self::getFilters($queryParams, Filter::URL_KEY), fn($val) => $val !== null);
+        }
+        $res[Filter::URL_KEY] = $filters;
+        $res[Orderer::URL_KEY] = self::getFilters($queryParams, Orderer::URL_KEY);
+        return $res;
+    }
+
     /**
      * Parse params in format ?order_by=first_order:ASC,second_order:DESC or for any other
      * @param array $params
@@ -19,14 +47,16 @@ class ParamsParser
      */
     public static function getFilters(array $params, string $type): ?array
     {
-        if (!array_key_exists($type, $params))
-            return null;
+        if (!array_key_exists($type, $params)) {
+            return [];
+        }
         $filters = explode(',', $params[$type]);
         $mapped = [];
         foreach ($filters as $filter) {
             $expl = explode(':', $filter);
-            if (count($expl) == 2)
+            if (count($expl) == 2) {
                 $mapped[$expl[0]] = $expl[1];
+            }
         }
         return $mapped;
     }
@@ -37,9 +67,12 @@ class ParamsParser
         $keys = array_keys($array);
         $last = end($keys);
         foreach ($array as $key => $val) {
-            $res .= $key . ':' . $val;
-            if ($key != $last)
-                $res .= ',';
+            if ($val) {
+                $res .= $key . ':' . $val;
+                if ($key != $last) {
+                    $res .= ',';
+                }
+            }
         }
         return $res;
     }

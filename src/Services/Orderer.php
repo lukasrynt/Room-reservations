@@ -15,6 +15,8 @@ use Doctrine\Common\Collections\Criteria;
  */
 class Orderer
 {
+    const URL_KEY = 'order_by';
+
     private Criteria $criteria;
 
     /**
