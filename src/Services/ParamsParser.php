@@ -22,7 +22,6 @@ class ParamsParser
 
     public static function getParamsFromUrl(array $queryParams, array $searchParams = null): array
     {
-        dump($queryParams);
         $res = [];
         $paginateParams = self::getFilters($queryParams, Paginator::URL_KEY);
         if (!array_key_exists('page_size', $paginateParams)) {

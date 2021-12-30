@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Form\Type\BuildingType;
 use App\Services\BuildingService;
+use App\Services\ParamsParser;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\ButtonType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
@@ -29,12 +30,21 @@ class BuildingController extends AbstractController
 
     /**
      * @Route("/", name="index")
+     * @param Request $request
      * @return Response
      */
-    public function index(): Response
+    public function index(Request $request): Response
     {
-        $buildings = $this->buildingService->findAll();
-        return $this->render('buildings/index.html.twig', ['buildings' => $buildings]);
+        $this->denyAccessUnlessGranted('view_buildings');
+        $params = ParamsParser::getParamsFromUrl($request->query->all());
+        $count = $this->buildingService->countForParams($params);
+        $buildings = $this->buildingService->filter($params);
+        dump($count);
+        return $this->render('buildings/index.html.twig', [
+            'buildings' => $buildings,
+            'buildingsCount' => $count,
+            'params' => $params
+        ]);
     }
 
     /**
@@ -48,6 +58,7 @@ class BuildingController extends AbstractController
         if (!$building) {
             return $this->render('errors/404.html.twig');
         }
+        $this->denyAccessUnlessGranted('view_building', $building);
         return $this->render('buildings/detail.html.twig', ['building' => $building]);
     }
 
@@ -64,7 +75,7 @@ class BuildingController extends AbstractController
         if (!$building) {
             return $this->render('errors/404.html.twig');
         }
-
+        $this->denyAccessUnlessGranted('edit_building', $building);
         $form = $this->createForm(BuildingType::class, $building)
             ->add('edit', SubmitType::class, [
                 'attr' => ['class' => 'button-base button-success'],
