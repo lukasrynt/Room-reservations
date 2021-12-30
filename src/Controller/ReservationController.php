@@ -51,7 +51,7 @@ class ReservationController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="detail", requirements={"id": "\d+"})
+     * @Route("/{id}", name="detail", methods="GET", requirements={"id": "\d+"})
      * @param int $id
      * @return Response
      */
@@ -64,6 +64,24 @@ class ReservationController extends AbstractController
         return $this->render('reservations/detail.html.twig', [
             'reservation' => $reservation
         ]);
+    }
+
+    /**
+     * @Route("/{id}", name="delete", methods="DELETE", requirements={"id": "\d+"})
+     * @param int $id
+     * @return Response
+     */
+    public function delete(int $id): Response
+    {
+        $reservation = $this->reservationService->find($id);
+        $this->denyAccessUnlessGranted('delete_reservation', $reservation);
+        if (!$reservation) {
+            return $this->render('errors/404.html.twig');
+        } else {
+            $this->reservationService->delete($reservation);
+            $this->addFlash('success', "Reservation #{$id} for room {$reservation->getRoom()->getName()} was successfully deleted.");
+            return $this->redirectToRoute('reservations_index');
+        }
     }
 
     /**
