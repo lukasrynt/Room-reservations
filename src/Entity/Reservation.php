@@ -7,11 +7,14 @@ use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use JMS\Serializer\Annotation\ExclusionPolicy;
+use JMS\Serializer\Annotation\Expose;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\Mapping\ClassMetadata;
 
 /**
  * @ORM\Entity(repositoryClass=ReservationRepository::class)
+ * @ExclusionPolicy("all")
  */
 class Reservation
 {
@@ -19,16 +22,19 @@ class Reservation
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
+     * @Expose
      */
     private ?int $id;
 
     /**
      * @ORM\Column(type="datetime")
+     * @Expose
      */
     private $date;
 
     /**
      * @ORM\Column(type="time")
+     * @Expose
      * @Assert\Expression(
      *     "this.getTimeTo() <= this.getRoom().getOpenedTo()",
      *     message="The room is not opened at this time!",
@@ -42,6 +48,7 @@ class Reservation
 
     /**
      * @ORM\Column(type="time")
+     * @Expose
      * @Assert\Expression(
      *     "this.getTimeFrom() >= this.getRoom().getOpenedFrom()",
      *     message="The room is not opened at this time!",
@@ -51,23 +58,27 @@ class Reservation
 
     /**
      * @ORM\Column(type="enum_state_type", options={"default": "PENDING"}, length=255, nullable=false)
+     * @Expose
      */
     private States $state;
 
     /**
      * @ORM\ManyToOne(targetEntity=User::class, inversedBy="reservations")
      * @ORM\JoinColumn(nullable=false)
+     * @Expose
      */
     private User $user;
 
     /**
      * @ORM\ManyToOne(targetEntity=Room::class, inversedBy="reservations")
      * @ORM\JoinColumn(nullable=false)
+     * @Expose
      */
     private Room $room;
 
     /**
      * @ORM\ManyToMany(targetEntity=User::class, inversedBy="reservationsToAttend")
+     * @Expose
      * @Assert\Expression(
      *     "this.getRoom().getCapacity() >= this.getAttendees().count()",
      *     message="The capacity of selected room is exceeded!",

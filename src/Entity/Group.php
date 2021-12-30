@@ -6,10 +6,13 @@ use App\Repository\GroupRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use JMS\Serializer\Annotation\ExclusionPolicy;
+use JMS\Serializer\Annotation\Expose;
 
 /**
  * @ORM\Entity(repositoryClass=GroupRepository::class)
  * @ORM\Table(name="`group`")
+ * @ExclusionPolicy("all")
  */
 class Group
 {
@@ -17,11 +20,13 @@ class Group
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
+     * @Expose
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Expose
      */
     private ?string $name;
 
@@ -32,11 +37,13 @@ class Group
 
     /**
      * @ORM\OneToMany(targetEntity="User", mappedBy="group")
+     * @Expose
      */
     private Collection $members;
 
     /**
      * @ORM\OneToMany(targetEntity="Room", mappedBy="group")
+     * @Expose
      */
     private Collection $rooms;
 
