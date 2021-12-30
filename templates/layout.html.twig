@@ -26,13 +26,8 @@
                 let main = document.getElementsByTagName('main')[0];
                 let header = document.getElementsByClassName('main-header')[0];
                 hamburgerMenuInstance = new HamburgerMenu(main, header);
+                hamburgerMenuInstance.watch();
             });
-
-            {# is it worth it? #}
-            window.addEventListener('resize', function () {
-                if (window.innerWidth > 740)
-                    hamburgerMenuInstance.hide()
-            })
         </script>
     {% endblock %}
 </head>

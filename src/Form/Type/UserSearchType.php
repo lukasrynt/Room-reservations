@@ -17,16 +17,27 @@ class UserSearchType extends AbstractType
             ->setMethod('GET')
             ->setAction('/users/search')
             ->add('firstName', TextType::class, [
-                'required' => false, 'label' => 'Jméno']
+                'required' => false,
+                'label' => 'First Name',
+                'attr' => ['placeholder' => 'John']
+                ]
             )->add('lastName', TextType::class, [
-                'required' => false, 'label' => 'Příjmení']
+                'required' => false,
+                'label' => 'Last Name',
+                'attr' => ['placeholder' => 'Doe']
+                ]
             )->add('email', TextType::class, [
-                'required' => false]
+                'required' => false,
+                'attr' => ['placeholder' => 'example@xyz.com']
+                ]
             )->add('phoneNumber', TextType::class, [
-                'required' => false, 'label' => 'Telefonní číslo']
+                'required' => false,
+                'label' => 'Phone Number',
+                'attr' => ['placeholder' => '111222333']
+                ]
             )->add('search', SubmitType::class, [
-                'attr' => ['class' => 'primary-button'],
-                'label' => 'Hledat'
+                'attr' => ['class' => 'button-base button-main'],
+                'label' => 'Search'
             ]);
     }
 }
