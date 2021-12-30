@@ -2,6 +2,19 @@
 
 {% block title %} Reserve a room {% endblock %}
 
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('styles/form.css') }}" type="text/css">
+{% endblock %}
+
 {% block main %}
-    {{ form(form) }}
+    <h1>Reservation form</h1>
+
+    <article id="form">
+        {{ form_start(form) }}
+        {{ form_row(form.user) }}
+        {{ form_row(form.room) }}
+        {{ form_end(form) }}
+    </article>
+
 {% endblock %}

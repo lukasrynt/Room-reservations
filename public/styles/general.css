@@ -64,6 +64,7 @@ footer {
 .button-with-icon {
     display: flex;
     align-items: center;
+    justify-content: center;
 }
 
 .button-icon {
@@ -167,6 +168,14 @@ footer {
     color: var(--main-darker);
 }
 
+.top-button {
+    margin-top: 1em;
+}
+
+.detail-list {
+    margin-left: 1em;
+}
+
 .alert {
     position: relative;
     padding: 0.75rem 1.25rem;
@@ -185,6 +194,12 @@ footer {
     color: #155724;
     background-color: #d4edda;
     border-color: #c3e6cb;
+}
+
+.alert-warning {
+    color: #856404;
+    background-color: #fff3cd;
+    border-color: #ffeeba;
 }
 
 section.alerts {

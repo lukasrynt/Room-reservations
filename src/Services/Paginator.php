@@ -6,10 +6,12 @@
 namespace App\Services;
 
 use Doctrine\Common\Collections\Criteria;
+use PhpParser\Node\Param;
 
 class Paginator
 {
-    const DEFAULT_PAGE_SIZE = 20;
+    const DEFAULT_PAGE_SIZE = 5;
+    const URL_KEY = 'paginate';
 
     private Criteria $criteria;
 
@@ -30,29 +32,46 @@ class Paginator
         return $this->criteria;
     }
 
-    public static function getCurrentPageFromParams(array $queries): int
+    public static function getCurrentPageFromParams(array $params): int
     {
-        $attributes = ParamsParser::getFilters($queries, 'paginate');
-        return (isset($attributes['page']) && $attributes['page'] >= 1) ? $attributes['page'] : 1;
+        $page = 1;
+        if (array_key_exists(self::URL_KEY, $params)) {
+            $page = $params[self::URL_KEY]['page'] ?? 1;
+        }
+        return $page;
     }
 
-    public static function updateQueryParams(?array $queries, bool $next, int $limit = 0): array
+    public static function updateQueryParams(array $params, bool $next, int $limit = 0): array
     {
-        if ($queries) {
-            $paginateParams = ParamsParser::getFilters($queries, 'paginate');
-            $paginateParams = self::updateParams($paginateParams, $next, $limit);
-            $queries['paginate'] = ParamsParser::mapArrayToParams($paginateParams);
-        } else
-            $queries = ['paginate' => 'page:' . self::getPage(null, $next, $limit)];
-        return $queries;
+        if (array_key_exists(self::URL_KEY, $params)) {
+            $params[self::URL_KEY] = self::updateParams($params[self::URL_KEY], $next, $limit);
+        } else {
+            $params[self::URL_KEY] = ['page' => self::getPage(null, $next, $limit)];
+        }
+        return self::filterOutParams($params);
     }
 
-    public static function getPagesCount(?array $queries, int $entitiesCount): int
+    private static function filterOutParams(array $queries): array
+    {
+        $res = [];
+        foreach ($queries as $key => $val) {
+            if ($key == 'filter_by' || $key == self::URL_KEY || $key == 'order_by') {
+                $res[$key] = $val;
+            }
+        }
+        return $res;
+    }
+
+    public static function getPagesCount(array $params, int $entitiesCount): int
     {
         $pageSize = self::DEFAULT_PAGE_SIZE;
-        if ($queries)
-            $pageSize = ParamsParser::getFilters($queries, 'paginate')['page_size'] ?? self::DEFAULT_PAGE_SIZE;
-        return $entitiesCount / $pageSize;
+        if (array_key_exists(self::URL_KEY, $params)) {
+            $pageSize = $params[self::URL_KEY]['page_size'] ?? self::DEFAULT_PAGE_SIZE;
+        }
+        if ($pageSize <= 0) {
+            $pageSize = self::DEFAULT_PAGE_SIZE;
+        }
+        return ceil($entitiesCount / floatval($pageSize));
     }
 
     private static function updateParams(array $paginatorParams, bool $next, int $limit = 0): array
@@ -64,9 +83,11 @@ class Paginator
     private static function getPage(?int $currentPage, bool $next, int $limit = 0): int
     {
         $currentPage ??= 1;
-        if ($next)
+        if ($next) {
             return $currentPage >= $limit ? $limit : $currentPage + 1;
-        else
+        }
+        else {
             return $currentPage <= 1 ? 1 : $currentPage - 1;
+        }
     }
 }

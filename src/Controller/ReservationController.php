@@ -91,24 +91,65 @@ class ReservationController extends AbstractController
      */
     public function create(Request $request): Response
     {
-        # TODO: auto approve requests if logged in as admin of the room/group/sysadmin - should be done using voters
         $user = $this->getUser();
         $this->denyAccessUnlessGranted('create_reservation');
         $rooms = $this->userService->getRoomsForUser($user);
         $form = $this->createForm(ReservationType::class, null, ['rooms' => $rooms ?? []])
-            ->add('Reserve', SubmitType::class);
+            ->add('Reserve', SubmitType::class, [
+                'attr' => ['class' => 'button-base button-success']
+            ]);
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            $reservation = $form->getData();
-            $reservation->setState(new States("PENDING"));
-            $this->reservationService->save($form->getData());
-            $this->addFlash('success', "Reservation for room {$reservation->getRoom()->getName()} was successfully created.");
-            return $this->redirectToRoute('reservations_detail', ['id' => $reservation->getId()]);
+            if (!$this->reservationService->checkTimeOfReservation($form->getData()))
+            {
+                $this->addFlash('danger', "Reservation in this time already exists!");
+            } else {
+                $reservation = $form->getData();
+                $reservation->setState(new States("PENDING"));
+                $this->reservationService->save($form->getData());
+                $this->addFlash('success', "Reservation for room {$reservation->getRoom()->getName()} was successfully created.");
+                return $this->redirectToRoute('reservations_detail', ['id' => $reservation->getId()]);
+            }
         }
 
         return $this->render('reservations/create.html.twig', [
             'form' => $form->createView()
+        ]);
+    }
+
+
+    /**
+     * @Route("/{id}/edit", name="edit", requirements={"id": "\d+"})
+     * @param Request $request
+     * @param int $id
+     * @return Response
+     */
+    public function edit(Request $request, int $id): Response{
+        $reservation = $this->reservationService->find($id);
+
+        if (!$reservation) {
+            return $this->render('errors/404.html.twig');
+        }
+
+        $this->denyAccessUnlessGranted('edit_reservation', $reservation);
+        $form = $this->createForm(BookRoomType::class, $reservation)
+            ->add('Edit', SubmitType::class, [
+                    'attr' => ['class' => 'button-base button-success']
+                ]
+            );
+
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()){
+            $this->reservationService->save($form->getData());
+            $this->addFlash('success', "Reservation #{$reservation->getId()} was successfully edited.");
+            return $this->redirectToRoute('reservations_detail', ['id' => $reservation->getId()]);
+        }
+
+        return $this->render('reservations/bookRoom.html.twig', [
+            'form' => $form->createView(),
+            'room' => $reservation->getRoom(),
+            'user' => $reservation->getUser()
         ]);
     }
 
@@ -120,7 +161,6 @@ class ReservationController extends AbstractController
      */
     public function bookRoom(Request $request, int $roomId): Response
     {
-        # TODO: auto approve requests if logged in as admin of the room/group/sysadmin - should be done using voters
         $user = $this->getUser();
         $room = $this->roomService->find($roomId);
         if (!$room) {
@@ -130,13 +170,21 @@ class ReservationController extends AbstractController
         $reservation = $this->reservationService->newWithRequesterAndRoom($user, $room);
 
         $form = $this->createForm(BookRoomType::class, $reservation)
-            ->add('Reserve', SubmitType::class);
+            ->add('Reserve', SubmitType::class, [
+                    'attr' => ['class' => 'button-base button-success']
+                ]
+            );
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->reservationService->save($form->getData());
-            $this->addFlash('success', "Booking request for room {$room->getName()} was successfully created. Please wait for administrator to submit it.");
-            return $this->redirectToRoute('reservations_detail', ['id' => $reservation->getId()]);
+            if (!$this->reservationService->checkTimeOfReservation($form->getData()))
+            {
+                $this->addFlash('danger', "Reservation at this time already exists!");
+            } else {
+                $this->reservationService->save($form->getData());
+                $this->addFlash('success', "Booking request for room {$room->getName()} was successfully created. Please wait for administrator to submit it.");
+                return $this->redirectToRoute('reservations_detail', ['id' => $reservation->getId()]);
+            }
         }
 
         return $this->render('reservations/bookRoom.html.twig', [

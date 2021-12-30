@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\User;
 use App\Form\Type\UserSearchType;
 use App\Form\Type\UserType;
+use App\Services\ParamsParser;
 use App\Services\UserService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\ButtonType;
@@ -64,10 +65,6 @@ class UserController extends AbstractController
             ->add('edit', SubmitType::class, [
                 'attr' => ['class' => 'button-base button-success'],
                 'label' => 'Save'
-            ])
-            ->add('delete', ButtonType::class, [
-                'attr' => ['class' => 'button-base button-danger-outline'],
-                'label' => 'Delete'
             ]);
 
         $form->handleRequest($request);
@@ -93,12 +90,14 @@ class UserController extends AbstractController
     {
         $this->denyAccessUnlessGranted('view_users');
         $searchForm = $this->createForm(UserSearchType::class);
-        $count = count($this->userService->findAll());
-        $users = $this->userService->filter($request->query->all());
+        $params = ParamsParser::getParamsFromUrl($request->query->all());
+        $count = $this->userService->countForParams($params);
+        $users = $this->userService->filter($params);
         return $this->render('users/index.html.twig', [
             'users' => $users,
             'searchForm' => $searchForm->createView(),
-            'usersCount' => $count
+            'usersCount' => $count,
+            'params' => $params
         ]);
     }
 
@@ -111,13 +110,14 @@ class UserController extends AbstractController
         $this->denyAccessUnlessGranted('view_users');
         $searchForm = $this->createForm(UserSearchType::class);
         $searchForm->handleRequest($request);
-        if ($searchForm->isSubmitted() && $searchForm->isValid()) {
-            $users = $this->userService->search($searchForm->getData());
-        }
+        $params = ParamsParser::getParamsFromUrl($request->query->all(), $searchForm->getData());
+        $users = $this->userService->filter($params);
+        $count = $this->userService->countForParams($params);
         return $this->render('users/index.html.twig', [
-            'users' => $users ?? [],
+            'users' => $users,
             'searchForm' => $searchForm->createView(),
-            'usersCount' => $users ? count($users) : 0
+            'usersCount' => $count,
+            'params' => $params
         ]);
     }
 

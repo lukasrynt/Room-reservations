@@ -10,7 +10,9 @@ use App\Entity\Room;
 use App\Entity\States;
 use App\Entity\User;
 use App\Repository\ReservationRepository;
+use Doctrine\Common\Collections\Criteria;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\Validator\Constraints\Date;
 
 class ReservationService
 {
@@ -88,5 +90,42 @@ class ReservationService
         $request->setState(new States("PENDING"));
         $request->setRoom($room);
         return $request;
+    }
+
+    public function filterCurrentReservation(Room $room) : \Doctrine\ORM\LazyCriteriaCollection
+    {
+        $today = new \DateTime();
+        $criteria = $this->getCriteriaDateRoomState($room, $today->format("Y-m-d"));
+        $criteria
+            ->andWhere(Criteria::expr()->lte('timeFrom', new \DateTime($today->format("H:i:s"))))
+            ->andWhere(Criteria::expr()->gte('timeTo', new \DateTime($today->format("H:i:s"))));
+        return $this->reservationRepository->matching($criteria);
+    }
+
+    public function checkTimeOfReservation(Reservation $reservation): Bool
+    {
+        $criteria = Criteria::create()
+            ->where( Criteria::expr()->andX(
+                Criteria::expr()->gte('timeFrom', new \DateTime($reservation->getTimeFrom())),
+                Criteria::expr()->lt('timeFrom', new \DateTime($reservation->getTimeTo()))))
+            ->orWhere(Criteria::expr()->andX(
+                Criteria::expr()->gt('timeTo', new \DateTime($reservation->getTimeFrom())),
+                Criteria::expr()->lte('timeTo', new \DateTime($reservation->getTimeTo()))))
+            ->orWhere(Criteria::expr()->andX(
+                Criteria::expr()->lte('timeFrom', new \DateTime($reservation->getTimeFrom())),
+                Criteria::expr()->gte('timeTo', new \DateTime($reservation->getTimeTo()))));
+        $criteria = $this->getCriteriaDateRoomState($reservation->getRoom(), $reservation->getDate(), $criteria);
+
+        $reservations = $this->reservationRepository->matching($criteria);
+        return $reservations->isEmpty();
+    }
+
+    private function getCriteriaDateRoomState(Room $room, string $date, Criteria $criteria = null): Criteria
+    {
+        $criteria = $criteria ?? Criteria::create();
+        return $criteria
+            ->andWhere(Criteria::expr()->eq('date', new \DateTime($date)))
+            ->andWhere(Criteria::expr()->eq('room', $room))
+            ->andWhere(Criteria::expr()->eq('state', States::APPROVED));
     }
 }

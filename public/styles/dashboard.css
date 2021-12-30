@@ -1,0 +1,105 @@
+main, main section {
+    display: flex;
+    align-items: center;
+    flex-flow: column;
+    width: 100%;
+}
+
+section h1 {
+    font-weight: 200;
+    font-family: 'Martel Sans', sans-serif;
+    font-size: 4rem;
+    color: var(--gray);
+    text-transform: uppercase;
+}
+
+section ul {
+    display: flex;
+    width: 80%;
+    flex-flow: row;
+    flex-wrap: wrap;
+    margin-top: 2rem;
+    justify-content: center;
+}
+
+section ul li {
+    margin: 0 .5rem 0 .5rem;
+}
+
+section ul li a {
+    background-color: var(--main);
+    display: flex;
+    flex-flow: column;
+    align-items: center;
+    justify-content: center;
+    color: var(--white);
+    border-radius: .438rem;
+    min-width: 10rem;
+    margin-bottom: 1rem;
+}
+
+section ul li a:hover {
+    color: var(--white);
+    background-color: var(--main-darker);
+}
+
+section ul li a span {
+    font-size: 1.25rem;
+    margin: 2rem 0 1.5rem 0;
+    padding: 0 2rem 0 2rem;
+}
+
+section ul li a .button-icon {
+    margin: 3rem 0 0 0;
+    height: 5rem;
+    width: 5rem;
+}
+
+@media screen and (min-width: 740px) {
+    section h1 {
+        padding-top: .25rem;
+        font-size: 4.5rem;
+    }
+}
+
+@media screen and (min-width: 900px) {
+    section h1 {
+        padding-top: .5rem;
+        font-size: 5rem;
+    }
+
+    section ul li a {
+        min-width: 13rem;
+    }
+
+    section ul li a span {
+        font-size: 1.75rem;
+        margin: 2.5rem 0 2rem 0;
+    }
+
+    section ul li a .button-icon {
+        height: 5.5rem;
+        width: 5.5rem;
+    }
+}
+
+@media screen and (min-width: 1150px) {
+    section h1 {
+        padding-top: 1rem;
+        font-size: 6rem;
+    }
+
+    section ul li a {
+        min-width: 14rem;
+    }
+
+    section ul li a span {
+        font-size: 2rem;
+        margin: 3rem 0 2rem 0;
+    }
+
+    section ul li a .button-icon {
+        height: 6rem;
+        width: 6rem;
+    }
+}

@@ -44,4 +44,29 @@ class BuildingService
         $this->entityManager->persist($building);
         $this->entityManager->flush();
     }
+
+    public function delete(Building $room): void
+    {
+        $this->entityManager->remove($room);
+        $this->entityManager->flush();
+    }
+
+    /**
+     * @param array $queryParams
+     * @return array
+     */
+    public function filter(array $queryParams): array
+    {
+        return $this->buildingRepository->filter(
+            $queryParams['filter_by'] ?? null,
+            $queryParams['order_by'] ?? null,
+            $queryParams['paginate'] ?? null
+        );
+    }
+
+    public function countForParams(array $queryParams): int
+    {
+        return count($this->buildingRepository->filter($queryParams['filter_by']));
+    }
+
 }

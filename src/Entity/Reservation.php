@@ -7,6 +7,8 @@ use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Validator\Mapping\ClassMetadata;
 
 /**
  * @ORM\Entity(repositoryClass=ReservationRepository::class)
@@ -27,11 +29,23 @@ class Reservation
 
     /**
      * @ORM\Column(type="time")
+     * @Assert\Expression(
+     *     "this.getTimeTo() <= this.getRoom().getOpenedTo()",
+     *     message="The room is not opened at this time!",
+     * )
+     * @Assert\Expression(
+     *     "this.getTimeTo() >= this.getTimeFrom()",
+     *     message="The end of reservation time must be before its start!",
+     * )
      */
     private $timeTo;
 
     /**
      * @ORM\Column(type="time")
+     * @Assert\Expression(
+     *     "this.getTimeFrom() >= this.getRoom().getOpenedFrom()",
+     *     message="The room is not opened at this time!",
+     * )
      */
     private $timeFrom;
 
@@ -54,6 +68,10 @@ class Reservation
 
     /**
      * @ORM\ManyToMany(targetEntity=User::class, inversedBy="reservationsToAttend")
+     * @Assert\Expression(
+     *     "this.getRoom().getCapacity() >= this.getAttendees().count()",
+     *     message="The capacity of selected room is exceeded!",
+     * )
      */
     private Collection $attendees;
 
@@ -165,7 +183,7 @@ class Reservation
         if (!$this->timeTo) {
             return null;
         }
-        return $this->timeTo->format('H:i');
+        return $this->timeTo->format('H:i:s');
     }
 
     public function setTimeTo(string $timeTo): self
@@ -183,7 +201,7 @@ class Reservation
         if (!$this->timeFrom) {
             return null;
         }
-        return $this->timeFrom->format('H:i');
+        return $this->timeFrom->format('H:i:s');
     }
 
     public function setTimeFrom(string $timeFrom): self

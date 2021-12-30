@@ -42,6 +42,12 @@ class RoomService
         $this->entityManager->flush();
     }
 
+    public function delete(Room $room): void
+    {
+        $this->entityManager->remove($room);
+        $this->entityManager->flush();
+    }
+
     /**
      * @param array $queryParams
      * @return array

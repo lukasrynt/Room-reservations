@@ -14,7 +14,9 @@
         </header>
         <dl>
             <dd>Building</dd>
-            <dt data-label="Building">{{ room.building }}</dt>
+            <dt data-label="Building">
+                <a href="{{ path('buildings_detail', { id: room.building.id }) }}">{{ room.building }}</a>
+            </dt>
             <dd>Floor</dd>
             <dt data-label="Floor">{{ room.floor }}</dt>
             <dd>Capacity</dd>
@@ -27,6 +29,15 @@
                     Private
                 {% else %}
                     Public
+                {% endif %}
+            </dt>
+            <dd>State</dd>
+            <dt data-label="State">
+                {% set reservedUntil = reservedUntil(room) %}
+                {% if reservedUntil %}
+                    Currently reserved - until {{ reservedUntil }}
+                {% else %}
+                    Currently not reserved
                 {% endif %}
             </dt>
         </dl>

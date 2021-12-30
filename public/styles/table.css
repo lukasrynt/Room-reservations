@@ -71,6 +71,7 @@ table tr {
         box-shadow: unset;
         background-color: unset;
         display: block;
+        margin: 0;
     }
 
     table thead, table tbody {

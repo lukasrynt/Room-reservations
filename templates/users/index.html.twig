@@ -6,10 +6,37 @@
     {{ parent() }}
     <link rel="stylesheet" href="{{ asset('styles/table.css') }}" type="text/css">
     <link rel="stylesheet" href="{{ asset('styles/pagination.css') }}" type="text/css">
+    <link rel="stylesheet" href="{{ asset('styles/filters.css') }}" type="text/css">
+    <link rel="stylesheet" href="{{ asset('styles/form.css') }}" type="text/css">
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script src="{{ asset('javascript/filters.js') }}"></script>
+    <script>
+        let filtersInstance;
+
+        document.addEventListener("DOMContentLoaded", function() {
+            let filterButton = document.getElementsByClassName('filters-button')[0];
+            let filterContent = document.getElementsByClassName('filters-content')[0];
+            filtersInstance = new Filters(filterButton, filterContent);
+            filtersInstance.watch();
+        });
+    </script>
 {% endblock %}
 
 {% block main %}
-    {{ form(searchForm) }}
+    <button type="button" onclick="filtersInstance.trigger()" class="filters-button">
+        {{ source('@icons/drop-down-menu.svg') }}
+        Filters</button>
+    <div class="filters-content">
+        {{ form_start(searchForm) }}
+        {{ form_row(searchForm.firstName) }}
+        {{ form_row(searchForm.lastName) }}
+        {{ form_row(searchForm.email) }}
+        {{ form_row(searchForm.phoneNumber) }}
+        {{ form_end(searchForm) }}
+    </div>
 
     <table>
         <thead>
@@ -34,26 +61,11 @@
                 <td data-label="Phone number">{{ user.phoneNumber }}</td>
                 <td class="table-buttons">
                     <a class="button-base button-main" href={{ path('users_detail', {id: user.id}) }}>Detail</a>
+                    {% include 'users/buttons.html.twig' %}
                 </td>
             </tr>
         {% endfor %}
         </tbody>
     </table>
-
-    {% set pageCnt = pagesCount(app.request, usersCount) %}
-        {% if pageCnt > 1 %}
-            <div id="pagination">
-                <a class="button-base button-main button-pagination {{ currentPage(app.request) > 1 ? "" : "dummy" }}"
-                   href={{ currentPage(app.request) > 1 ? path('users_index', prevPageParams(app.request)) : "" }}>
-                    {{ source('@icons/arrow-left.svg') }}
-                </a>
-                <button class="button-base button-secondary-outline button-pagination">
-                    {{ currentPage(app.request) }}
-                </button>
-                <a class="button-base button-main button-pagination {{ currentPage(app.request) < pageCnt ? "" : "dummy" }}"
-                   href={{ path('users_index', nextPageParams(app.request, pageCnt)) }}>
-                    {{ source('@icons/arrow-right.svg') }}
-                </a>
-            </div>
-        {% endif %}
+    {% include 'pagination.html.twig' with { itemsCount: usersCount, indexPath: 'users_index' } %}
 {% endblock %}

@@ -39,4 +39,11 @@ class HamburgerMenu {
         this.showButton.classList.remove('hamburger-menu-close-hidden');
         this.itemList.forEach((x) => x.classList.remove('hamburger-menu-item'));
     }
+
+    watch() {
+        window.addEventListener('resize', function () {
+            if (window.innerWidth > 740)
+                hamburgerMenuInstance.hide()
+        })
+    }
 }

@@ -15,11 +15,21 @@
         <dl>
             <dd>Address</dd>
             <dt data-label="Address">{{ building.address }}</dt>
+            <dd>Rooms</dd>
+            <dt data-label="Rooms">
+                <ul class="detail-list">
+                    {% for room in building.rooms %}
+                        {% if is_granted('view_room', room) %}
+                            <li>
+                                <a href="{{ path('rooms_detail', { id: room.id }) }}">{{ room.name }}</a>
+                            </li>
+                        {% endif %}
+                    {% endfor %}
+                </ul>
+            </dt>
         </dl>
         <footer>
-            <a class="button-base button-with-icon button-main-outline" href={{ path('buildings_edit', { id: building.id }) }}>
-                {{ source('@icons/edit-icon.svg') }}
-                Edit</a>
+            {% include 'buildings/buttons.html.twig' %}
         </footer>
     </article>
 {% endblock %}

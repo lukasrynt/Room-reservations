@@ -1,14 +1,23 @@
+{% if is_granted('edit_reservation', reservation) %}
+    <a class="button-base button-with-icon button-main-outline" href={{ path('reservations_edit', { id: reservation.id }) }}>
+        {{ source('@icons/edit-icon.svg') }} Edit
+    </a>
+{% endif %}
 {% if reservation.isPending %}
     {% if is_granted('approve_reservation', reservation) %}
-        <a class="button-base button-success-outline" href={{ path('reservations_approve', { id: reservation.id }) }}>Approve</a>
+        <a class="button-base button-with-icon button-success-outline" href={{ path('reservations_approve', { id: reservation.id }) }}>
+            {{ source('@icons/checkmark-icon.svg') }}
+            Approve</a>
     {% endif %}
     {% if is_granted('reject_reservation', reservation) %}
-        <a class="button-base button-danger-outline" href={{ path('reservations_reject', { id: reservation.id }) }}>Reject</a>
+        <a class="button-base button-with-icon button-danger-outline" href={{ path('reservations_reject', { id: reservation.id }) }}>
+            {{ source('@icons/close-icon.svg') }}
+            Reject</a>
     {% endif %}
 {% endif %}
 {% if is_granted('delete_reservation', reservation) %}
+    <a class="button-base button-danger-outline delete-link">Delete</a>
     <form method="post" action="{{ path('reservations_delete', { id: reservation.id }) }}">
         <input type="hidden" name="_method" value="DELETE">
-        <button type="submit" class="button-base button-danger-outline">Delete</button>
     </form>
 {% endif %}

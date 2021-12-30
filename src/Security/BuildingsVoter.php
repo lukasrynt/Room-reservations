@@ -2,25 +2,25 @@
 
 namespace App\Security;
 
-use App\Entity\Room;
+use App\Entity\Building;
 use App\Entity\User;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 
-class RoomsVoter extends Voter
+class BuildingsVoter extends Voter
 {
-    const VIEW_ALL = 'view_rooms';
-    const VIEW = 'view_room';
-    const EDIT = 'edit_room';
-    const CREATE = 'create_room';
-    const DELETE = 'delete_room';
+    const VIEW_ALL = 'view_buildings';
+    const VIEW = 'view_building';
+    const EDIT = 'edit_building';
+    const CREATE = 'create_building';
+    const DELETE = 'delete_building';
 
     protected function supports(string $attribute, $subject): bool
     {
         if (!in_array($attribute, [self::VIEW, self::EDIT, self::CREATE, self::VIEW_ALL, self::DELETE])) {
             return false;
         }
-        if (!($subject instanceof Room || !$subject)) {
+        if (!($subject instanceof Building || !$subject)) {
             return false;
         }
         return true;
@@ -29,15 +29,15 @@ class RoomsVoter extends Voter
     protected function voteOnAttribute(string $attribute, $subject, TokenInterface $token): bool
     {
         $user = $token->getUser();
-        if ($user === "") {
-            $user = null;
+        if (!$user) {
+            return false;
         }
 
         switch($attribute) {
             case self::VIEW_ALL:
                 return $this->canViewAll();
             case self::VIEW:
-                return $this->canView($user, $subject);
+                return $this->canView();
             case self::EDIT:
                 return $this->canEdit($user);
             case self::CREATE:
@@ -54,29 +54,22 @@ class RoomsVoter extends Voter
         return true;
     }
 
-
-    private function canView(?User $account, Room $room): bool
+    private function canView(): bool
     {
-        if (!$account && $room->getPrivate()) {
-            return false;
-        }
         return true;
     }
 
-    private function canCreate(?User $account): bool
+    private function canCreate(User $account): bool
     {
-        if (!$account) {
-            return false;
-        }
-        return $account->isAdmin();
+        return  $account->isAdmin();
     }
 
-    private function canEdit(?User $account): bool
+    private function canEdit(User $account): bool
     {
         return $this->canCreate($account);
     }
 
-    private function canDelete(?User $account): bool
+    private function canDelete(User $account): bool
     {
         return $this->canCreate($account);
     }
