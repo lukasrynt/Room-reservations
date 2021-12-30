@@ -37,10 +37,29 @@ class ParamsParser
         $keys = array_keys($array);
         $last = end($keys);
         foreach ($array as $key => $val) {
-            $res .= $key . ':' . $val;
-            if ($key != $last)
-                $res .= ',';
+            if ($val) {
+                $res .= $key . ':' . $val;
+                if ($key != $last) {
+                    $res .= ',';
+                }
+            }
         }
         return $res;
     }
+
+    public static function getSearchUrl(array $array, string $basePath): string
+    {
+        $func = function ($key, $value) {
+            if ($value) {
+                return "$key:$value";
+            } else {
+                return "";
+            }
+        };
+        $array = array_map($func, array_keys($array), $array);
+        $array = array_filter($array, fn($val) => $val !== "");
+        $imploded = implode(',', $array);
+        return "$basePath?filter_by=$imploded";
+    }
+
 }

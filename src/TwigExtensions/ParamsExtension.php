@@ -22,14 +22,14 @@ class ParamsExtension extends AbstractExtension
         ];
     }
 
-    public function nextPageParams(Request $request, int $entitiesCount): array
+    public function nextPageParams(Request $request, int $entitiesCount, ?array $searchParams): array
     {
-        return Paginator::updateQueryParams($request->query->all(), true, $entitiesCount);
+        return Paginator::updateQueryParams($request->query->all(), true, $searchParams, $entitiesCount);
     }
 
-    public function prevPageParams(Request $request): array
+    public function prevPageParams(Request $request, ?array $searchParams): array
     {
-        return Paginator::updateQueryParams($request->query->all(), false);
+        return Paginator::updateQueryParams($request->query->all(), false, $searchParams);
     }
 
     public function currentPage(Request $request): int

@@ -38,7 +38,7 @@ class UserRepository extends ServiceEntityRepository
         return $this->matching($criteria)->toArray();
     }
 
-    public function search(?array $findFilters): Collection
+    public function search(?array $findFilters): array
     {
         $criteria = (new Filter())->getFilterCriteria($findFilters);
         return $this->matching($criteria)->toArray();

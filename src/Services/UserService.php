@@ -73,17 +73,17 @@ class UserService
         );
     }
 
-    public function search(array $searchParams): Collection
+    public function search(array $searchParams): array
     {
         return $this->userRepository->search($searchParams);
     }
 
-    public function getManagedRoomsByRoomAdmin(RoomManager $user): Collection
+    public function getManagedRoomsByRoomAdmin(RoomManager $user): array
     {
         return $user->getManagedRooms();
     }
 
-    public function getManagedRoomsByGroupAdmin(GroupManager $user): Collection
+    public function getManagedRoomsByGroupAdmin(GroupManager $user): array
     {
         $groups = $user->getGroups();
         return $this->roomService->findByGroups($groups);
@@ -94,9 +94,9 @@ class UserService
         if ($user->isAdmin()) {
             return $this->roomService->findAll();
         } elseif ($user->isRoomAdmin()) {
-            return $this->userService->getManagedRoomsByRoomAdmin($user);
+            return $this->getManagedRoomsByRoomAdmin($user);
         } else if ($user->isGroupAdmin()) {
-            return $this->userService->getManagedRoomsByGroupAdmin($user);
+            return $this->getManagedRoomsByGroupAdmin($user);
         } else {
             return [];
         }

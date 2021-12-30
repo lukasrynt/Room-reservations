@@ -6,6 +6,7 @@
 namespace App\Services;
 
 use Doctrine\Common\Collections\Criteria;
+use PhpParser\Node\Param;
 
 class Paginator
 {
@@ -36,22 +37,43 @@ class Paginator
         return (isset($attributes['page']) && $attributes['page'] >= 1) ? $attributes['page'] : 1;
     }
 
-    public static function updateQueryParams(?array $queries, bool $next, int $limit = 0): array
+    public static function updateQueryParams(?array $queries, bool $next, ?array $searchParams, int $limit = 0): array
     {
         if ($queries) {
             $paginateParams = ParamsParser::getFilters($queries, 'paginate');
             $paginateParams = self::updateParams($paginateParams, $next, $limit);
             $queries['paginate'] = ParamsParser::mapArrayToParams($paginateParams);
-        } else
+        } else {
             $queries = ['paginate' => 'page:' . self::getPage(null, $next, $limit)];
+        }
+        if ($searchParams) {
+            $queries['filter_by'] = ParamsParser::mapArrayToParams($searchParams);
+        }
+        $queries = self::filterOutParams($queries);
+        dump($queries);
         return $queries;
+    }
+
+    private static function filterOutParams(array $queries): array
+    {
+        $res = [];
+        foreach ($queries as $key => $val) {
+            if ($key == 'filter_by' || $key == 'paginate' || $key == 'order_by') {
+                $res[$key] = $val;
+            }
+        }
+        return $res;
     }
 
     public static function getPagesCount(?array $queries, int $entitiesCount): int
     {
         $pageSize = self::DEFAULT_PAGE_SIZE;
-        if ($queries)
+        if ($queries) {
             $pageSize = ParamsParser::getFilters($queries, 'paginate')['page_size'] ?? self::DEFAULT_PAGE_SIZE;
+        }
+        if ($pageSize <= 0) {
+            $pageSize = self::DEFAULT_PAGE_SIZE;
+        }
         return $entitiesCount / $pageSize;
     }
 

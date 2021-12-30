@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\User;
 use App\Form\Type\UserSearchType;
 use App\Form\Type\UserType;
+use App\Services\ParamsParser;
 use App\Services\UserService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\ButtonType;
@@ -98,7 +99,8 @@ class UserController extends AbstractController
         return $this->render('users/index.html.twig', [
             'users' => $users,
             'searchForm' => $searchForm->createView(),
-            'usersCount' => $count
+            'usersCount' => $count,
+            'searchParams' => []
         ]);
     }
 
@@ -114,10 +116,16 @@ class UserController extends AbstractController
         if ($searchForm->isSubmitted() && $searchForm->isValid()) {
             $users = $this->userService->search($searchForm->getData());
         }
+        $usersCnt = $users ? count($users) : 0;
+        $filters = $request->query->all();
+        $filters['filter_by'] = ParamsParser::mapArrayToParams($searchForm->getData());
+        dump($filters);
+        $users = $this->userService->filter($filters);
         return $this->render('users/index.html.twig', [
             'users' => $users ?? [],
             'searchForm' => $searchForm->createView(),
-            'usersCount' => $users ? count($users) : 0
+            'usersCount' => $usersCnt,
+            'searchParams' => $searchForm->getData()
         ]);
     }
 
