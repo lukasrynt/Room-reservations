@@ -14,9 +14,47 @@
         </header>
         <dl>
             <dd>Group Manager</dd>
-            <dt data-label="Group Manager">{{ group.groupManager }}</dt>
+            <dt data-label="Group Manager">
+                {% if group.groupManager is empty %}
+                    none
+                {% else %}
+                    {{ group.groupManager }}
+                {% endif %}
+            </dt>
+
+            {% if group.parent is not empty %}
+                <dd>Subgroup of</dd>
+                <dt data-label="Subgroup of">{{ group.parent.name }}</dt>
+            {% endif %}
+
+            <dd>Members</dd>
+                <dt data-label="Members">
+                    {% if group.members is not empty %}
+                        <br>
+                        {% for member in group.members %}
+                            {{ member }} <br>
+                        {% endfor %}
+                    {% else %}
+                    no members
+                    {% endif %}
+
+                </dt>
+
+            <dd>Rooms</dd>
+                <dt data-label="Rooms">
+                    {% if group.rooms is not empty %}
+                        {% for room in group.rooms %}
+                            {{ room }}
+                        {% endfor %}
+                    {% else %}
+                        -
+                    {% endif %}
+
+                </dt>
+
         </dl>
         <footer>
+            {% include 'groups/buttons.html.twig' %}
         </footer>
     </article>
 {% endblock %}
