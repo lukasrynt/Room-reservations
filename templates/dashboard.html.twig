@@ -17,15 +17,10 @@
                         {{ source('@icons/classroom-icon.svg') }}
                         <span>Classrooms</span></a></li>
             {% endif %}
-            {% if is_granted('view_requests') %}
-                <li><a class="" href="{{ path('requests_index') }}">
-                        {{ source('@icons/reservation-icon.svg') }}
-                        <span>Requests</span></a></li>
-            {% endif %}
             {% if is_granted('view_reservations') %}
                 <li><a class="" href="{{ path('reservations_index') }}">
                         {{ source('@icons/reservation-icon.svg') }}
-                        <span>Reservation</span></a></li>
+                        <span>Reservations</span></a></li>
             {% endif %}
             {% if is_granted('view_groups') %}
                 <li><a class="" href="#">
