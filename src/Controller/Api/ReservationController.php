@@ -6,6 +6,7 @@
 namespace App\Controller\Api;
 
 use App\Entity\Reservation;
+use App\Entity\States;
 use App\Form\Type\ReservationRestType;
 use App\Services\ReservationService;
 use FOS\RestBundle\Controller\AbstractFOSRestController;
@@ -104,6 +105,44 @@ class ReservationController extends AbstractFOSRestController
             $view = $this->handleFormSubmission($request, $reservation, Response::HTTP_OK);
         }
         return $this->handleView($view);
+    }
+
+    /**
+     * @Rest\Put("/{id}/approve", name="approve", requirements={"id": "\d+"})
+     * @param int $id
+     * @return Response
+     */
+    public function approve(int $id): Response
+    {
+        $reservation = $this->reservationService->find($id);
+        if (!$reservation) {
+            return $this->handleView($this->view([], Response::HTTP_NOT_FOUND));
+        }
+        if (!$reservation->isPending()) {
+            return $this->handleView($this->view('Reservation must be pending to be approved', Response::HTTP_FORBIDDEN));
+        }
+        $reservation->setState(new States(States::APPROVED));
+        $this->reservationService->save($reservation);
+        return $this->handleView($this->view($reservation, Response::HTTP_OK));
+    }
+
+    /**
+     * @Rest\Put("/{id}/reject", name="reject", requirements={"id": "\d+"})
+     * @param int $id
+     * @return Response
+     */
+    public function reject(int $id): Response
+    {
+        $reservation = $this->reservationService->find($id);
+        if (!$reservation) {
+            return $this->handleView($this->view([], Response::HTTP_NOT_FOUND));
+        }
+        if (!$reservation->isPending()) {
+            return $this->handleView($this->view('Reservation must be pending to be rejected', Response::HTTP_FORBIDDEN));
+        }
+        $reservation->setState(new States(States::REJECTED));
+        $this->reservationService->save($reservation);
+        return $this->handleView($this->view($reservation, Response::HTTP_OK));
     }
 
     private function handleFormSubmission(Request $request, Reservation $reservation, int $statusOk): View

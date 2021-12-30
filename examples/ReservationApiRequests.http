@@ -26,13 +26,17 @@ Content-Type: application/json
 }
 
 ###
-
 # Remove reservation
 DELETE localhost:8080/api/reservations/3
 
 ###
-
+# Get one reservation
 GET localhost:8080/api/reservations/1
 
 ###
+# Approve reservation
+PUT localhost:8080/api/reservations/10/approve
 
+###
+# Reject reservation
+PUT localhost:8080/api/reservations/11/reject
