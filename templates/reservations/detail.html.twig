@@ -8,6 +8,15 @@
 {% endblock %}
 
 {% block main %}
+    <li class="ajax-list-item" id="ajax-template">
+        <a class="list-button button-danger button-with-icon remove-reservation-user">
+            {{ source('@icons/user-minus-icon.svg') }}
+        </a>
+    </li>
+    <dialog class="add-modal" id="modal-template">
+        <ul id="users-list"></ul>
+        <button class="button-base button-success">Close</button>
+    </dialog>
     <article id="detail">
         <header>
             <h1>Reservation #{{ reservation.id }}</h1>
@@ -21,10 +30,26 @@
             <dt data-label="State">{{ reservation.state }}</dt>
             <dd>Attendees</dd>
             <dt data-label="Attendees">
-                <ul>
+                <ul class="detail-list">
                     {% for attendee in reservation.attendees %}
-                        <li>{{ attendee.username }}</li>
+                        <li class="ajax-list-item">
+                            {% if is_granted('edit_reservation', reservation) %}
+                                <a class="list-button button-danger button-with-icon remove-reservation-user"
+                                   data-reservation-id="{{ reservation.id }}" data-user-id="{{ attendee.id }}">
+                                    {{ source('@icons/user-minus-icon.svg') }}
+                                </a>
+                            {% endif %}
+                            {{ attendee.username }}
+                        </li>
                     {% endfor %}
+                    {% if is_granted('edit_reservation', reservation) %}
+                        <li class="ajax-list-item">
+                            <a class="list-button button-success button-with-icon" id="add-reservation-user"
+                               data-reservation-id="{{ reservation.id }}">
+                                {{ source('@icons/user-plus-icon.svg') }}
+                            </a>
+                        </li>
+                    {% endif %}
                 </ul>
             </dt>
             <dd>Date</dd>
