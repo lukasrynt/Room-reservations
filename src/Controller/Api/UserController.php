@@ -5,9 +5,11 @@
 
 namespace App\Controller\Api;
 
+use App\Services\ParamsParser;
 use App\Services\UserService;
 use FOS\RestBundle\Controller\AbstractFOSRestController;
 use FOS\RestBundle\Controller\Annotations as Rest;
+use PhpParser\Node\Param;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -36,7 +38,7 @@ class UserController extends AbstractFOSRestController
      */
     public function all(Request $request): Response
     {
-        $users = $this->userService->filter($request->query->all());
+        $users = $this->userService->filter(ParamsParser::convertToUrlParams($request->query->all()));
         $view = $this->view($users, Response::HTTP_OK);
         return $this->handleView($view);
     }

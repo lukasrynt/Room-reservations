@@ -67,9 +67,9 @@ class UserService
     public function filter(array $queryParams): array
     {
         return $this->userRepository->filter(
-            $queryParams['filter_by'],
-            $queryParams['order_by'],
-            $queryParams['paginate']
+            $queryParams['filter_by'] ?? null,
+            $queryParams['order_by'] ?? null,
+            $queryParams['paginate'] ?? null
         );
     }
 
