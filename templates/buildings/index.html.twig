@@ -26,6 +26,7 @@
                 <td data-label="Address">{{ building.address }}</td>
                 <td class="table-buttons">
                     <a class="button-base button-main" href={{ path('buildings_detail', { id: building.id }) }}>Detail</a>
+                    {% include 'buildings/buttons.html.twig' %}
                 </td>
             </tr>
         {% endfor %}

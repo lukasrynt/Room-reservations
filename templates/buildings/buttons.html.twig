@@ -1,0 +1,5 @@
+{% if is_granted('edit_building') %}
+    <a class="button-base button-with-icon button-main-outline" href={{ path('buildings_edit', { id: building.id }) }}>
+        {{ source('@icons/edit-icon.svg') }}
+        Edit</a>
+{% endif %}

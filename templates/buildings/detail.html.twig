@@ -17,9 +17,7 @@
             <dt data-label="Address">{{ building.address }}</dt>
         </dl>
         <footer>
-            <a class="button-base button-with-icon button-main-outline" href={{ path('buildings_edit', { id: building.id }) }}>
-                {{ source('@icons/edit-icon.svg') }}
-                Edit</a>
+            {% include 'buildings/buttons.html.twig' %}
         </footer>
     </article>
 {% endblock %}
