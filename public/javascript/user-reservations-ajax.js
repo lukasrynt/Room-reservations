@@ -1,18 +1,9 @@
-class Dialog
-{
-    constructor(dialog) {
-        this.dialog = dialog;
-    }
+function hide(element) {
+    element.classList.add('hidden');
+}
 
-    show() {
-        this.hidden = false;
-        this.dialog.style = 'display: block;';
-    }
-
-    hide() {
-        this.hidden = true;
-        this.dialog.style = 'display: none;';
-    }
+function show(element) {
+    element.classList.remove('hidden');
 }
 
 function removeUser(element) {
@@ -22,7 +13,7 @@ function removeUser(element) {
         .then((response) => {
             if (response.ok) {
                 element.parentElement.remove();
-                document.getElementById('add-reservation-user').classList.remove('hidden');
+                show(document.getElementById('add-reservation-user'));
             }
         })
 }
@@ -75,8 +66,11 @@ async function fetchAvailableAttendees(reservationId) {
 }
 
 function createUsersDialog() {
-    let dialog = document.getElementById('modal-template');
-    return new Dialog(dialog);
+    let template = document.getElementById('modal-template');
+    let dialog = template.cloneNode(true);
+    dialog.getElementsByTagName('button')[0].addEventListener('click', (e) => dialog.close())
+    dialog.removeAttribute('id');
+    return dialog;
 }
 
 document.addEventListener("DOMContentLoaded", function() {
@@ -86,26 +80,34 @@ document.addEventListener("DOMContentLoaded", function() {
     let addBtn = document.getElementById('add-reservation-user');
     let reservationId = addBtn.getAttribute('data-reservation-id')
     let dialog = createUsersDialog();
-    addBtn.parentElement.append(dialog.dialog);
-    dialog.hide();
+    addBtn.parentElement.append(dialog);
+    dialog.close();
+    hide(addBtn);
+    fetchAvailableAttendees(reservationId).then((users) => {
+        if (!users.length)
+            show(addBtn);
+    });
     addBtn.addEventListener('click', () => {
         fetchAvailableAttendees(reservationId).then((users) => {
             if (!users.length) {
-                addBtn.classList.add('hidden');
+                hide(addBtn)
                 return;
             }
-            let usersList = document.getElementById('users-list')
+            console.log(users);
+            let usersList = dialog.getElementsByTagName('ul')[0];
             usersList.innerHTML = "";
             users.forEach((user) => {
                 let userLink = document.createElement('a');
                 userLink.innerText = user['username'];
                 userLink.addEventListener('click', () => {
                     addUser(addBtn, user);
-                    dialog.hide();
+                    if (users.length === 1)
+                        hide(addBtn);
+                    dialog.close();
                 });
                 usersList.append(userLink);
             })
-            dialog.show();
+            dialog.showModal();
         });
     });
 })
