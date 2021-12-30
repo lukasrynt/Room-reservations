@@ -7,10 +7,13 @@ use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use JMS\Serializer\Annotation\ExclusionPolicy;
+use JMS\Serializer\Annotation\Expose;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=RoomRepository::class)
+ * @ExclusionPolicy("all")
  */
 class Room
 {
@@ -18,36 +21,43 @@ class Room
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
+     * @Expose
      */
     private int $id;
 
     /**
      * @ORM\Column(type="integer")
+     * @Expose
      */
     private int $capacity;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Expose
      */
     private string $name;
 
     /**
      * @ORM\Column(type="integer")
+     * @Expose
      */
     private int $floor;
 
     /**
      * @ORM\Column(type="boolean")
+     * @Expose
      */
     private bool $private = true;
 
     /**
      * @ORM\Column(type="time")
+     * @Expose
      */
     private \DateTime $openedFrom;
 
     /**
      * @ORM\Column(type="time")
+     * @Expose
      * @Assert\Expression(
      *     "this.getOpenedTo() >= this.getOpenedFrom()",
      *     message="The start of opening hours must be before its end!",
@@ -58,12 +68,14 @@ class Room
     /**
      * @ORM\ManyToOne(targetEntity=Building::class, inversedBy="rooms")
      * @ORM\JoinColumn(nullable=false)
+     * @Expose
      */
     private Building $building;
 
     /**
      * @ORM\ManyToMany(targetEntity=User::class, inversedBy="rooms")
      * @ORM\JoinTable(name="members_rooms")
+     * @Expose
      */
     private Collection $users;
 
@@ -74,6 +86,7 @@ class Room
 
     /**
      * @ORM\ManyToOne(targetEntity=RoomManager::class, inversedBy="managedRooms")
+     * @Expose
      */
     private ?RoomManager $roomManager;
 

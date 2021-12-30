@@ -203,7 +203,7 @@ class ReservationController extends AbstractController
     {
         $reservation = $this->reservationService->find($id);
         $this->denyAccessUnlessGranted('approve_reservation', $reservation);
-        $reservation->setState(new States('APPROVED'));
+        $reservation->setState(new States(States::APPROVED));
         $this->reservationService->save($reservation);
         $this->addFlash('success', "Reservation for room {$reservation->getRoom()->getName()} was successfully approved.");
         return $this->redirectToRoute('reservations_detail', ['id' => $reservation->getId()]);
@@ -218,7 +218,7 @@ class ReservationController extends AbstractController
     {
         $reservation = $this->reservationService->find($id);
         $this->denyAccessUnlessGranted('approve_reservation', $reservation);
-        $reservation->setState(new States('REJECTED'));
+        $reservation->setState(new States(States::REJECTED));
         $this->reservationService->save($reservation);
         $this->addFlash('success', "Request with for room {$reservation->getRoom()->getName()} was successfully rejected.");
         return $this->redirectToRoute('reservations_detail', ['id' => $reservation->getId()]);

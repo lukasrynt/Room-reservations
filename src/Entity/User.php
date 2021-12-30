@@ -6,6 +6,8 @@ use App\Repository\UserRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use JMS\Serializer\Annotation\ExclusionPolicy;
+use JMS\Serializer\Annotation\Expose;
 use phpDocumentor\Reflection\Types\Boolean;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -18,6 +20,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
  * @ORM\DiscriminatorColumn(name="discr", type="string")
  * @ORM\DiscriminatorMap({"user" = "User", "admin" = "Admin", "roomManager" = "RoomManager",
  *                          "groupManager" = "GroupManager"})
+ * @ExclusionPolicy("all")
  */
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
@@ -30,36 +33,43 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
+     * @Expose
      */
     protected int $id;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Expose
      */
     protected string $firstName;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Expose
      */
     protected string $lastName;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Expose
      */
     protected string $email;
 
     /**
      * @ORM\Column(type="integer", nullable=true)
+     * @Expose
      */
     protected int $phoneNumber;
 
     /**
      * @ORM\Column(type="json")
+     * @Expose
      */
     protected array $roles = [];
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Expose
      */
     protected string $note;
 
@@ -72,6 +82,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     /**
      * @ORM\Column(type="string", length=100, nullable=false)
+     * @Expose
      */
     protected string $username;
 
