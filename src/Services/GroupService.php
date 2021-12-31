@@ -138,4 +138,11 @@ class GroupService
         $this->entityManager->persist($group);
         $this->entityManager->flush();
     }
+
+    public function delete(Group $group)
+    {
+        # TODO subgroups
+        $this->entityManager->remove($group);
+        $this->entityManager->flush();
+    }
 }
