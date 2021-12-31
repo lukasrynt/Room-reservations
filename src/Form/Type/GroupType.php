@@ -27,14 +27,6 @@ class GroupType extends AbstractType
                 'placeholder' => 'Choose an option',
                 'required' => false,
             ])
-            ->add('rooms', EntityType::class, [
-                # TODO selecting rooms doesn't work
-                "class" => Room::class,
-                'label' => 'Room :',
-                'required' => false,
-                'multiple' => true,
-                'expanded' => true,
-            ])
             ->add('parent', EntityType::class, [
                 "class" => Group::class,
                 'choice_label' => 'name',
