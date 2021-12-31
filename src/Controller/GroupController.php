@@ -69,11 +69,7 @@ class GroupController extends AbstractController
         }
 
         $this->denyAccessUnlessGranted('edit_group', $group);
-        $form = $this->createForm(GroupType::class, $group)
-            ->add('delete', ButtonType::class, [
-                'attr' => ['class' => 'button-base button-danger-outline'],
-                'label' => 'Delete'
-            ]);
+        $form = $this->createForm(GroupType::class, $group);
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
