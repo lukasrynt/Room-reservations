@@ -11,15 +11,15 @@ article {
 article h1 {
     font-weight: 900;
     font-family: 'Martel Sans', sans-serif;
-    font-size: 6rem;
+    font-size: 5rem;
     color: var(--main);
     margin-left: -0.6rem;
 }
 
 article p {
     color: var(--gray-dark);
-    font-size: 1.518rem;
-    margin: -0.5rem 0 1rem 0;
+    font-size: 1.26rem;
+    margin: -0.5rem 0 1rem -0.15rem;
 }
 
 article p span {
@@ -61,6 +61,7 @@ footer p {
     }
 
     article p {
-        font-size: 2.25rem;
+        font-size: 2.26rem;
+        margin-left: 0;
     }
 }
