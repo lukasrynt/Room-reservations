@@ -5,8 +5,7 @@ function buildMessage(element) {
 }
 
 document.addEventListener("DOMContentLoaded", function() {
-    let deleteLink = document.getElementsByClassName('delete-link')[0];
-    if (deleteLink) {
+    Array.prototype.forEach.call(document.getElementsByClassName('delete-link'), (deleteLink) => {
         deleteLink.addEventListener('click', (e) => {
             let modal = document.getElementById('delete-modal');
             document.getElementById('delete-modal-message').innerText = buildMessage(deleteLink)
@@ -19,6 +18,6 @@ document.addEventListener("DOMContentLoaded", function() {
                 let form = deleteLink.parentElement.getElementsByTagName('form')[0];
                 form.submit();
             });
-        })
-    }
+        });
+    });
 });
