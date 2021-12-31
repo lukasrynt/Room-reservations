@@ -3,26 +3,44 @@ POST http://localhost:8080/api/reservations/
 Content-Type: application/json
 
 {
+  "date": {
+    "year": "2020",
+    "month": "10",
+    "day": "10"
+  },
+  "time_from": {
+    "hour": "10",
+    "minute": "0"
+  },
+  "time_to": {
+    "hour": "12",
+    "minute": "0"
+  },
   "user": 1,
-  "room": 1,
-  "state": "PENDING",
-  "date": "2021-11-17",
-  "time_from": "18:00:00",
-  "time_to": "22:00:00"
+  "room": 1
 }
 
 ###
 # Update reservation
-PUT http://localhost:8080/api/reservations/11
+PUT http://localhost:8080/api/reservations/1
 Content-Type: application/json
 
 {
-  "user": 1,
-  "room": 1,
-  "state": "PENDING",
-  "date": "2021-11-17",
-  "time_from": "18:00:00",
-  "time_to": "22:00:00"
+  "date": {
+    "year": "2020",
+    "month": "10",
+    "day": "10"
+  },
+  "time_from": {
+    "hour": "15",
+    "minute": "0"
+  },
+  "time_to": {
+    "hour": "16",
+    "minute": "0"
+  },
+  "user": 2,
+  "room": 1
 }
 
 ###
