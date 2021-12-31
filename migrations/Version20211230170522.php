@@ -7,9 +7,7 @@ namespace DoctrineMigrations;
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\Migrations\AbstractMigration;
 
-/**
- * Auto-generated Migration: Please modify to your needs!
- */
+
 final class Version20211230170522 extends AbstractMigration
 {
     public function getDescription(): string
@@ -20,8 +18,8 @@ final class Version20211230170522 extends AbstractMigration
     public function up(Schema $schema): void
     {
         $this->addSql('ALTER TABLE room ADD last_access INT DEFAULT NULL');
-        $this->addSql('ALTER TABLE room ADD locked BOOLEAN NOT NULL');
-        $this->addSql('ALTER TABLE room ADD access_counter INT NOT NULL');
+        $this->addSql('ALTER TABLE room ADD locked BOOLEAN NOT NULL DEFAULT TRUE');
+        $this->addSql('ALTER TABLE room ADD access_counter INT NOT NULL DEFAULT 0');
     }
 
     public function down(Schema $schema): void
