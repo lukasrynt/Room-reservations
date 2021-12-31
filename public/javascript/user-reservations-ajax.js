@@ -78,6 +78,8 @@ document.addEventListener("DOMContentLoaded", function() {
         el.addEventListener('click', () => removeUser(el))
     })
     let addBtn = document.getElementById('add-reservation-user');
+    if (!addBtn)
+        return;
     let reservationId = addBtn.getAttribute('data-reservation-id')
     let dialog = createUsersDialog();
     addBtn.parentElement.append(dialog);

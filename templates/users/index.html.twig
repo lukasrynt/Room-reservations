@@ -8,11 +8,13 @@
     <link rel="stylesheet" href="{{ asset('styles/pagination.css') }}" type="text/css">
     <link rel="stylesheet" href="{{ asset('styles/filters.css') }}" type="text/css">
     <link rel="stylesheet" href="{{ asset('styles/form.css') }}" type="text/css">
+    <link rel="stylesheet" href="{{ asset('styles/detail.css') }}" type="text/css">
 {% endblock %}
 
 {% block javascripts %}
     {{ parent() }}
     <script src="{{ asset('javascript/filters.js') }}"></script>
+    <script src="{{ asset('javascript/users-detail.js') }}"></script>
     <script>
         let filtersInstance;
 
@@ -26,6 +28,7 @@
 {% endblock %}
 
 {% block main %}
+    {% include 'users/ajaxTemplates.html.twig' with { user: users[0] } %}
     <button type="button" onclick="filtersInstance.trigger()" class="filters-button">
         {{ source('@icons/drop-down-menu.svg') }}
         Filters</button>
@@ -50,7 +53,7 @@
 
         <tbody>
         {% for user in users %}
-            <tr>
+            <tr data-user-id="{{ user.id }}" class="user-row">
                 <td data-label="Name">{{ user.firstName }} {{ user.lastName }}</td>
                 <td data-label="Email">{{ user.email }}</td>
                 <td data-label="Role">

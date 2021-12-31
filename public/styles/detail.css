@@ -74,6 +74,63 @@ main {
     margin-bottom: .5rem;
 }
 
+#detail-modal-template {
+    display: none;
+}
+
+.detail-modal {
+    position: fixed;
+    display: flex;
+    align-items: center;
+    flex-flow: column;
+    background-color: var(--white);
+    border-radius: .438rem;
+    box-shadow: 0 2px 8px 0 rgba(0,0,0,0.1);
+    padding: 3rem;
+    flex-grow: 1;
+}
+
+.detail-modal header {
+    border-bottom: .125rem solid var(--gray-table-light);
+    padding-bottom: 2rem;
+    display: flex;
+    width: 100%;
+    flex-direction: column-reverse;
+    align-items: center;
+    text-align: center;
+}
+
+.detail-modal header h1 {
+    font-family: 'Martel Sans', sans-serif;
+    font-size: 2.5rem;
+    margin-top: 1.5rem;
+    text-transform: uppercase;
+}
+
+.detail-modal dl {
+    padding: 1rem 0 1rem 0;
+    display: flex;
+    flex-flow: column;
+    width: 100%;
+    flex-grow: 1;
+    font-size: 1.125rem;
+}
+
+.detail-modal dd {
+    display: none;
+}
+
+.detail-modal dt::before {
+    content: attr(data-label) ': ';
+    text-transform: uppercase;
+    font-size: 1.2rem;
+    color: var(--gray-light);
+}
+
+.detail-modal dt:not(:last-of-type) {
+    margin-bottom: .5rem;
+}
+
 @media screen and (min-width: 740px) {
     #detail {
         max-width: 60%;
