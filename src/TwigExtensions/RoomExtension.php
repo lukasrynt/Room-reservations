@@ -5,7 +5,6 @@ namespace App\TwigExtensions;
 
 use App\Entity\Room;
 use App\Services\ReservationService;
-use Symfony\Component\Validator\Constraints\Date;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFunction;
 
@@ -32,9 +31,9 @@ class RoomExtension extends AbstractExtension
 
     public function reservedUntil(Room $room): string
     {
-        $reservations = $this->reservationService->filterCurrentReservation($room);
-        if ($reservations->isEmpty() || $reservations->count() >= 2)
+        $reservation = $this->reservationService->getCurrentReservation($room);
+        if (!$reservation)
             return "";
-        return $reservations->first()->getTimeTo();
+        return $reservation->getTimeTo();
     }
 }

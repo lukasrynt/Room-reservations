@@ -4,12 +4,14 @@ namespace App\Repository;
 
 use App\Entity\GroupManager;
 use App\Entity\Reservation;
+use App\Entity\Room;
 use App\Entity\RoomManager;
 use App\Entity\States;
 use App\Entity\User;
 use App\Services\Filter;
 use App\Services\Orderer;
 use App\Services\Paginator;
+use DateTime;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Collections\Criteria;
 use Doctrine\Persistence\ManagerRegistry;
@@ -45,6 +47,40 @@ class ReservationRepository extends ServiceEntityRepository
         $criteria = (new Orderer($criteria))->getOrderCriteria($orderByFilters);
         $criteria = (new Paginator($criteria))->getCriteriaForPage($paginationFilters);
         return $this->matching($criteria)->toArray();
+    }
+
+    public function getCollisionReservations(Reservation $reservation): array
+    {
+        $criteria = Criteria::create()
+            ->where( Criteria::expr()->andX(
+                Criteria::expr()->gte('timeFrom', new \DateTime($reservation->getTimeFrom())),
+                Criteria::expr()->lt('timeFrom', new \DateTime($reservation->getTimeTo()))))
+            ->orWhere(Criteria::expr()->andX(
+                Criteria::expr()->gt('timeTo', new \DateTime($reservation->getTimeFrom())),
+                Criteria::expr()->lte('timeTo', new \DateTime($reservation->getTimeTo()))))
+            ->orWhere(Criteria::expr()->andX(
+                Criteria::expr()->lte('timeFrom', new \DateTime($reservation->getTimeFrom())),
+                Criteria::expr()->gte('timeTo', new \DateTime($reservation->getTimeTo()))));
+
+        $criteria = $this->getApprovedCrit($criteria);
+        $criteria = $this->getByRoomCrit($reservation->getRoom(), $criteria);
+        $criteria = $this->getByDateCrit($reservation->getDate(), $criteria);
+
+        return $this->matching($criteria)->toArray();
+    }
+
+    public function getCurrentRoomReservation(Room $room): ?Reservation
+    {
+        $today = new \DateTime();
+        $criteria = $this->getByDateCrit($today->format("Y-m-d"));
+        $criteria = $this->getByRoomCrit($room, $criteria);
+        $criteria = $this->getApprovedCrit($criteria);
+
+        $criteria
+            ->andWhere(Criteria::expr()->lte('timeFrom', new \DateTime($today->format("H:i:s"))))
+            ->andWhere(Criteria::expr()->gte('timeTo', new \DateTime($today->format("H:i:s"))));
+
+        return $this->matching($criteria)->toArray()[0] ?? null;
     }
 
     private function getAllForUserCrit(User $user): Criteria
@@ -98,5 +134,26 @@ class ReservationRepository extends ServiceEntityRepository
     {
         $criteria ??= Criteria::create();
         return $criteria->andWhere(Criteria::expr()->eq('state', new States("PENDING")));
+    }
+
+    private function getByDateCrit(string $date, Criteria $criteria = null): Criteria
+    {
+        $criteria ??= Criteria::create();
+        return $criteria
+            ->andWhere(Criteria::expr()->eq('date', new \DateTime($date)));
+    }
+
+    private function getByRoomCrit(Room $room,  Criteria $criteria = null): Criteria
+    {
+        $criteria ??= Criteria::create();
+        return $criteria
+            ->andWhere(Criteria::expr()->eq('room', $room));
+    }
+
+    private function getApprovedCrit(Criteria $criteria = null): Criteria
+    {
+        $criteria ??= Criteria::create();
+        return $criteria
+            ->andWhere(Criteria::expr()->eq('state', States::APPROVED));
     }
 }
