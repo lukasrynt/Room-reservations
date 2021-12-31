@@ -27,7 +27,7 @@
 
 /* header logo */
 .main-header h1 {
-    margin-left: 2rem;
+    margin-left: 1rem;
     height: 2.6rem;
     overflow: hidden;
 }
@@ -51,7 +51,8 @@
 /* user links */
 .main-header .user-links {
     justify-content: flex-end;
-    margin-right: 2rem;
+    margin-right: 1rem;
+    display: none;
 }
 
 /* dropdown */
@@ -109,7 +110,7 @@
         display: inline-block;
     }
 
-    .main-header nav, .user-links {
+    .main-header nav, .main-header .user-links {
         display: flex;
     }
 
