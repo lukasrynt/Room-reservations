@@ -40,7 +40,7 @@ class GroupController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="detail", requirements={"id": "\d+"})
+     * @Route("/{id}", name="detail", methods="GET", requirements={"id": "\d+"})
      * @param int $id
      * @return Response
      */
@@ -104,6 +104,24 @@ class GroupController extends AbstractController
         return $this->render('groups/create.html.twig', [
             'form' => $form->createView()
         ]);
+    }
+
+    /**
+     * @Route("/{id}", name="delete", methods="DELETE", requirements={"id": "\d+"})
+     * @param int $id
+     * @return Response
+     */
+    public function delete(int $id): Response
+    {
+        $group = $this->groupService->find($id);
+        $this->denyAccessUnlessGranted('delete_group');
+        if (!$group) {
+            return $this->render('errors/404.html.twig');
+        } else {
+            $this->groupService->delete($group);
+            $this->addFlash('success', "Group {$group->getName()} was successfully deleted.");
+            return $this->redirectToRoute('groups_index');
+        }
     }
 
 }
