@@ -13,10 +13,11 @@ class GroupVoter extends Voter
     const VIEW = 'view_group';
     const EDIT = 'edit_group';
     const CREATE = 'create_group';
+    const DELETE = 'delete_group';
 
     protected function supports(string $attribute, $subject): bool
     {
-        if (!in_array($attribute, [self::VIEW, self::EDIT, self::CREATE, self::VIEW_ALL])) {
+        if (!in_array($attribute, [self::VIEW, self::EDIT, self::CREATE, self::VIEW_ALL, self::DELETE])) {
             return false;
         }
         if (!($subject instanceof Group || !$subject)) {
@@ -41,6 +42,8 @@ class GroupVoter extends Voter
                 return $this->canEdit($user, $subject);
             case self::CREATE:
                 return $this->canCreate($user);
+            case self::DELETE:
+                return $this->canDelete($user);
             default:
                 return false;
         }    }
@@ -73,6 +76,11 @@ class GroupVoter extends Voter
     }
 
     private function canCreate(User $account): bool
+    {   
+        return $account->isAdmin();
+    }
+
+    private function canDelete(User $account): bool
     {
         return $account->isAdmin();
     }
