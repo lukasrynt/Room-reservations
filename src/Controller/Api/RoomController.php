@@ -78,6 +78,9 @@ class RoomController extends AbstractFOSRestController
         $user = $this->userService->find($userId);
         $room = $this->roomService->find($id);
 
+        if (!$user || !$room)
+            return $this->handleView($this->view([], Response::HTTP_NOT_FOUND));
+
         if (!$this->hasUserPermission($user, $room))
             return $this->handleView($this->view("Access forbidden", Response::HTTP_FORBIDDEN));
 
