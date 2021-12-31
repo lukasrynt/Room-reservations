@@ -16,7 +16,7 @@
     {% endif %}
 {% endif %}
 {% if is_granted('delete_reservation', reservation) %}
-    <a class="button-base button-danger-outline delete-link" data-confirm="delete" data-name="reservation #{{ reservation.id }}">
+    <a class="button-base button-with-icon button-danger-outline delete-link" data-confirm="delete" data-name="reservation #{{ reservation.id }}">
         {{ source('@icons/delete-icon.svg') }}
         Delete
     </a>

@@ -1,5 +1,5 @@
 {% if is_granted('book_room', room) %}
-    <a class="button-base button-with-icon button-main" href={{ path('reservations_book_room', {'roomId': room.id}) }}>
+    <a class="button-base button-with-icon button-main-outline" href={{ path('reservations_book_room', {'roomId': room.id}) }}>
         {{ source('@icons/create-reservation-icon.svg') }}
         Request a reservation</a>
 {% endif %}
@@ -9,7 +9,10 @@
         Edit</a>
 {% endif %}
 {% if is_granted('delete_room', room) %}
-    <a class="button-base button-danger-outline delete-link">Delete</a>
+    <a class="button-base button-with-icon button-danger-outline delete-link" data-confirm="delete" data-name="{{ room.name }}">
+        {{ source('@icons/delete-icon.svg') }}
+        Delete
+    </a>
     <form method="post" action="{{ path('rooms_delete', { id: room.id }) }}">
         <input type="hidden" name="_method" value="DELETE">
     </form>

@@ -4,7 +4,10 @@
         Edit</a>
 {% endif %}
 {% if is_granted('delete_building', building) %}
-    <a class="button-base button-danger-outline delete-link">Delete</a>
+    <a class="button-base button-danger-outline delete-link button-with-icon" data-confirm="delete" data-name="{{ building.name }}">
+        {{ source('@icons/delete-icon.svg') }}
+        Delete
+    </a>
     <form method="post" action="{{ path('buildings_delete', { id: building.id }) }}">
         <input type="hidden" name="_method" value="DELETE">
     </form>
