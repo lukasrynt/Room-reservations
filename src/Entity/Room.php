@@ -82,6 +82,21 @@ class Room
      */
     private ?Group $group;
 
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private ?int $lastAccess = null;
+
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private bool $locked;
+
+    /**
+     * @ORM\Column(type="integer")
+     */
+    private int $accessCounter;
+
     public function __construct()
     {
         $this->users = new ArrayCollection();
@@ -263,6 +278,41 @@ class Room
     {
         $this->private = $private;
 
+        return $this;
+    }
+
+    public function getLastAccess(): ?int
+    {
+        return $this->lastAccess;
+    }
+
+    public function setLastAccess(int $lastAccess): self
+    {
+        $this->lastAccess = $lastAccess;
+
+        return $this;
+    }
+
+    public function getLocked(): bool
+    {
+        return $this->locked;
+    }
+
+    public function setLocked(bool $locked): self
+    {
+        $this->locked = $locked;
+
+        return $this;
+    }
+
+    public function getAccessCounter(): int
+    {
+        return $this->accessCounter;
+    }
+
+    public function setAccessCounter(int $accessCounter): self
+    {
+        $this->accessCounter = $accessCounter;
         return $this;
     }
 }
