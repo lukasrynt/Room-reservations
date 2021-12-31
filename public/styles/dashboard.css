@@ -1,6 +1,13 @@
-main, main section {
+main section {
+    display: -webkit-box;
+    display: -ms-flexbox;
     display: flex;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
     align-items: center;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+    -ms-flex-flow: column;
     flex-flow: column;
     width: 100%;
 }
@@ -14,14 +21,23 @@ section h1 {
 }
 
 section ul {
+    display: -webkit-box;
+    display: -ms-flexbox;
     display: flex;
     margin-top: 1.5rem;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+    -ms-flex-flow: column;
     flex-flow: column;
     width: 100%;
 }
 
 section ul li {
+    display: -webkit-box;
+    display: -ms-flexbox;
     display: flex;
+    -webkit-box-pack: center;
+    -ms-flex-pack: center;
     justify-content: center;
 }
 
@@ -32,9 +48,15 @@ section ul li:not(:last-of-type){
 section ul li a {
     background-color: var(--main);
     color: var(--white);
+    display: -webkit-box;
+    display: -ms-flexbox;
     display: flex;
     border-radius: .438rem;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
     align-items: center;
+    -webkit-box-pack: center;
+    -ms-flex-pack: center;
     justify-content: center;
     width: 90%;
     font-size: 2rem;
@@ -59,8 +81,14 @@ section ul li a .button-icon {
 
     section ul {
         width: 80%;
+        -webkit-box-orient: horizontal;
+        -webkit-box-direction: normal;
+        -ms-flex-flow: row;
         flex-flow: row;
+        -ms-flex-wrap: wrap;
         flex-wrap: wrap;
+        -webkit-box-pack: center;
+        -ms-flex-pack: center;
         justify-content: center;
     }
 
@@ -70,6 +98,9 @@ section ul li a .button-icon {
     }
 
     section ul li a {
+        -webkit-box-orient: vertical;
+        -webkit-box-direction: normal;
+        -ms-flex-flow: column;
         flex-flow: column;
         min-width: 10rem;
         margin-bottom: 1rem;
