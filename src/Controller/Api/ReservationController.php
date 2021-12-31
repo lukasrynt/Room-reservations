@@ -8,6 +8,7 @@ namespace App\Controller\Api;
 use App\Entity\Reservation;
 use App\Entity\States;
 use App\Form\Type\ReservationRestType;
+use App\Form\Type\ReservationType;
 use App\Services\ReservationService;
 use App\Services\UserService;
 use FOS\RestBundle\Controller\AbstractFOSRestController;
@@ -196,10 +197,11 @@ class ReservationController extends AbstractFOSRestController
         $form = $this->createForm(ReservationRestType::class, $reservation, ['csrf_protection' => false]);
         $form->submit($request->request->all());
         if (!$form->isValid()) {
-            return $this->view($form->getData());
+            return $this->view($form->getData(), Response::HTTP_BAD_REQUEST);
         }
 
         $reservation = $form->getData();
+        $reservation->setState(new States(States::APPROVED));
         $this->reservationService->save($reservation);
         return $this->view($reservation, $statusOk);
     }
