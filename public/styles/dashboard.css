@@ -1,6 +1,13 @@
-main, main section {
+main section {
+    display: -webkit-box;
+    display: -ms-flexbox;
     display: flex;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
     align-items: center;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+    -ms-flex-flow: column;
     flex-flow: column;
     width: 100%;
 }
@@ -8,34 +15,52 @@ main, main section {
 section h1 {
     font-weight: 200;
     font-family: 'Martel Sans', sans-serif;
-    font-size: 4rem;
+    font-size: 3.5rem;
     color: var(--gray);
     text-transform: uppercase;
 }
 
 section ul {
+    display: -webkit-box;
+    display: -ms-flexbox;
     display: flex;
-    width: 80%;
-    flex-flow: row;
-    flex-wrap: wrap;
-    margin-top: 2rem;
-    justify-content: center;
+    margin-top: 1.5rem;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+    -ms-flex-flow: column;
+    flex-flow: column;
+    width: 100%;
 }
 
 section ul li {
-    margin: 0 .5rem 0 .5rem;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-pack: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+}
+
+section ul li:not(:last-of-type){
+    margin-bottom: .5rem;
 }
 
 section ul li a {
     background-color: var(--main);
-    display: flex;
-    flex-flow: column;
-    align-items: center;
-    justify-content: center;
     color: var(--white);
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
     border-radius: .438rem;
-    min-width: 10rem;
-    margin-bottom: 1rem;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    -webkit-box-pack: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+    width: 90%;
+    font-size: 2rem;
+    padding: 1rem 0 1rem 0;
 }
 
 section ul li a:hover {
@@ -43,22 +68,55 @@ section ul li a:hover {
     background-color: var(--main-darker);
 }
 
-section ul li a span {
-    font-size: 1.25rem;
-    margin: 2rem 0 1.5rem 0;
-    padding: 0 2rem 0 2rem;
-}
-
 section ul li a .button-icon {
-    margin: 3rem 0 0 0;
-    height: 5rem;
-    width: 5rem;
+    height: 2rem;
+    width: 2rem;
 }
 
 @media screen and (min-width: 740px) {
     section h1 {
         padding-top: .25rem;
         font-size: 4.5rem;
+    }
+
+    section ul {
+        width: 80%;
+        -webkit-box-orient: horizontal;
+        -webkit-box-direction: normal;
+        -ms-flex-flow: row;
+        flex-flow: row;
+        -ms-flex-wrap: wrap;
+        flex-wrap: wrap;
+        -webkit-box-pack: center;
+        -ms-flex-pack: center;
+        justify-content: center;
+    }
+
+    section ul li {
+        margin: 0 .5rem 0 .5rem;
+        display: block;
+    }
+
+    section ul li a {
+        -webkit-box-orient: vertical;
+        -webkit-box-direction: normal;
+        -ms-flex-flow: column;
+        flex-flow: column;
+        min-width: 10rem;
+        margin-bottom: 1rem;
+        padding: 0;
+    }
+
+    section ul li a span {
+        font-size: 1.25rem;
+        margin: 2rem 0 1.5rem 0;
+        padding: 0 2rem 0 2rem;
+    }
+
+    section ul li a .button-icon {
+        margin: 3rem 0 0 0;
+        height: 5rem;
+        width: 5rem;
     }
 }
 

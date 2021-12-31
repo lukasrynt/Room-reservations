@@ -9,8 +9,14 @@
     width: 90%;
     background-color: var(--main);
     color: var(--white);
+    display: -webkit-box;
+    display: -ms-flexbox;
     display: flex;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
     align-items: center;
+    -webkit-box-pack: center;
+    -ms-flex-pack: center;
     justify-content: center;
 }
 
@@ -24,19 +30,29 @@
 }
 
 .active .button-icon {
+    -webkit-transform: rotate(180deg);
+    -ms-transform: rotate(180deg);
     transform: rotate(180deg);
 }
 
 .filters-content {
     max-height: 0;
     overflow: hidden;
+    -webkit-transition: max-height 0.2s ease-out;
+    -o-transition: max-height 0.2s ease-out;
     transition: max-height 0.2s ease-out;
     background-color: var(--white);
     width: 90%;
+    display: -webkit-box;
+    display: -ms-flexbox;
     display: flex;
+    -webkit-box-pack: center;
+    -ms-flex-pack: center;
     justify-content: center;
     border-radius: 0 0 .438rem .438rem;
+    -webkit-box-shadow: 0 2px 8px 0 rgba(0,0,0,0.1);
     box-shadow: 0 2px 8px 0 rgba(0,0,0,0.1);
+    margin-bottom: 1rem;
 }
 
 .filters-content > form {
@@ -45,13 +61,23 @@
 
 @media screen and (min-width: 790px) {
     .filters-content > form {
+        display: -webkit-box;
+        display: -ms-flexbox;
         display: flex;
+        -webkit-box-orient: horizontal;
+        -webkit-box-direction: normal;
+        -ms-flex-flow: row;
         flex-flow: row;
+        -ms-flex-wrap: wrap;
         flex-wrap: wrap;
+        -webkit-box-pack: justify;
+        -ms-flex-pack: justify;
         justify-content: space-between;
     }
 
     .filters-content > form div:not(:last-child) {
+        -webkit-box-flex: 1;
+        -ms-flex-positive: 1;
         flex-grow: 1;
         margin-left: .5rem;
         margin-right: .5rem;
