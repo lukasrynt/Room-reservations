@@ -24,7 +24,7 @@ class Reservation
      * @ORM\Column(type="integer")
      * @Expose
      */
-    private ?int $id;
+    private int $id;
 
     /**
      * @ORM\Column(type="datetime")
@@ -91,7 +91,7 @@ class Reservation
         $this->attendees = new ArrayCollection();
     }
 
-    public function getId(): ?int
+    public function getId(): int
     {
         return $this->id;
     }
