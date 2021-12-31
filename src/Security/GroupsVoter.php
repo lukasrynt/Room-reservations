@@ -7,7 +7,7 @@ use App\Entity\User;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 
-class GroupVoter extends Voter
+class GroupsVoter extends Voter
 {
     const VIEW_ALL = 'view_groups';
     const VIEW = 'view_group';
