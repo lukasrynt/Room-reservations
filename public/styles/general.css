@@ -248,6 +248,22 @@ li.ajax-list-item {
     color: var(--gray-dark);
 }
 
+#delete-modal {
+    position: fixed;
+    padding: 1em;
+    border-radius: .438rem;
+    box-shadow: inset 0 0 0 .078rem var(--red-dark);
+    background: var(--white);
+    border: 0;
+    font-size: 1.2em;
+}
+
+#delete-modal .button-row {
+    display: flex;
+    justify-content: space-around;
+    margin-top: 1em;
+}
+
 .hidden {
     display: none;
 }
