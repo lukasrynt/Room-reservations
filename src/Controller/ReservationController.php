@@ -101,7 +101,7 @@ class ReservationController extends AbstractController
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            if (!$this->reservationService->checkTimeOfReservation($form->getData()))
+            if (!$this->reservationService->checkCollisionReservations($form->getData()))
             {
                 $this->addFlash('danger', "Reservation in this time already exists!");
             } else {
@@ -177,7 +177,7 @@ class ReservationController extends AbstractController
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            if (!$this->reservationService->checkTimeOfReservation($form->getData()))
+            if (!$this->reservationService->checkCollisionReservations($form->getData()))
             {
                 $this->addFlash('danger', "Reservation at this time already exists!");
             } else {
