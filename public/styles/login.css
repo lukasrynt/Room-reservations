@@ -74,6 +74,7 @@ form button {
 }
 
 form input, form textarea {
+    -webkit-appearance: none;
     font-family: 'Source Sans Pro', sans-serif;
     padding: .625rem;
     font-size: 1rem;
