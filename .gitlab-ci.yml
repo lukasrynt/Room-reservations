@@ -12,7 +12,7 @@ zip_files:
     - apt-get update
     - apt-get install -y zip
   script:
-    - zip -r team-hmsr.zip *
+    - zip -r team-hmsr.zip * .[^.]*
 
 scp_zip:
   stage: scp_zip
