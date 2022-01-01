@@ -44,7 +44,7 @@ deploy:
     # remove old version
     - ssh -o StrictHostKeyChecking=no -i deploy_key "${SSH_USER}@${SSH_HOST}" "cd ../home && rm -r team-hmsr"
     # remove docker container and volume
-    - ssh -o StrictHostKeyChecking=no -i deploy_key "${SSH_USER}@${SSH_HOST}" "docker stop $(docker ps -q) && docker rm $(docker ps -q -a) && docker volume rm $(docker volume ls -q)"
+    - ssh -o StrictHostKeyChecking=no -i deploy_key "${SSH_USER}@${SSH_HOST}" "docker stop \$(docker ps -q) && docker rm \$(docker ps -q -a) && docker volume rm \$(docker volume ls -q)"
     # unzip and delete zip
     - ssh -o StrictHostKeyChecking=no -i deploy_key "${SSH_USER}@${SSH_HOST}" "cd ../home && unzip team-hmsr.zip -d team-hmsr && rm team-hmsr.zip"
     # run deploy script
