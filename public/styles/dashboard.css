@@ -18,18 +18,20 @@ section h1 {
     font-size: 3.5rem;
     color: var(--gray);
     text-transform: uppercase;
+    margin-bottom: 1.5rem;
 }
 
 section ul {
     display: -webkit-box;
     display: -ms-flexbox;
     display: flex;
-    margin-top: 1.5rem;
     -webkit-box-orient: vertical;
     -webkit-box-direction: normal;
     -ms-flex-flow: column;
     flex-flow: column;
-    width: 100%;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
 }
 
 section ul li {
@@ -39,10 +41,7 @@ section ul li {
     -webkit-box-pack: center;
     -ms-flex-pack: center;
     justify-content: center;
-}
-
-section ul li:not(:last-of-type){
-    margin-bottom: .5rem;
+    width: calc(100vw - 10%)
 }
 
 section ul li a {
@@ -73,6 +72,10 @@ section ul li a .button-icon {
     width: 2rem;
 }
 
+section ul li:not(:last-of-type) a {
+    margin-bottom: .5rem;
+}
+
 @media screen and (min-width: 740px) {
     section h1 {
         padding-top: .25rem;
@@ -92,9 +95,17 @@ section ul li a .button-icon {
         justify-content: center;
     }
 
+    section ul li:not(:last-of-type) a {
+        margin-bottom: 0;
+    }
+
+    section ul li a {
+        width: 100%;
+    }
+
     section ul li {
-        margin: 0 .5rem 0 .5rem;
-        display: block;
+        margin: 0 .5rem 1rem .5rem;
+        width: unset;
     }
 
     section ul li a {
@@ -103,7 +114,6 @@ section ul li a .button-icon {
         -ms-flex-flow: column;
         flex-flow: column;
         min-width: 10rem;
-        margin-bottom: 1rem;
         padding: 0;
     }
 
