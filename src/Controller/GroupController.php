@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Group;
 use App\Form\Type\GroupType;
 use App\Services\GroupService;
+use App\Services\ParamsParser;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\ButtonType;
 use Symfony\Component\HttpFoundation\Request;
@@ -35,8 +36,14 @@ class GroupController extends AbstractController
     public function index(Request $request): Response
     {
         $this->denyAccessUnlessGranted('view_groups');
-        $groups = $this->groupService->findAll();
-        return $this->render('groups/index.html.twig', ['groups' => $groups]);
+        $params = ParamsParser::getParamsFromUrl($request->query->all());
+        $count = $this->groupService->countForParams($params);
+        $groups = $this->groupService->filter($params);
+        return $this->render('groups/index.html.twig', [
+            'groups' => $groups,
+            'groupsCount' => $count,
+            'params' => $params
+        ]);
     }
 
     /**

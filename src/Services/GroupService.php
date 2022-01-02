@@ -45,15 +45,20 @@ class GroupService
 
     /**
      * @param array $queryParams
-     * @return Group[]|array
+     * @return array
      */
     public function filter(array $queryParams): array
     {
         return $this->groupRepository->filter(
-            ParamsParser::getFilters($queryParams, 'filter_by'),
-            ParamsParser::getFilters($queryParams, 'order_by'),
-            ParamsParser::getFilters($queryParams, 'paginate')
+            $queryParams['filter_by'] ?? null,
+            $queryParams['order_by'] ?? null,
+            $queryParams['paginate'] ?? null
         );
+    }
+
+    public function countForParams(array $queryParams): int
+    {
+        return count($this->groupRepository->filter($queryParams['filter_by']));
     }
 
     /**

@@ -10,7 +10,7 @@
 
 {% block main %}
     {% if is_granted('create_group') %}
-        <a class="button-base button-success-outline top-button" href={{ path('groups_create') }}>
+        <a class="button-base button-success-outline top-button button-with-icon" href={{ path('groups_create') }}>
             {{ source('@icons/plus-icon.svg') }} Add
         </a>
     {% endif %}
@@ -53,5 +53,5 @@
         {% endfor %}
         </tbody>
     </table>
-
+    {% include 'pagination.html.twig' with { itemsCount: groupsCount, indexPath: 'groups_index' } %}
 {% endblock %}
