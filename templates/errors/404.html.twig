@@ -12,15 +12,17 @@
             4</h1>
         <p>You have entered the hamster's breakroom!</p>
 
-        {# TODO : go back to previus page - once we have sessions? #}
-        <a class="button-base button-with-icon button-main" href="#">
-            <svg class="button-icon" width="1em" height="1em" aria-hidden="true" role="img" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                <g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
-                    <path d="m11 5-7 7 7 7"/>
-                    <path d="m4 12h16"/>
-                </g>
-            </svg>
-            Go back</a>
+        {% if app.user %}
+            <a class="button-base button-with-icon button-main" href="{{ path('dashboard') }}">
+                {{ source('@icons/arrow-left.svg') }}
+                Go back to dashboard
+            </a>
+        {% else %}
+            <a class="button-base button-with-icon button-main" href="{{ path('landing_page') }}">
+                {{ source('@icons/arrow-left.svg') }}
+                Go back to landing page
+            </a>
+        {% endif %}
     </article>
 
 {% endblock %}
