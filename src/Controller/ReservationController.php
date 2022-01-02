@@ -7,6 +7,7 @@ namespace App\Controller;
 use App\Entity\States;
 use App\Form\Type\BookRoomType;
 use App\Form\Type\ReservationType;
+use App\Services\ParamsParser;
 use App\Services\ReservationService;
 use App\Services\RoomService;
 use App\Services\UserService;
@@ -46,8 +47,14 @@ class ReservationController extends AbstractController
     public function index(Request $request): Response
     {
         $this->denyAccessUnlessGranted('view_reservations');
-        $reservations = $this->reservationService->filterAllForUser($this->getUser(), $request->query->all());
-        return $this->render('reservations/index.html.twig', ['reservations' => $reservations]);
+        $params = ParamsParser::getParamsFromUrl($request->query->all());
+        $count = $this->reservationService->countForParamsAndUser($params, $this->getUser());
+        $reservations = $this->reservationService->filterForUser($params, $this->getUser());
+        return $this->render('reservations/index.html.twig', [
+            'reservations' => $reservations,
+            'reservationsCount' => $count,
+            'params' => $params
+        ]);
     }
 
     /**
