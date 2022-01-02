@@ -44,7 +44,7 @@
                                         {{ source('@icons/user-minus-icon.svg') }}
                                     </a>
                                 {% endif %}
-                                {{ member }}
+                                {{ member.username }}
                             </li>
                         {% endfor %}
                         {% if is_granted('edit_group', group) %}
