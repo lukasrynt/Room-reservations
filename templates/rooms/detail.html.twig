@@ -42,6 +42,14 @@
             </dt>
             <dd>Room manager</dd>
             <dt data-label="Room manager">{{ room.roomManager }}</dt>
+            <dd>Status</dd>
+            {% if room.locked %}
+                <dt data-label="Status">Locked</dt>
+            {% else %}
+                <dt data-label="Status">Unlocked</dt>
+            {% endif %}
+            <dd>Last accessed user</dd>
+            <dt data-label="Last accessed user">{{ room.lastAccess }}</dt>
         </dl>
         <footer>
             {% include 'rooms/buttons.html.twig' %}
