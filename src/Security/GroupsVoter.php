@@ -46,15 +46,19 @@ class GroupsVoter extends Voter
                 return $this->canDelete($user);
             default:
                 return false;
-        }    }
+        }
+    }
 
     private function canViewAll(): bool
     {
         return true;
     }
 
-    private function canView(User $account, Group $group): bool
+    private function canView(User $account, ?Group $group): bool
     {
+        if (!$group) {
+            return true;
+        }
         if ($account->isAdmin()) {
             return true;
         }
@@ -67,7 +71,6 @@ class GroupsVoter extends Voter
         }
 
         return $account === $group->getGroupManager();
-
     }
 
     private function canEdit(User $account, Group $group): bool

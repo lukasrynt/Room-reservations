@@ -55,8 +55,11 @@ class RoomsVoter extends Voter
     }
 
 
-    private function canView(?User $account, Room $room): bool
+    private function canView(?User $account, ?Room $room): bool
     {
+        if (!$room) {
+            return true;
+        }
         if (!$account && $room->getPrivate()) {
             return false;
         }
