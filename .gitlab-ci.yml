@@ -53,5 +53,5 @@ deploy:
     - ssh -o StrictHostKeyChecking=no -i deploy_key "${SSH_USER}@${SSH_HOST}" "cd ../home && unzip team-hmsr.zip -d team-hmsr && rm team-hmsr.zip"
     # run deploy script
     - ssh -o StrictHostKeyChecking=no -i deploy_key "${SSH_USER}@${SSH_HOST}" "cd ../home/team-hmsr && chmod +x deploy-script.sh && bash deploy-script.sh"
-    only:
-      - deploy
+  only:
+    - deploy
