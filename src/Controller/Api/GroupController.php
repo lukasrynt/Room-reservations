@@ -42,6 +42,23 @@ class GroupController extends AbstractFOSRestController
     }
 
     /**
+     * @Rest\Get("/{id}", name="detail", requirements={"id": "\d+"})
+     * @param int $id
+     * @return Response
+     */
+    public function detail(int $id): Response
+    {
+        $group = $this->groupService->find($id);
+        if (!$group) {
+            $view = $this->view([], Response::HTTP_NOT_FOUND);
+        } else {
+            $view = $this->view($group, Response::HTTP_OK);
+        }
+        return $this->handleView($view);
+    }
+
+
+    /**
      * @Rest\Put("/{gid}/users/{uid}",
      *        name="add_user",
      *        requirements={"gid": "\d+", "uid": "\d+"})
