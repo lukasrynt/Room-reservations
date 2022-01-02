@@ -19,7 +19,7 @@ function removeUser(element) {
 }
 
 function createUserElement(user, groupId) {
-    let template = document.getElementById('ajax-template');
+    let template = document.getElementById('ajax-template-user');
     let userElement = template.cloneNode(true);
     userElement.removeAttribute('id');
     let link = userElement.getElementsByTagName('a')[0];
@@ -66,7 +66,7 @@ async function fetchAvailableMembers(groupId) {
 }
 
 function createUsersDialog() {
-    let template = document.getElementById('modal-template');
+    let template = document.getElementById('modal-template-members');
     let dialog = template.cloneNode(true);
     dialog.getElementsByTagName('button')[0].addEventListener('click', (e) => dialog.close())
     dialog.removeAttribute('id');
