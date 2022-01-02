@@ -85,7 +85,7 @@ class Room
     private Collection $reservations;
 
     /**
-     * @ORM\ManyToOne(targetEntity=RoomManager::class, inversedBy="managedRooms", fetch="EAGER")
+     * @ORM\ManyToOne(targetEntity=RoomManager::class, inversedBy="managedRooms")
      * @Expose
      */
     private ?RoomManager $roomManager = null;
@@ -327,10 +327,5 @@ class Room
     {
         $this->accessCounter = $accessCounter;
         return $this;
-    }
-
-    public function __sleep()
-    {
-        return [];
     }
 }

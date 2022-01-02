@@ -305,10 +305,6 @@ li.ajax-list-item {
     display: none;
 }
 
-#ajax-template {
-    display: none;
-}
-
-#modal-template {
+#ajax-template, #modal-template, #ajax-rooms-template, #ajax-users-template, #ajax-template-user, #ajax-template-room {
     display: none;
 }
