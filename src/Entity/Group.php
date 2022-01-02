@@ -22,7 +22,7 @@ class Group
      * @ORM\Column(type="integer")
      * @Expose
      */
-    private $id;
+    private ?int $id = null;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
@@ -33,7 +33,7 @@ class Group
     /**
      * @ORM\ManyToOne(targetEntity=GroupManager::class, inversedBy="managedGroups")
      */
-    private ?GroupManager $groupManager;
+    private ?GroupManager $groupManager = null;
 
     /**
      * @ORM\OneToMany(targetEntity="User", mappedBy="group")
@@ -58,7 +58,7 @@ class Group
      * Many subgroups have One group.
      * @ORM\ManyToOne(targetEntity="Group", inversedBy="children")
      */
-    private ?Group $parent;
+    private ?Group $parent = null;
 
     public function __construct()
     {

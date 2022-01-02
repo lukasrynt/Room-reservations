@@ -77,6 +77,7 @@ footer {
     cursor: pointer;
     font-family: 'Source Sans Pro', sans-serif;
     font-weight: 400;
+    text-align: center;
 }
 
 .button-with-icon {
@@ -201,7 +202,7 @@ footer {
 }
 
 .top-button {
-    margin-top: 1em;
+    margin-bottom: 1em;
 }
 
 .detail-list {
@@ -277,7 +278,11 @@ li.ajax-list-item {
 }
 
 .add-modal a:hover {
-    color: var(--gray-dark);
+    color: var(--green);
+}
+
+.add-modal a:hover::before {
+    content: '+ '
 }
 
 #delete-modal {

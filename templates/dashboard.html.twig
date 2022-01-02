@@ -13,28 +13,27 @@
         <h1>Dashboard</h1>
         <ul>
             {% if is_granted('view_rooms') %}
-                <li><a class="" href="{{ path('rooms_index') }}">
+                <li><a href="{{ path('rooms_index') }}">
                         {{ source('@icons/classroom-icon.svg') }}
                         <span>Classrooms</span></a></li>
             {% endif %}
             {% if is_granted('view_buildings') %}
-                <li><a class="" href="{{ path('buildings_index') }}">
+                <li><a href="{{ path('buildings_index') }}">
                         {{ source('@icons/building-icon.svg') }}
                         <span>Buildings</span></a></li>
             {% endif %}
             {% if is_granted('view_reservations') %}
-                <li><a class="" href="{{ path('reservations_index') }}">
+                <li><a href="{{ path('reservations_index') }}">
                         {{ source('@icons/reservation-icon.svg') }}
                         <span>Reservations</span></a></li>
             {% endif %}
             {% if is_granted('view_groups') %}
-
-                <li><a class="button-base {{ linkClassForUrl(app.request.pathInfo, 'groups') }} button-with-icon" href="{{ path('groups_index') }}">
+                <li><a href="{{ path('groups_index') }}">
                         {{ source('@icons/group-icon.svg') }}
                         <span>Groups</span></a></li>
             {% endif %}
             {% if is_granted('view_users') %}
-                <li><a class="" href="{{ path('users_index') }}">
+                <li><a href="{{ path('users_index') }}">
                         {{ source('@icons/account-badge-icon.svg') }}
                         <span>Users</span></a></li>
             {% endif %}

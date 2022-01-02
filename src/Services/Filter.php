@@ -32,19 +32,23 @@ class Filter
 
     public function getFilterCriteria(?array $attributes): Criteria
     {
-        if (!$attributes)
+        if (!$attributes) {
             return $this->criteria;
+        }
         foreach ($attributes as $key => $value) {
-            if (!$value)
+            if ($value === null) {
                 continue;
-            if (is_numeric($value))
+            }
+            if (is_numeric($value) || $value === true || $value === false) {
                 $expression = Criteria::expr()->eq($key, $value);
-            else
+            } else {
                 $expression = Criteria::expr()->contains($key, $value);
-            if ($this->andMode)
+            }
+            if ($this->andMode) {
                 $this->criteria->andWhere($expression);
-            else
+            } else {
                 $this->criteria->orWhere($expression);
+            }
         }
         return $this->criteria;
     }

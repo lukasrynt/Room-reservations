@@ -6,14 +6,31 @@
     {{ parent() }}
     <link rel="stylesheet" href="{{ asset('styles/table.css') }}" type="text/css">
     <link rel="stylesheet" href="{{ asset('styles/pagination.css') }}" type="text/css">
+    <link rel="stylesheet" href="{{ asset('styles/filters.css') }}" type="text/css">
+    <link rel="stylesheet" href="{{ asset('styles/form.css') }}" type="text/css">
 {% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script src="{{ asset('javascript/filters.js') }}"></script>
+{% endblock %}
+
 
 {% block main %}
     {% if is_granted('create_building') %}
-        <a class="button-base button-with-icon button-success-outline" href={{ path('buildings_create') }}>
+        <a class="button-base button-with-icon button-success-outline top-button" href={{ path('buildings_create') }}>
             {{ source('@icons/plus-icon.svg') }} Add
         </a>
     {% endif %}
+    <button type="button" class="filters-button">
+        {{ source('@icons/drop-down-menu.svg') }}
+        Filters</button>
+    <div class="filters-content">
+        {{ form_start(searchForm) }}
+        {{ form_row(searchForm.name) }}
+        {{ form_row(searchForm.address) }}
+        {{ form_end(searchForm) }}
+    </div>
     <table>
         <thead>
         <tr>
