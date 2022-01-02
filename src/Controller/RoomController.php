@@ -5,6 +5,8 @@ namespace App\Controller;
 
 
 use App\Entity\Room;
+use App\Form\Type\RoomSearchType;
+use App\Services\ParamsParser;
 use App\Services\RoomService;
 use App\Form\Type\RoomType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -38,12 +40,37 @@ class RoomController extends AbstractController
     public function index(Request $request): Response
     {
         $this->denyAccessUnlessGranted('view_rooms');
-        if (!$this->getUser()) {
-            $rooms = $this->roomService->findAllPublic();
-        } else {
-            $rooms = $this->roomService->filter($request->query->all());
-        }
-        return $this->render('rooms/index.html.twig', ['rooms' => $rooms]);
+        $searchForm = $this->createForm(RoomSearchType::class);
+        $searchForm->handleRequest($request);
+        $params = ParamsParser::getParamsFromUrl($request->query->all());
+        $count = $this->roomService->countForParamsAndUser($params, $this->getUser());
+        $rooms = $this->roomService->filterForUser($params, $this->getUser());
+        return $this->render('rooms/index.html.twig', [
+            'rooms' => $rooms,
+            'searchForm' => $searchForm->createView(),
+            'params' => $params,
+            'roomsCount' => $count
+        ]);
+    }
+
+    /**
+     * @Route("/search", name="search")
+     * @param Request $request
+     * @return Response
+     */
+    public function search(Request $request): Response {
+        $this->denyAccessUnlessGranted('view_rooms');
+        $searchForm = $this->createForm(RoomSearchType::class);
+        $searchForm->handleRequest($request);
+        $params = ParamsParser::getParamsFromUrl($request->query->all(), $searchForm->getData());
+        $rooms = $this->roomService->filterForUser($params, $this->getUser());
+        $count = $this->roomService->countForParamsAndUser($params, $this->getUser());
+        return $this->render('rooms/index.html.twig', [
+            'rooms' => $rooms,
+            'searchForm' => $searchForm->createView(),
+            'params' => $params,
+            'roomsCount' => $count
+        ]);
     }
 
     /**

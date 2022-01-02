@@ -15,21 +15,11 @@
     {{ parent() }}
     <script src="{{ asset('javascript/filters.js') }}"></script>
     <script src="{{ asset('javascript/users-detail.js') }}"></script>
-    <script>
-        let filtersInstance;
-
-        document.addEventListener("DOMContentLoaded", function() {
-            let filterButton = document.getElementsByClassName('filters-button')[0];
-            let filterContent = document.getElementsByClassName('filters-content')[0];
-            filtersInstance = new Filters(filterButton, filterContent);
-            filtersInstance.watch();
-        });
-    </script>
 {% endblock %}
 
 {% block main %}
     {% include 'users/ajaxTemplates.html.twig' with { user: users[0] } %}
-    <button type="button" onclick="filtersInstance.trigger()" class="filters-button">
+    <button type="button" class="filters-button">
         {{ source('@icons/drop-down-menu.svg') }}
         Filters</button>
     <div class="filters-content">
@@ -58,7 +48,7 @@
                 <td data-label="Email">{{ user.email }}</td>
                 <td data-label="Role">
                     {% for role in user.roles %}
-                        {{ role }}
+                        {{ getRoleText(role) }}
                     {% endfor %}
                 </td>
                 <td data-label="Phone number">{{ user.phoneNumber }}</td>

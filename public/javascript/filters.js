@@ -34,3 +34,15 @@ class Filters {
         })
     }
 }
+
+let filtersInstance;
+
+document.addEventListener("DOMContentLoaded", function() {
+    let filterButton = document.getElementsByClassName('filters-button')[0];
+    let filterContent = document.getElementsByClassName('filters-content')[0];
+    filtersInstance = new Filters(filterButton, filterContent);
+    filtersInstance.watch();
+    document.getElementsByClassName('filters-button')[0].addEventListener('click', () => {
+        filtersInstance.trigger()
+    })
+});

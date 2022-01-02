@@ -21,7 +21,7 @@ class Building
      * @ORM\Column(type="integer")
      * @Expose
      */
-    private int $id;
+    private ?int $id = null;
 
     /**
      * @ORM\Column(type="string", length=255)

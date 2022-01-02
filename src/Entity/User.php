@@ -11,6 +11,7 @@ use JMS\Serializer\Annotation\Expose;
 use phpDocumentor\Reflection\Types\Boolean;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=UserRepository::class)
@@ -26,8 +27,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
     const COMMON_USER = 'ROLE_USER';
     const ADMIN = 'ROLE_ADMIN';
-    const GROUP_ADMIN = 'ROLE_GROUP_ADMIN';
-    const ROOM_ADMIN = 'ROLE_ROOM_ADMIN';
+    const GROUP_ADMIN = 'ROLE_GROUP_MANAGER';
+    const ROOM_ADMIN = 'ROLE_ROOM_MANAGER';
 
     /**
      * @ORM\Id
@@ -35,7 +36,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      * @ORM\Column(type="integer")
      * @Expose
      */
-    protected int $id;
+    private ?int $id = null;
 
     /**
      * @ORM\Column(type="string", length=255)
@@ -64,6 +65,10 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     /**
      * @ORM\Column(type="json")
      * @Expose
+     * @Assert\Expression(
+     *     "this.getRolesCount() <= 1",
+     *     message="User is allowed to have only ONE role!",
+     * )
      */
     protected array $roles = [];
 
@@ -231,11 +236,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     public function getRoles(): array
     {
-        $roles = $this->roles;
-        // guarantee every user at least has ROLE_USER
-        $roles[] = 'ROLE_USER';
+        $rolesArr = $this->roles;
 
-        return array_unique($roles);
+        if (empty($rolesArr)) {
+            $rolesArr[] = 'ROLE_USER';
+        }
+
+        return array_unique($rolesArr);
+    }
+
+    public function getRolesCount(): int
+    {
+        return count($this->roles);
     }
 
     public function setRoles(array $roles): self
@@ -317,11 +329,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     public function removeReservation(Reservation $reservation): self
     {
-        if ($this->reservations->removeElement($reservation)) {
-            // set the owning side to null (unless already changed)
-            if ($reservation->getUser() === $this) {
-                $reservation->setUser(null);
-            }
+        if ($this->reservations->removeElement($reservation) && $reservation->getUser() === $this) {
+            $reservation->setUser(null);
         }
 
         return $this;
@@ -364,5 +373,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         }
 
         return $this;
+    }
+
+    /**
+     * @return string[]
+     */
+    public static function getAllRoles(): array
+    {
+        return [
+            'Admin' => User::ADMIN,
+            'Group Admin' => User::GROUP_ADMIN,
+            'Room Admin' => User::ROOM_ADMIN,
+            'User' => User::COMMON_USER
+        ];
     }
 }

@@ -45,15 +45,20 @@ class GroupService
 
     /**
      * @param array $queryParams
-     * @return Group[]|array
+     * @return array
      */
     public function filter(array $queryParams): array
     {
         return $this->groupRepository->filter(
-            ParamsParser::getFilters($queryParams, 'filter_by'),
-            ParamsParser::getFilters($queryParams, 'order_by'),
-            ParamsParser::getFilters($queryParams, 'paginate')
+            $queryParams['filter_by'] ?? null,
+            $queryParams['order_by'] ?? null,
+            $queryParams['paginate'] ?? null
         );
+    }
+
+    public function countForParams(array $queryParams): int
+    {
+        return count($this->groupRepository->filter($queryParams['filter_by']));
     }
 
     /**
@@ -69,7 +74,9 @@ class GroupService
             return null;
 
         $group->addMember($user);
+        $user->setGroup($group);
         $this->entityManager->persist($group);
+        $this->entityManager->persist($user);
         $this->entityManager->flush();
         return $group;
     }
@@ -87,7 +94,9 @@ class GroupService
             return null;
 
         $group->removeMember($user);
+        $user->setGroup(null);
         $this->entityManager->persist($group);
+        $this->entityManager->persist($user);
         $this->entityManager->flush();
         return $group;
     }
@@ -101,11 +110,14 @@ class GroupService
     {
         $group = $this->groupRepository->find($groupId);
         $room = $this->roomRepository->find($roomId);
-        if (!$room || !$group)
+        if (!$room || !$group) {
             return null;
+        }
 
         $group->addRoom($room);
+        $room->setGroup($group);
         $this->entityManager->persist($group);
+        $this->entityManager->persist($room);
         $this->entityManager->flush();
         return $group;
     }
@@ -119,11 +131,14 @@ class GroupService
     {
         $group = $this->groupRepository->find($groupId);
         $room = $this->roomRepository->find($roomId);
-        if (!$room || !$group)
+        if (!$room || !$group) {
             return null;
+        }
 
         $group->removeRoom($room);
+        $room->setGroup(null);
         $this->entityManager->persist($group);
+        $this->entityManager->persist($room);
         $this->entityManager->flush();
         return $group;
     }

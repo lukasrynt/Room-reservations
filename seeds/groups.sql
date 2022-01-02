@@ -1,13 +1,26 @@
 insert into "group" (id, name, group_manager_id, parent_id)
 values (
-           nextval('group_id_seq'), 'Pilni studenti', null, null
+           nextval('group_id_seq'), 'Katedra aplikované matematiky', null, null
        ),
        (
-           nextval('group_id_seq'), 'Ne moc dobri studenti', null, null
+           nextval('group_id_seq'), 'Katedra softwarového inženýrství', null, null
        ),
        (
-           nextval('group_id_seq'), 'Trochu mene pilni studenti', null, 1
+           nextval('group_id_seq'), 'Subkatedra aplikované matematiky', null, 1
        ),
        (
-           nextval('group_id_seq'), 'Jeste min pilni studenti', null, 3
+           nextval('group_id_seq'), 'Subkatedra softwarového inženýrství - softwarového inženýrství', null, 2
+       ),
+       (
+           nextval('group_id_seq'), 'Katedra teoretické informatiky', null, null
+       ),
+       (
+           nextval('group_id_seq'), 'Subkatedra softwarového inženýrství - webové inženýrství', null, 2
        );
+
+update "group" set group_manager_id = 5 where id = 1;
+update "group" set group_manager_id = 6 where id = 2;
+update "group" set group_manager_id = 7 where id = 3;
+update "group" set group_manager_id = 8 where id = 4;
+update "group" set group_manager_id = 9 where id = 5;
+update "group" set group_manager_id = 10 where id = 6;

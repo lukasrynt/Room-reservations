@@ -38,7 +38,8 @@ class UserController extends AbstractFOSRestController
      */
     public function all(Request $request): Response
     {
-        $users = $this->userService->filter(ParamsParser::convertToUrlParams($request->query->all()));
+        $params = ParamsParser::getParamsFromUrl($request->query->all());
+        $users = $this->userService->filter($params);
         $view = $this->view($users, Response::HTTP_OK);
         return $this->handleView($view);
     }

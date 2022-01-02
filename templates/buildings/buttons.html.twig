@@ -8,7 +8,7 @@
         {{ source('@icons/delete-icon.svg') }}
         Delete
     </a>
-    <form method="post" action="{{ path('buildings_delete', { id: building.id }) }}">
+    <form class="table-delete-form" method="post" action="{{ path('buildings_delete', { id: building.id }) }}">
         <input type="hidden" name="_method" value="DELETE">
     </form>
 {% endif %}

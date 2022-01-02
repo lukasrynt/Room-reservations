@@ -7,48 +7,48 @@ function show(element) {
 }
 
 function removeUser(element) {
-    let reservationId = parseInt(element.getAttribute('data-reservation-id'));
+    let groupId = parseInt(element.getAttribute('data-group-id'));
     let userId = parseInt(element.getAttribute('data-user-id'));
-    fetch('/api/reservations/' + reservationId + '/attendees/' + userId, { method: 'DELETE' })
+    fetch('/api/groups/' + groupId + '/users/' + userId, { method: 'DELETE' })
         .then((response) => {
             if (response.ok) {
                 element.parentElement.remove();
-                show(document.getElementById('add-reservation-user'));
+                show(document.getElementById('add-group-user'));
             }
         })
 }
 
-function createUserElement(user, reservationId) {
-    let template = document.getElementById('ajax-template');
+function createUserElement(user, groupId) {
+    let template = document.getElementById('ajax-template-user');
     let userElement = template.cloneNode(true);
     userElement.removeAttribute('id');
     let link = userElement.getElementsByTagName('a')[0];
     link.addEventListener('click', () => removeUser(link))
-    link.setAttribute('data-reservation-id', reservationId);
+    link.setAttribute('data-group-id', groupId);
     link.setAttribute('data-user-id', user.id);
     userElement.append(user['username']);
     return userElement;
 }
 
 function addUser(element, user) {
-    let reservationId = parseInt(element.getAttribute('data-reservation-id'));
-    fetch('/api/reservations/' + reservationId + '/attendees/' + user['id'], { method: 'PUT' })
+    let groupId = parseInt(element.getAttribute('data-group-id'));
+    fetch('/api/groups/' + groupId + '/users/' + user['id'], { method: 'PUT' })
         .then((response) => {
             if (response.ok) {
-                let userEl = createUserElement(user, reservationId);
+                let userEl = createUserElement(user, groupId);
                 let listItem = element.parentElement;
                 listItem.parentElement.insertBefore(userEl, listItem);
             }
         })
 }
 
-async function fetchTakenIds(reservationId) {
-    let response = await fetch('/api/reservations/' + reservationId);
+async function fetchTakenIds(groupId) {
+    let response = await fetch('/api/groups/' + groupId);
     if (!response.ok) {
         return [];
     }
     const json = await response.json();
-    return json['attendees'].map((user) => user['id'])
+    return json['members'].map((user) => user['id'])
 }
 
 async function fetchAllUsers() {
@@ -59,14 +59,14 @@ async function fetchAllUsers() {
     return await response.json();
 }
 
-async function fetchAvailableAttendees(reservationId) {
-    let takenIds = await fetchTakenIds(reservationId);
+async function fetchAvailableMembers(groupId) {
+    let takenIds = await fetchTakenIds(groupId);
     let allUsers = await fetchAllUsers();
     return allUsers.filter((user) => !takenIds.includes(user.id))
 }
 
 function createUsersDialog() {
-    let template = document.getElementById('modal-template');
+    let template = document.getElementById('modal-template-members');
     let dialog = template.cloneNode(true);
     dialog.getElementsByTagName('button')[0].addEventListener('click', (e) => dialog.close())
     dialog.removeAttribute('id');
@@ -74,23 +74,23 @@ function createUsersDialog() {
 }
 
 document.addEventListener("DOMContentLoaded", function() {
-    Array.prototype.forEach.call(document.getElementsByClassName('remove-reservation-user'), (el) => {
+    Array.prototype.forEach.call(document.getElementsByClassName('remove-group-user'), (el) => {
         el.addEventListener('click', () => removeUser(el))
     })
-    let addBtn = document.getElementById('add-reservation-user');
+    let addBtn = document.getElementById('add-group-user');
     if (!addBtn)
         return;
-    let reservationId = addBtn.getAttribute('data-reservation-id')
+    let groupId = addBtn.getAttribute('data-group-id')
     let dialog = createUsersDialog();
     addBtn.parentElement.append(dialog);
     dialog.close();
     hide(addBtn);
-    fetchAvailableAttendees(reservationId).then((users) => {
+    fetchAvailableMembers(groupId).then((users) => {
         if (users.length)
             show(addBtn);
     });
     addBtn.addEventListener('click', () => {
-        fetchAvailableAttendees(reservationId).then((users) => {
+        fetchAvailableMembers(groupId).then((users) => {
             if (!users.length) {
                 hide(addBtn)
                 return;

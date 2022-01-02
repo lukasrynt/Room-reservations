@@ -23,7 +23,6 @@ final class Version20211229002706 extends AbstractMigration
 
     public function down(Schema $schema): void
     {
-        $this->addSql('CREATE SCHEMA public');
         $this->addSql('ALTER TABLE "group" DROP CONSTRAINT FK_6DC044C5727ACA70');
         $this->addSql('DROP INDEX IDX_6DC044C5727ACA70');
         $this->addSql('ALTER TABLE "group" DROP parent_id');

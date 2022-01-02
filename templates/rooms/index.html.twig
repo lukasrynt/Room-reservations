@@ -6,32 +6,30 @@
     {{ parent() }}
     <link rel="stylesheet" href="{{ asset('styles/table.css') }}" type="text/css">
     <link rel="stylesheet" href="{{ asset('styles/pagination.css') }}" type="text/css">
+    <link rel="stylesheet" href="{{ asset('styles/filters.css') }}" type="text/css">
+    <link rel="stylesheet" href="{{ asset('styles/form.css') }}" type="text/css">
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script src="{{ asset('javascript/filters.js') }}"></script>
 {% endblock %}
 
 {% block main %}
-    <section>
-        <form>
-            <label for="access"></label>
-            <select name="access" id="access">
-                <option value="public">Public</option>
-                <option value="private">Private</option>
-            </select>
-
-            <button type="submit">Filter</button>
-        </form>
-
-
-        <form action="#">
-            <label for="search"></label>
-                <input type="text" id="search" placeholder="Search by name" name="search">
-            <button type="submit">Ikonka</button>
-        </form>
-    </section>
     {% if is_granted('create_room') %}
         <a class="button-base button-success-outline button-with-icon top-button" href={{ path('rooms_create') }}>
             {{ source('@icons/plus-icon.svg') }} Add
         </a>
     {% endif %}
+    <button type="button" class="filters-button">
+        {{ source('@icons/drop-down-menu.svg') }}
+        Filters</button>
+    <div class="filters-content">
+        {{ form_start(searchForm) }}
+        {{ form_row(searchForm.private) }}
+        {{ form_row(searchForm.name) }}
+        {{ form_end(searchForm) }}
+    </div>
     <table>
         <thead>
             <tr>
@@ -67,4 +65,5 @@
             {% endfor %}
         </tbody>
     </table>
+    {% include 'pagination.html.twig' with { itemsCount: roomsCount, indexPath: 'rooms_index' } %}
 {% endblock %}

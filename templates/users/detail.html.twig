@@ -19,6 +19,42 @@
             <dt data-label="Last name">{{ user.lastName }}</dt>
             <dd>Username</dd>
             <dt data-label="Username">{{ user.username }}</dt>
+            <dd>Note</dd>
+            <dd>Role</dd>
+            <dt data-label="Role">
+                {% for role in user.roles %}
+                    {{ getRoleText(role) }}
+                {% endfor %}
+            </dt>
+            <dt data-label="Note">{{ user.note }}</dt>
+            <dd>Rooms</dd>
+            <dt data-label="Rooms">
+                <ul class="detail-list">
+                    {% for room in user.rooms %}
+                        <li>{{ room.name }}</li>
+                    {% endfor %}
+                </ul>
+            </dt>
+            {% if user.isGroupAdmin %}
+                <dd>Groups</dd>
+                <dt data-label="Groups">
+                    <ul class="detail-list">
+                        {% for group in user.groups %}
+                            <li>{{ group.name }}</li>
+                        {% endfor %}
+                    </ul>
+                </dt>
+            {% endif %}
+            {% if user.isRoomAdmin %}
+                <dd>Managed rooms</dd>
+                <dt data-label="Managed rooms">
+                    <ul class="detail-list">
+                        {% for room in user.managedRooms %}
+                            <li>{{ room.name }}</li>
+                        {% endfor %}
+                    </ul>
+                </dt>
+            {% endif %}
         </dl>
         <footer>
             {% include 'users/buttons.html.twig' %}
