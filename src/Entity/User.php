@@ -36,7 +36,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      * @ORM\Column(type="integer")
      * @Expose
      */
-    protected int $id;
+    private ?int $id = null;
 
     /**
      * @ORM\Column(type="string", length=255)
