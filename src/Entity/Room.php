@@ -85,7 +85,7 @@ class Room
     private Collection $reservations;
 
     /**
-     * @ORM\ManyToOne(targetEntity=RoomManager::class, inversedBy="managedRooms")
+     * @ORM\ManyToOne(targetEntity=RoomManager::class, inversedBy="managedRooms", fetch="EAGER")
      * @Expose
      */
     private ?RoomManager $roomManager = null;
