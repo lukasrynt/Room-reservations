@@ -19,14 +19,10 @@
             </h2>
             <form action="{{ path('login') }}" method="post">
                 <label for="username">Username:</label>
-                {# TODO : ask if value needed? - its blocking placeholder #}
                 <input placeholder="Username" type="text" id="username" name="_username" {# value="{{ last_username }}" #}/>
 
                 <label for="password">Password:</label>
                 <input type="password" id="password" name="_password" placeholder="Password"/>
-
-                {# TODO : Once the dashboard is done, redirect to dashboard after successful login #}
-               {# <input type="hidden" name="_target_path" value="dashboard"/>#}
 
                 <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
 
