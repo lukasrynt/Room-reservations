@@ -13,6 +13,7 @@
     --green-dark: #278E50;
     --red: #CA4C4C;
     --red-dark: #9C2A2A;
+    --yellow: #eec63a;
 }
 
 /* a reset */
@@ -307,4 +308,25 @@ li.ajax-list-item {
 
 #ajax-template, #modal-template, #ajax-rooms-template, #ajax-users-template, #ajax-template-user, #ajax-template-room {
     display: none;
+}
+
+.red-font {
+    color: var(--red);
+}
+
+.green-font {
+    color: var(--green);
+}
+
+.yellow-font {
+    color: var(--yellow);
+}
+
+.column-with-icon {
+    display: flex;
+    justify-content: center;
+}
+
+.column-with-icon svg {
+    margin-left: 0.5em;
 }

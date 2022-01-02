@@ -207,7 +207,7 @@ class ReservationController extends AbstractController
      * @param int $id
      * @return Response
      */
-    public function approve(Request $request,int $id): Response
+    public function approve(Request $request, int $id): Response
     {
         $reservation = $this->reservationService->find($id);
         $this->denyAccessUnlessGranted('approve_reservation', $reservation);
@@ -219,21 +219,22 @@ class ReservationController extends AbstractController
         $reservation->setState(new States(States::APPROVED));
         $this->reservationService->save($reservation);
         $this->addFlash('success', "Reservation for room {$reservation->getRoom()->getName()} was successfully approved.");
-        return $this->redirectToRoute('reservations_detail', ['id' => $reservation->getId()]);
+        return $this->redirect($request->headers->get('referer'));
     }
 
     /**
      * @Route("/{id}/reject", name="reject")
+     * @param Request $request
      * @param int $id
      * @return Response
      */
-    public function reject(int $id): Response
+    public function reject(Request $request, int $id): Response
     {
         $reservation = $this->reservationService->find($id);
         $this->denyAccessUnlessGranted('approve_reservation', $reservation);
         $reservation->setState(new States(States::REJECTED));
         $this->reservationService->save($reservation);
         $this->addFlash('success', "Request with for room {$reservation->getRoom()->getName()} was successfully rejected.");
-        return $this->redirectToRoute('reservations_detail', ['id' => $reservation->getId()]);
+        return $this->redirect($request->headers->get('referer'));
     }
 }

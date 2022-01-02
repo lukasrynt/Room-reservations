@@ -24,7 +24,18 @@
             <dd>Room</dd>
             <dt data-label="Last name">{{ reservation.room.name }}</dt>
             <dd>State</dd>
-            <dt data-label="State">{{ reservation.state }}</dt>
+            <dt data-label="State">
+                {% if reservation.state == 'PENDING' %}
+                    Pending
+                    {{ source('@icons/question-circle-icon.svg') }}
+                {% elseif reservation.state == 'APPROVED' %}
+                    Approved
+                    {{ source('@icons/check-circle-icon.svg') }}
+                {% else %}
+                    Rejected
+                    {{ source('@icons/cancel-circle-icon.svg') }}
+                {% endif %}
+            </dt>
             <dd>Attendees</dd>
             <dt data-label="Attendees">
                 <ul class="detail-list">
