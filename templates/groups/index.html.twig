@@ -26,7 +26,7 @@
     </div>
 
     {% if is_granted('create_group') %}
-        <a class="button-base button-success-outline top-button button-with-icon" href={{ path('groups_create') }}>
+        <a class="button-base button-with-icon button-success-outline top-button button-with-icon" href={{ path('groups_create') }}>
             {{ source('@icons/plus-icon.svg') }} Add
         </a>
     {% endif %}
