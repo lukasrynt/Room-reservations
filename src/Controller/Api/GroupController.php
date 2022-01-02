@@ -69,10 +69,11 @@ class GroupController extends AbstractFOSRestController
     public function addUserToGroup(int $gid, int $uid): Response
     {
         $editedGroup = $this->groupService->addUser($gid, $uid);
-        if (!$editedGroup)
+        if (!$editedGroup) {
             $view = $this->view([], Response::HTTP_NOT_FOUND);
-        else
+        } else {
             $view = $this->view($editedGroup, Response::HTTP_CREATED);
+        }
         return $this->handleView($view);
     }
 
@@ -87,10 +88,11 @@ class GroupController extends AbstractFOSRestController
     public function removeUserFromGroup(int $gid, int $uid): Response
     {
         $editedGroup = $this->groupService->removeUser($gid, $uid);
-        if (!$editedGroup)
+        if (!$editedGroup) {
             $view = $this->view([], Response::HTTP_NOT_FOUND);
-        else
+        } else {
             $view = $this->view($editedGroup, Response::HTTP_OK);
+        }
         return $this->handleView($view);
     }
 
@@ -105,12 +107,12 @@ class GroupController extends AbstractFOSRestController
      */
     public function addRoomToGroup(int $gid, int $rid): Response
     {
-        # TODO check if room is already taken
         $editedGroup = $this->groupService->addRoom($gid, $rid);
-        if (!$editedGroup)
+        if (!$editedGroup) {
             $view = $this->view([], Response::HTTP_NOT_FOUND);
-        else
+        } else {
             $view = $this->view($editedGroup, Response::HTTP_CREATED);
+        }
         return $this->handleView($view);
     }
 
@@ -126,10 +128,11 @@ class GroupController extends AbstractFOSRestController
     public function removeRoomFromGroup(int $gid, int $rid): Response
     {
         $editedGroup = $this->groupService->removeRoom($gid, $rid);
-        if (!$editedGroup)
+        if (!$editedGroup) {
             $view = $this->view([], Response::HTTP_NOT_FOUND);
-        else
+        } else {
             $view = $this->view($editedGroup, Response::HTTP_OK);
+        }
         return $this->handleView($view);
     }
 }

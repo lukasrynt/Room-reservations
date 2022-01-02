@@ -110,8 +110,9 @@ class GroupService
     {
         $group = $this->groupRepository->find($groupId);
         $room = $this->roomRepository->find($roomId);
-        if (!$room || !$group)
+        if (!$room || !$group) {
             return null;
+        }
 
         $group->addRoom($room);
         $room->setGroup($group);
@@ -130,8 +131,9 @@ class GroupService
     {
         $group = $this->groupRepository->find($groupId);
         $room = $this->roomRepository->find($roomId);
-        if (!$room || !$group)
+        if (!$room || !$group) {
             return null;
+        }
 
         $group->removeRoom($room);
         $room->setGroup(null);

@@ -78,11 +78,13 @@ class RoomController extends AbstractFOSRestController
         $user = $this->userService->find($userId);
         $room = $this->roomService->find($id);
 
-        if (!$user || !$room)
+        if (!$user || !$room) {
             return $this->handleView($this->view([], Response::HTTP_NOT_FOUND));
+        }
 
-        if (!$this->hasUserPermission($user, $room))
+        if (!$this->hasUserPermission($user, $room)) {
             return $this->handleView($this->view("Access forbidden", Response::HTTP_FORBIDDEN));
+        }
 
         if ($room->getAccessCounter() == 1 && (!$room->getLastAccess() || $room->getLastAccess() == $userId))
         {
@@ -103,8 +105,9 @@ class RoomController extends AbstractFOSRestController
         $room->setAccessCounter(1);
         $room->setLastAccess($userId);
         $this->roomService->save($room);
-        if (!$room->getLocked())
+        if (!$room->getLocked()) {
             return $this->handleView($this->view("Opening the door", Response::HTTP_OK));
+        }
         return $this->handleView($this->view("Access counter to unlock the door: 1/2", Response::HTTP_OK));
     }
 
@@ -112,12 +115,14 @@ class RoomController extends AbstractFOSRestController
     {
         if ($user->isAdmin() ||
             $room->getRoomManager() === $user ||
-            ($user->isGroupAdmin() && $room->getGroup() === $user->getGroup()))
+            ($user->isGroupAdmin() && $room->getGroup() === $user->getGroup())) {
             return true;
+        }
 
         $currentReservation = $this->reservationService->getCurrentReservation($room);
-        if (!$currentReservation)
+        if (!$currentReservation) {
             return false;
+        }
 
         return $currentReservation->getAttendees()->contains($user) || $currentReservation->getUser() === $user;
     }
