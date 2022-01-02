@@ -31,7 +31,7 @@ class Group
     private ?string $name;
 
     /**
-     * @ORM\ManyToOne(targetEntity=GroupManager::class, inversedBy="managedGroups")
+     * @ORM\ManyToOne(targetEntity=GroupManager::class, inversedBy="managedGroups", fetch="EAGER")
      */
     private ?GroupManager $groupManager;
 
