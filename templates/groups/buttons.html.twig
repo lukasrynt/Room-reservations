@@ -1,0 +1,14 @@
+{% if is_granted('edit_group', group) %}
+    <a class="button-base button-with-icon button-main-outline" href={{ path('groups_edit', {'id': group.id}) }}>
+        {{ source('@icons/edit-icon.svg') }}
+        Edit</a>
+{% endif %}
+{% if is_granted('delete_group', group) %}
+    <a class="button-base button-with-icon button-danger-outline delete-link" data-confirm="delete" data-name="{{ group.name }}">
+        {{ source('@icons/delete-icon.svg') }}
+        Delete
+    </a>
+    <form method="post" action="{{ path('groups_delete', { id: group.id }) }}">
+        <input type="hidden" name="_method" value="DELETE">
+    </form>
+{% endif %}
