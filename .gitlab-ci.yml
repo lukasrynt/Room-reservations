@@ -13,6 +13,8 @@ zip_files:
     - apt-get install -y zip
   script:
     - zip -r team-hmsr.zip * .[^.]*
+  only:
+    - deploy
 
 scp_zip:
   stage: scp_zip
@@ -28,6 +30,8 @@ scp_zip:
     - chmod 600 deploy_key
     # copy zip
     - scp -o StrictHostKeyChecking=no -i deploy_key team-hmsr.zip $SSH_USER@$SSH_HOST:../home
+  only:
+    - deploy
 
 deploy:
   stage: deploy
@@ -49,3 +53,5 @@ deploy:
     - ssh -o StrictHostKeyChecking=no -i deploy_key "${SSH_USER}@${SSH_HOST}" "cd ../home && unzip team-hmsr.zip -d team-hmsr && rm team-hmsr.zip"
     # run deploy script
     - ssh -o StrictHostKeyChecking=no -i deploy_key "${SSH_USER}@${SSH_HOST}" "cd ../home/team-hmsr && chmod +x deploy-script.sh && bash deploy-script.sh"
+    only:
+      - deploy
