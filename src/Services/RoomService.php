@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Entity\Room;
+use App\Entity\User;
 use App\Repository\RoomRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Common\Collections\Collection;
@@ -48,6 +49,26 @@ class RoomService
         $this->entityManager->flush();
     }
 
+    public function countForParamsAndUser(array $queryParams, ?User $user): int
+    {
+        return count($this->roomRepository->filterForUser($user, $queryParams['filter_by']));
+    }
+
+    /**
+     * @param User|null $user
+     * @param array $queryParams
+     * @return array
+     */
+    public function filterForUser(array $queryParams, ?User $user): array
+    {
+        return $this->roomRepository->filterForUser(
+            $user,
+            $queryParams['filter_by'] ?? null,
+            $queryParams['order_by'] ?? null,
+            $queryParams['paginate'] ?? null
+        );
+    }
+
     /**
      * @param array $queryParams
      * @return array
@@ -55,9 +76,9 @@ class RoomService
     public function filter(array $queryParams): array
     {
         return $this->roomRepository->filter(
-            ParamsParser::getFilters($queryParams, 'filter_by'),
-            ParamsParser::getFilters($queryParams, 'order_by'),
-            ParamsParser::getFilters($queryParams, 'paginate')
+            $queryParams['filter_by'] ?? null,
+            $queryParams['order_by'] ?? null,
+            $queryParams['paginate'] ?? null
         );
     }
 

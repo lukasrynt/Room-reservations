@@ -5,6 +5,7 @@ namespace App\Controller;
 
 
 use App\Entity\Room;
+use App\Services\ParamsParser;
 use App\Services\RoomService;
 use App\Form\Type\RoomType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -38,12 +39,14 @@ class RoomController extends AbstractController
     public function index(Request $request): Response
     {
         $this->denyAccessUnlessGranted('view_rooms');
-        if (!$this->getUser()) {
-            $rooms = $this->roomService->findAllPublic();
-        } else {
-            $rooms = $this->roomService->filter($request->query->all());
-        }
-        return $this->render('rooms/index.html.twig', ['rooms' => $rooms]);
+        $params = ParamsParser::getParamsFromUrl($request->query->all());
+        $count = $this->roomService->countForParamsAndUser($params, $this->getUser());
+        $rooms = $this->roomService->filterForUser($params, $this->getUser());
+        return $this->render('rooms/index.html.twig', [
+            'rooms' => $rooms,
+            'params' => $params,
+            'roomsCount' => $count
+        ]);
     }
 
     /**

@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\Room;
+use App\Entity\User;
 use App\Services\Filter;
 use App\Services\Orderer;
 use App\Services\Paginator;
@@ -30,11 +31,34 @@ class RoomRepository extends ServiceEntityRepository
      * @param array|null $paginationFilters
      * @return array
      */
-    public function filter(?array $findFilters, ?array $orderByFilters, ?array $paginationFilters): array
+    public function filter(?array $findFilters, ?array $orderByFilters = null, ?array $paginationFilters = null): array
     {
         $criteria = (new Filter())->getFilterCriteria($findFilters);
         $criteria = (new Orderer($criteria))->getOrderCriteria($orderByFilters);
-        $criteria = (new Paginator($criteria))->getCriteriaForPage($paginationFilters);
+        if ($paginationFilters) {
+            $criteria = (new Paginator($criteria))->getCriteriaForPage($paginationFilters);
+        }
+        return $this->matching($criteria)->toArray();
+    }
+
+    /**
+     * @param User|null $user
+     * @param array|null $findFilters
+     * @param array|null $orderByFilters
+     * @param array|null $paginationFilters
+     * @return array
+     */
+    public function filterForUser(?User $user, ?array $findFilters, ?array $orderByFilters = null, ?array $paginationFilters = null): array
+    {
+        $criteria = Criteria::create();
+        if (!$user) {
+            $criteria = $criteria->andWhere(Criteria::expr()->eq('private', false));
+        }
+        $criteria = (new Filter($criteria))->getFilterCriteria($findFilters);
+        $criteria = (new Orderer($criteria))->getOrderCriteria($orderByFilters);
+        if ($paginationFilters) {
+            $criteria = (new Paginator($criteria))->getCriteriaForPage($paginationFilters);
+        }
         return $this->matching($criteria)->toArray();
     }
 

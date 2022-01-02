@@ -67,4 +67,5 @@
             {% endfor %}
         </tbody>
     </table>
+    {% include 'pagination.html.twig' with { itemsCount: roomsCount, indexPath: 'rooms_index' } %}
 {% endblock %}
