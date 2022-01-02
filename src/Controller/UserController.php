@@ -72,13 +72,8 @@ class UserController extends AbstractController
 
         if (in_array(User::ROOM_ADMIN, $this->getUser()->getRoles())){
             $form->add('roles', ChoiceType::class, [
-                'choices' => [
-                    'Admin' => User::ADMIN,
-                    'Group Admin' => User::GROUP_ADMIN,
-                    'Room Admin' => User::ROOM_ADMIN,
-                    'User' => User::COMMON_USER
-                    ]
-                ,'multiple' => true
+                'choices' => User::getAllRoles(),
+                'multiple' => true
             ]);
         }
 

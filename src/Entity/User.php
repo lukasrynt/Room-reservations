@@ -376,4 +376,17 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
         return $this;
     }
+
+    /**
+     * @return string[]
+     */
+    public static function getAllRoles(): array
+    {
+        return [
+            'Admin' => User::ADMIN,
+            'Group Admin' => User::GROUP_ADMIN,
+            'Room Admin' => User::ROOM_ADMIN,
+            'User' => User::COMMON_USER
+        ];
+    }
 }
