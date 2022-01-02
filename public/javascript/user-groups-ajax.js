@@ -59,8 +59,8 @@ async function fetchAllUsers() {
     return await response.json();
 }
 
-async function fetchAvailableMembers(reservationId) {
-    let takenIds = await fetchTakenIds(reservationId);
+async function fetchAvailableMembers(groupId) {
+    let takenIds = await fetchTakenIds(groupId);
     let allUsers = await fetchAllUsers();
     return allUsers.filter((user) => !takenIds.includes(user.id))
 }

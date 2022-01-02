@@ -7,7 +7,13 @@
     <link rel="stylesheet" href="{{ asset('styles/detail.css') }}" type="text/css">
 {% endblock %}
 
+{% block javascripts %}
+    {{ parent() }}
+    <script src="{{ asset('javascript/user-groups-ajax.js') }}"></script>
+{% endblock %}
+
 {% block main %}
+    {% include 'groups/ajaxTemplates.html.twig' %}
     <article id="detail">
         <header>
             <h1>{{ group.name }}</h1>
@@ -29,15 +35,27 @@
 
             <dd>Members</dd>
                 <dt data-label="Members">
-                    {% if group.members is not empty %}
-                        <br>
+                    <ul class="detail-list">
                         {% for member in group.members %}
-                            {{ member }} <br>
+                            <li class="ajax-list-item">
+                                {% if is_granted('edit_group', group) %}
+                                    <a class="list-button button-danger button-with-icon remove-group-user"
+                                       data-group-id="{{ group.id }}" data-user-id="{{ member.id }}">
+                                        {{ source('@icons/user-minus-icon.svg') }}
+                                    </a>
+                                {% endif %}
+                                {{ member }}
+                            </li>
                         {% endfor %}
-                    {% else %}
-                    no members
-                    {% endif %}
-
+                        {% if is_granted('edit_group', group) %}
+                            <li class="ajax-list-item">
+                                <a class="list-button button-success button-with-icon" id="add-group-user"
+                                   data-group-id="{{ group.id }}">
+                                    {{ source('@icons/user-plus-icon.svg') }}
+                                </a>
+                            </li>
+                        {% endif %}
+                    </ul>
                 </dt>
 
             <dd>Rooms</dd>
