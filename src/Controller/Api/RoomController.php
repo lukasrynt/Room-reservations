@@ -8,6 +8,7 @@ namespace App\Controller\Api;
 use App\Entity\Room;
 use App\Entity\User;
 use App\Repository\RoomRepository;
+use App\Services\ParamsParser;
 use App\Services\ReservationService;
 use App\Services\RoomService;
 use App\Services\UserService;
@@ -49,7 +50,8 @@ class RoomController extends AbstractFOSRestController
      */
     public function all(Request $request): Response
     {
-        $rooms = $this->roomService->filter($request->query->all());
+        $params = ParamsParser::getParamsFromUrl($request->query->all());
+        $rooms = $this->roomService->filter($params);
         $view = $this->view($rooms, Response::HTTP_OK);
         return $this->handleView($view);
     }

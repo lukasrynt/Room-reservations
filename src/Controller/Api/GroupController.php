@@ -6,6 +6,7 @@
 namespace App\Controller\Api;
 
 use App\Services\GroupService;
+use App\Services\ParamsParser;
 use FOS\RestBundle\Controller\AbstractFOSRestController;
 use FOS\RestBundle\Controller\Annotations as Rest;
 use Symfony\Component\HttpFoundation\Request;
@@ -36,7 +37,8 @@ class GroupController extends AbstractFOSRestController
      */
     public function all(Request $request): Response
     {
-        $groups = $this->groupService->filter($request->query->all());
+        $params = ParamsParser::getParamsFromUrl($request->query->all());
+        $groups = $this->groupService->filter($params);
         $view = $this->view($groups, Response::HTTP_OK);
         return $this->handleView($view);
     }

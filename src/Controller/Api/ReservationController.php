@@ -9,6 +9,7 @@ use App\Entity\Reservation;
 use App\Entity\States;
 use App\Form\Type\ReservationRestType;
 use App\Form\Type\ReservationType;
+use App\Services\ParamsParser;
 use App\Services\ReservationService;
 use App\Services\UserService;
 use FOS\RestBundle\Controller\AbstractFOSRestController;
@@ -41,12 +42,13 @@ class ReservationController extends AbstractFOSRestController
 
     /**
      * @Rest\Get("/",  name="list")
-     * @param Request $reservation
+     * @param Request $request
      * @return Response
      */
-    public function all(Request $reservation): Response
+    public function all(Request $request): Response
     {
-        $reservations = $this->reservationService->filterAll($reservation->query->all());
+        $params = ParamsParser::getParamsFromUrl($request->query->all());
+        $reservations = $this->reservationService->filter($params);
         $view = $this->view($reservations, Response::HTTP_OK);
         return $this->handleView($view);
     }
