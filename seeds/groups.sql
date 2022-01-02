@@ -1,5 +1,3 @@
--- after insert you have to manually set group manager id to each group,
--- group manager id goes from 5 (Katedra aplikované matematiky) to 10 (Subkatedra softwarového inženýrství - webové inženýrství)
 insert into "group" (id, name, group_manager_id, parent_id)
 values (
            nextval('group_id_seq'), 'Katedra aplikované matematiky', null, null
@@ -19,3 +17,10 @@ values (
        (
            nextval('group_id_seq'), 'Subkatedra softwarového inženýrství - webové inženýrství', null, 2
        );
+
+update "group" set group_manager_id = 5 where id = 1;
+update "group" set group_manager_id = 6 where id = 2;
+update "group" set group_manager_id = 7 where id = 3;
+update "group" set group_manager_id = 8 where id = 4;
+update "group" set group_manager_id = 9 where id = 5;
+update "group" set group_manager_id = 10 where id = 6;
