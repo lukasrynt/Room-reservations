@@ -24,7 +24,7 @@ class Reservation
      * @ORM\Column(type="integer")
      * @Expose
      */
-    private int $id;
+    private ?int $id;
 
     /**
      * @ORM\Column(type="datetime")
@@ -89,9 +89,10 @@ class Reservation
     public function __construct()
     {
         $this->attendees = new ArrayCollection();
+        $this->state = new States(States::PENDING);
     }
 
-    public function getId(): int
+    public function getId(): ?int
     {
         return $this->id;
     }
