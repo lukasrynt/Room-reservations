@@ -1,0 +1,59 @@
+{% extends 'base.html.twig' %}
+
+{% block title %} Groups {% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('styles/table.css') }}" type="text/css">
+    <link rel="stylesheet" href="{{ asset('styles/pagination.css') }}" type="text/css">
+{% endblock %}
+
+{% block main %}
+    <h1>Groups</h1>
+
+    {% if is_granted('create_group') %}
+        <a class="button-base button-success-outline" href={{ path('groups_create') }}>
+            {{ source('@icons/plus-icon.svg') }} Create new group
+        </a>
+    {% endif %}
+    <table>
+        <thead>
+        <tr>
+            <th>Name</th>
+            <th>Group Manager</th>
+            <th>Rooms</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for group in groups %}
+            <tr>
+                <td data-label="Name">{{ group.name }}</td>
+
+                <td data-label="Group Manager">
+                    {% if group.groupManager is empty %}
+                        -
+                    {% else %}
+                        {{ group.groupManager }}
+                    {% endif %}
+                </td>
+
+                <td data-label="Rooms">
+                    {% if group.rooms is empty %}
+                        -
+                    {% else %}
+                        {% for room in group.rooms %}
+                            {{ room }}
+                        {% endfor %}
+                    {% endif %}
+                </td>
+
+                <td class="table-buttons">
+                    <a class="button-base button-main" href={{ path('groups_detail', { id: group.id }) }}>Detail</a>
+                    {% include 'groups/buttons.html.twig' %}
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+{% endblock %}
