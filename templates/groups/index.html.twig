@@ -6,9 +6,25 @@
     {{ parent() }}
     <link rel="stylesheet" href="{{ asset('styles/table.css') }}" type="text/css">
     <link rel="stylesheet" href="{{ asset('styles/pagination.css') }}" type="text/css">
+    <link rel="stylesheet" href="{{ asset('styles/filters.css') }}" type="text/css">
+    <link rel="stylesheet" href="{{ asset('styles/form.css') }}" type="text/css">
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script src="{{ asset('javascript/filters.js') }}"></script>
 {% endblock %}
 
 {% block main %}
+    <button type="button" class="filters-button">
+        {{ source('@icons/drop-down-menu.svg') }}
+        Filters</button>
+    <div class="filters-content">
+        {{ form_start(searchForm) }}
+        {{ form_row(searchForm.name) }}
+        {{ form_end(searchForm) }}
+    </div>
+
     {% if is_granted('create_group') %}
         <a class="button-base button-success-outline top-button button-with-icon" href={{ path('groups_create') }}>
             {{ source('@icons/plus-icon.svg') }} Add

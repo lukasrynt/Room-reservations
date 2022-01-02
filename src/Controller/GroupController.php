@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Group;
+use App\Form\Type\GroupSearchType;
 use App\Form\Type\GroupType;
 use App\Services\GroupService;
 use App\Services\ParamsParser;
@@ -36,11 +37,34 @@ class GroupController extends AbstractController
     public function index(Request $request): Response
     {
         $this->denyAccessUnlessGranted('view_groups');
+        $searchForm = $this->createForm(GroupSearchType::class);
+        $searchForm->handleRequest($request);
         $params = ParamsParser::getParamsFromUrl($request->query->all());
         $count = $this->groupService->countForParams($params);
         $groups = $this->groupService->filter($params);
         return $this->render('groups/index.html.twig', [
             'groups' => $groups,
+            'searchForm' => $searchForm->createView(),
+            'groupsCount' => $count,
+            'params' => $params
+        ]);
+    }
+
+    /**
+     * @Route("/search", name="search")
+     * @param Request $request
+     * @return Response
+     */
+    public function search(Request $request): Response {
+        $this->denyAccessUnlessGranted('view_groups');
+        $searchForm = $this->createForm(GroupSearchType::class);
+        $searchForm->handleRequest($request);
+        $params = ParamsParser::getParamsFromUrl($request->query->all(), $searchForm->getData());
+        $groups = $this->groupService->filter($params);
+        $count = $this->groupService->countForParams($params);
+        return $this->render('groups/index.html.twig', [
+            'groups' => $groups,
+            'searchForm' => $searchForm->createView(),
             'groupsCount' => $count,
             'params' => $params
         ]);
