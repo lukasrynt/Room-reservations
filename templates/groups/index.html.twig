@@ -56,6 +56,9 @@
                     {% else %}
                         {% for room in group.rooms %}
                             {{ room }}
+                            {% if not loop.last %}
+                                ,
+                            {% endif %}
                         {% endfor %}
                     {% endif %}
                 </td>
