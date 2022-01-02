@@ -102,7 +102,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     protected Collection $reservations;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Group::class, inversedBy="members")
+     * @ORM\ManyToOne(targetEntity=Group::class, inversedBy="members", fetch="EAGER")
      */
     private ?Group $group;
 

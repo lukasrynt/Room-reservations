@@ -119,15 +119,20 @@ class BuildingController extends AbstractController
 
     /**
      * @Route("/{id}", name="delete", methods="DELETE", requirements={"id": "\d+"})
+     * @param Request $request
      * @param int $id
      * @return Response
      */
-    public function delete(int $id): Response
+    public function delete(Request $request, int $id): Response
     {
         $building = $this->buildingService->find($id);
         $this->denyAccessUnlessGranted('delete_building', $building);
         if (!$building) {
             return $this->render('errors/404.html.twig');
+        } else if (!$building->getRooms()->isEmpty()){
+            $this->addFlash('danger', "Building {$building->getName()} has existing rooms, thus it can not be deleted.\n Firstly delete existing rooms.");
+            $referer = $request->headers->get('referer');
+            return $this->redirect($referer);
         } else {
             $this->buildingService->delete($building);
             $this->addFlash('success', "Building {$building->getName()} was successfully deleted.");

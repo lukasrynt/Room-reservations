@@ -8,7 +8,7 @@ use App\Repository\RoomRepository;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Monolog\Logger;
-use phpDocumentor\Reflection\Types\Collection;
+use Doctrine\Common\Collections\Collection;
 
 class GroupService
 {
@@ -36,9 +36,9 @@ class GroupService
     }
 
     /**
-     * @return Group[]|Collection
+     * @return Group[]|array
      */
-    public function findAll(): Collection
+    public function findAll(): array
     {
         return $this->groupRepository->findAll();
     }
@@ -126,5 +126,23 @@ class GroupService
         $this->entityManager->persist($group);
         $this->entityManager->flush();
         return $group;
+    }
+
+    public function find(int $id): ?Group
+    {
+        return $this->groupRepository->find($id);
+    }
+
+    public function save(Group $group): void
+    {
+        $this->entityManager->persist($group);
+        $this->entityManager->flush();
+    }
+
+    public function delete(Group $group)
+    {
+        # TODO subgroups
+        $this->entityManager->remove($group);
+        $this->entityManager->flush();
     }
 }
