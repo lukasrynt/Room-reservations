@@ -69,7 +69,9 @@ class GroupService
             return null;
 
         $group->addMember($user);
+        $user->setGroup($group);
         $this->entityManager->persist($group);
+        $this->entityManager->persist($user);
         $this->entityManager->flush();
         return $group;
     }
@@ -87,7 +89,9 @@ class GroupService
             return null;
 
         $group->removeMember($user);
+        $user->setGroup(null);
         $this->entityManager->persist($group);
+        $this->entityManager->persist($user);
         $this->entityManager->flush();
         return $group;
     }
