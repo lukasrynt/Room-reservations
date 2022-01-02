@@ -27,8 +27,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
     const COMMON_USER = 'ROLE_USER';
     const ADMIN = 'ROLE_ADMIN';
-    const GROUP_ADMIN = 'ROLE_GROUP_ADMIN';
-    const ROOM_ADMIN = 'ROLE_ROOM_ADMIN';
+    const GROUP_ADMIN = 'ROLE_GROUP_MANAGER';
+    const ROOM_ADMIN = 'ROLE_ROOM_MANAGER';
 
     /**
      * @ORM\Id
@@ -236,12 +236,13 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     public function getRoles(): array
     {
-        $roles = $this->roles;
+        $rolesArr = $this->roles;
 
-        if (empty($roles))
-            $roles[] = 'ROLE_USER';
+        if (empty($rolesArr)) {
+            $rolesArr[] = 'ROLE_USER';
+        }
 
-        return array_unique($roles);
+        return array_unique($rolesArr);
     }
 
     public function getRolesCount(): int
@@ -328,11 +329,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     public function removeReservation(Reservation $reservation): self
     {
-        if ($this->reservations->removeElement($reservation)) {
-            // set the owning side to null (unless already changed)
-            if ($reservation->getUser() === $this) {
-                $reservation->setUser(null);
-            }
+        if ($this->reservations->removeElement($reservation) && $reservation->getUser() === $this) {
+            $reservation->setUser(null);
         }
 
         return $this;

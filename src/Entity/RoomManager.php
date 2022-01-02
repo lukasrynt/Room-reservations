@@ -15,7 +15,7 @@ class RoomManager extends User
     /**
      * @ORM\OneToMany(targetEntity=Room::class, mappedBy="roomManager")
      */
-    private Collection $managedRooms;
+    private ?Collection $managedRooms = null;
 
     public function __construct()
     {
@@ -43,11 +43,8 @@ class RoomManager extends User
 
     public function removeManagedRoom(Room $room): self
     {
-        if ($this->managedRooms->removeElement($room)) {
-            // set the owning side to null (unless already changed)
-            if ($room->getRoomManager() === $this) {
-                $room->setRoomManager(null);
-            }
+        if ($this->managedRooms->removeElement($room) && $room->getRoomManager() === $this) {
+            $room->setRoomManager(null);
         }
 
         return $this;
