@@ -16,6 +16,11 @@
 {% endblock %}
 
 {% block main %}
+    {% if is_granted('create_room') %}
+        <a class="button-base button-success-outline button-with-icon top-button" href={{ path('rooms_create') }}>
+            {{ source('@icons/plus-icon.svg') }} Add
+        </a>
+    {% endif %}
     <button type="button" class="filters-button">
         {{ source('@icons/drop-down-menu.svg') }}
         Filters</button>
@@ -25,12 +30,6 @@
         {{ form_row(searchForm.name) }}
         {{ form_end(searchForm) }}
     </div>
-
-    {% if is_granted('create_room') %}
-        <a class="button-base button-success-outline button-with-icon top-button" href={{ path('rooms_create') }}>
-            {{ source('@icons/plus-icon.svg') }} Add
-        </a>
-    {% endif %}
     <table>
         <thead>
             <tr>
