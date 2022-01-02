@@ -22,3 +22,7 @@ PostgreSQL driver
 ### Naplnění databáze
 - (pokud máte PostgreSQL nainstalovaný) ve složce seeds přidat skriptu práva pro spuštění a pustit seedy
 - jinak je nejjednodušší napojit PhpStorm na databázi a spustit je postupně
+
+## Deploy
+- [aplikace](http://46.101.181.115:8000/)
+- [adminer](http://46.101.181.115:8080/)
