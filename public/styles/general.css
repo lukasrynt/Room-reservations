@@ -278,7 +278,11 @@ li.ajax-list-item {
 }
 
 .add-modal a:hover {
-    color: var(--gray-dark);
+    color: var(--green);
+}
+
+.add-modal a:hover::before {
+    content: '+ '
 }
 
 #delete-modal {
