@@ -9,11 +9,9 @@
 {% endblock %}
 
 {% block main %}
-    <h1>Groups</h1>
-
     {% if is_granted('create_group') %}
-        <a class="button-base button-success-outline" href={{ path('groups_create') }}>
-            {{ source('@icons/plus-icon.svg') }} Create new group
+        <a class="button-base button-success-outline top-button" href={{ path('groups_create') }}>
+            {{ source('@icons/plus-icon.svg') }} Add
         </a>
     {% endif %}
     <table>
