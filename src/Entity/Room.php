@@ -66,7 +66,7 @@ class Room
     private \DateTime $openedTo;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Building::class, inversedBy="rooms")
+     * @ORM\ManyToOne(targetEntity=Building::class, inversedBy="rooms", fetch="EAGER")
      * @ORM\JoinColumn(nullable=false)
      * @Expose
      */
@@ -85,7 +85,7 @@ class Room
     private Collection $reservations;
 
     /**
-     * @ORM\ManyToOne(targetEntity=RoomManager::class, inversedBy="managedRooms")
+     * @ORM\ManyToOne(targetEntity=RoomManager::class, inversedBy="managedRooms", fetch="EAGER")
      * @Expose
      */
     private ?RoomManager $roomManager;
