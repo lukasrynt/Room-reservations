@@ -1,0 +1,51 @@
+stages:
+  - zip_files
+  - scp_zip
+  - deploy
+
+zip_files:
+  stage: zip_files
+  image: ubuntu:latest
+  artifacts:
+    untracked: true
+  before_script:
+    - apt-get update
+    - apt-get install -y zip
+  script:
+    - zip -r team-hmsr.zip * .[^.]*
+
+scp_zip:
+  stage: scp_zip
+  image: kroniak/ssh-client
+  dependencies:
+    - zip_files
+  script:
+    # deploy key file
+    - echo $SSH_KEY > deploy_key && sed -i 's/ /\n/g' deploy_key
+    - echo '-----BEGIN OPENSSH PRIVATE KEY-----' > temp
+    - cat deploy_key >> temp && mv temp deploy_key
+    - echo '-----END OPENSSH PRIVATE KEY-----' >> deploy_key
+    - chmod 600 deploy_key
+    # copy zip
+    - scp -o StrictHostKeyChecking=no -i deploy_key team-hmsr.zip $SSH_USER@$SSH_HOST:../home
+
+deploy:
+  stage: deploy
+  image: kroniak/ssh-client
+  script:
+    # deploy key file
+    - echo $SSH_KEY > deploy_key && sed -i 's/ /\n/g' deploy_key
+    - echo '-----BEGIN OPENSSH PRIVATE KEY-----' > temp
+    - cat deploy_key >> temp && mv temp deploy_key
+    - echo '-----END OPENSSH PRIVATE KEY-----' >> deploy_key
+    - chmod 600 deploy_key
+    # stop symfony server
+    - ssh -o StrictHostKeyChecking=no -i deploy_key "${SSH_USER}@${SSH_HOST}" 'cd ../home/team-hmsr && export PATH="$HOME/.symfony/bin:$PATH" && symfony server:stop'
+    # remove old version
+    - ssh -o StrictHostKeyChecking=no -i deploy_key "${SSH_USER}@${SSH_HOST}" "cd ../home && rm -r team-hmsr"
+    # remove docker container and volume
+    - ssh -o StrictHostKeyChecking=no -i deploy_key "${SSH_USER}@${SSH_HOST}" "docker stop \$(docker ps -q) && docker rm \$(docker ps -q -a) && docker volume rm \$(docker volume ls -q)"
+    # unzip and delete zip
+    - ssh -o StrictHostKeyChecking=no -i deploy_key "${SSH_USER}@${SSH_HOST}" "cd ../home && unzip team-hmsr.zip -d team-hmsr && rm team-hmsr.zip"
+    # run deploy script
+    - ssh -o StrictHostKeyChecking=no -i deploy_key "${SSH_USER}@${SSH_HOST}" "cd ../home/team-hmsr && chmod +x deploy-script.sh && bash deploy-script.sh"
