@@ -11,6 +11,7 @@ use JMS\Serializer\Annotation\Expose;
 use phpDocumentor\Reflection\Types\Boolean;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=UserRepository::class)
@@ -35,7 +36,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      * @ORM\Column(type="integer")
      * @Expose
      */
-    protected int $id;
+    private ?int $id = null;
 
     /**
      * @ORM\Column(type="string", length=255)
@@ -64,6 +65,10 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     /**
      * @ORM\Column(type="json")
      * @Expose
+     * @Assert\Expression(
+     *     "this.getRolesCount() <= 1",
+     *     message="User is allowed to have only ONE role!",
+     * )
      */
     protected array $roles = [];
 
@@ -232,10 +237,16 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function getRoles(): array
     {
         $roles = $this->roles;
-        // guarantee every user at least has ROLE_USER
-        $roles[] = 'ROLE_USER';
+
+        if (empty($roles))
+            $roles[] = 'ROLE_USER';
 
         return array_unique($roles);
+    }
+
+    public function getRolesCount(): int
+    {
+        return count($this->roles);
     }
 
     public function setRoles(array $roles): self
@@ -364,5 +375,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         }
 
         return $this;
+    }
+
+    /**
+     * @return string[]
+     */
+    public static function getAllRoles(): array
+    {
+        return [
+            'Admin' => User::ADMIN,
+            'Group Admin' => User::GROUP_ADMIN,
+            'Room Admin' => User::ROOM_ADMIN,
+            'User' => User::COMMON_USER
+        ];
     }
 }

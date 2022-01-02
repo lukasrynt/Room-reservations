@@ -121,7 +121,7 @@ class ReservationRepository extends ServiceEntityRepository
         $criteria ??= Criteria::create();
         $criteria = $this->getPendingCrit($criteria);
         $requestedRooms = $roomManager->getManagedRooms();
-        return $this->getByRoomsCrit($requestedRooms, $criteria);
+        return $this->getByRoomsCrit($requestedRooms->toArray(), $criteria);
     }
 
     private function getByRoomsCrit(array $rooms, Criteria $criteria = null): Criteria
