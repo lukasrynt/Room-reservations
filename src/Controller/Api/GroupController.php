@@ -97,6 +97,7 @@ class GroupController extends AbstractFOSRestController
     /**
      * @Rest\Put("/{gid}/rooms/{rid}",
      *        name="add_room",
+     *        methods="PUT",
      *        requirements={"gid": "\d+", "rid": "\d+"})
      * @param int $gid
      * @param int $rid
@@ -104,6 +105,7 @@ class GroupController extends AbstractFOSRestController
      */
     public function addRoomToGroup(int $gid, int $rid): Response
     {
+        # TODO check if room is already taken
         $editedGroup = $this->groupService->addRoom($gid, $rid);
         if (!$editedGroup)
             $view = $this->view([], Response::HTTP_NOT_FOUND);
@@ -115,6 +117,7 @@ class GroupController extends AbstractFOSRestController
     /**
      * @Rest\Delete("/{gid}/rooms/{rid}",
      *        name="remove_room",
+     *        methods="DELETE",
      *        requirements={"gid": "\d+", "rid": "\d+"})
      * @param int $gid
      * @param int $rid
