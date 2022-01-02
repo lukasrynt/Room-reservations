@@ -300,6 +300,6 @@ li.ajax-list-item {
     display: none;
 }
 
-#ajax-template, #modal-template, #ajax-rooms-template, #ajax-users-template {
+#ajax-template, #modal-template, #ajax-rooms-template, #ajax-users-template, #ajax-template-user, #ajax-template-room {
     display: none;
 }
