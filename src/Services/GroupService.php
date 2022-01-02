@@ -109,7 +109,9 @@ class GroupService
             return null;
 
         $group->addRoom($room);
+        $room->setGroup($group);
         $this->entityManager->persist($group);
+        $this->entityManager->persist($room);
         $this->entityManager->flush();
         return $group;
     }
@@ -127,7 +129,9 @@ class GroupService
             return null;
 
         $group->removeRoom($room);
+        $room->setGroup(null);
         $this->entityManager->persist($group);
+        $this->entityManager->persist($room);
         $this->entityManager->flush();
         return $group;
     }
