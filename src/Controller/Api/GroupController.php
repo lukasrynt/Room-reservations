@@ -37,7 +37,7 @@ class GroupController extends AbstractFOSRestController
      */
     public function all(Request $request): Response
     {
-        $params = ParamsParser::getParamsFromUrl($request->query->all());
+        $params = ParamsParser::getParamsFromUrl($request->query->all(), null, false);
         $groups = $this->groupService->filter($params);
         $view = $this->view($groups, Response::HTTP_OK);
         return $this->handleView($view);

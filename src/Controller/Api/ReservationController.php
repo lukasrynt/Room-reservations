@@ -47,7 +47,7 @@ class ReservationController extends AbstractFOSRestController
      */
     public function all(Request $request): Response
     {
-        $params = ParamsParser::getParamsFromUrl($request->query->all());
+        $params = ParamsParser::getParamsFromUrl($request->query->all(), null, false);
         $reservations = $this->reservationService->filter($params);
         $view = $this->view($reservations, Response::HTTP_OK);
         return $this->handleView($view);

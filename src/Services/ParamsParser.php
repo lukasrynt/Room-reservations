@@ -20,11 +20,11 @@ class ParamsParser
         return $res;
     }
 
-    public static function getParamsFromUrl(array $queryParams, array $searchParams = null): array
+    public static function getParamsFromUrl(array $queryParams, array $searchParams = null, bool $autoPaginate = true): array
     {
         $res = [];
         $paginateParams = self::getFilters($queryParams, Paginator::URL_KEY);
-        if (!array_key_exists('page_size', $paginateParams)) {
+        if ($autoPaginate && !array_key_exists('page_size', $paginateParams)) {
             $paginateParams['page_size'] = Paginator::DEFAULT_PAGE_SIZE;
         }
         $res[Paginator::URL_KEY] = $paginateParams;

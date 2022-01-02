@@ -50,7 +50,7 @@ class RoomController extends AbstractFOSRestController
      */
     public function all(Request $request): Response
     {
-        $params = ParamsParser::getParamsFromUrl($request->query->all());
+        $params = ParamsParser::getParamsFromUrl($request->query->all(), null, false);
         $rooms = $this->roomService->filter($params);
         $view = $this->view($rooms, Response::HTTP_OK);
         return $this->handleView($view);
