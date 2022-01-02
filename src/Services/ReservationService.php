@@ -61,12 +61,12 @@ class ReservationService
         $this->entityManager->flush();
     }
 
-    public function filterAll(array $queryParams): array
+    public function filter(array $queryParams): array
     {
-        return $this->reservationRepository->filterAll(
-            ParamsParser::getFilters($queryParams, 'filter_by'),
-            ParamsParser::getFilters($queryParams, 'order_by'),
-            ParamsParser::getFilters($queryParams, 'paginate')
+        return $this->reservationRepository->filter(
+            $queryParams['filter_by'] ?? null,
+            $queryParams['order_by'] ?? null,
+            $queryParams['paginate'] ?? null
         );
     }
 
@@ -75,14 +75,19 @@ class ReservationService
      * @param array $queryParams
      * @return array
      */
-    public function filterAllForUser(User $user, array $queryParams): array
+    public function filterForUser(array $queryParams, User $user): array
     {
-        return $this->reservationRepository->filterAllForUser(
+        return $this->reservationRepository->filterForUser(
             $user,
-            ParamsParser::getFilters($queryParams, 'filter_by'),
-            ParamsParser::getFilters($queryParams, 'order_by'),
-            ParamsParser::getFilters($queryParams, 'paginate')
+            $queryParams['filter_by'] ?? null,
+            $queryParams['order_by'] ?? null,
+            $queryParams['paginate'] ?? null
         );
+    }
+
+    public function countForParamsAndUser(array $queryParams, ?User $user): int
+    {
+        return count($this->reservationRepository->filterForUser($user, $queryParams['filter_by']));
     }
 
     public function newWithRequesterAndRoom(User $user, Room $room) : Reservation

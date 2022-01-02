@@ -32,27 +32,31 @@ class ReservationRepository extends ServiceEntityRepository
         $this->roomRepository = $roomRepository;
     }
 
-    public function filterAll(?array $findFilters, ?array $orderByFilters, ?array $paginationFilters): array
+    public function filter(?array $findFilters, ?array $orderByFilters = null, ?array $paginationFilters = null): array
     {
         $criteria = (new Filter())->getFilterCriteria($findFilters);
         $criteria = (new Orderer($criteria))->getOrderCriteria($orderByFilters);
-        $criteria = (new Paginator($criteria))->getCriteriaForPage($paginationFilters);
+        if ($paginationFilters) {
+            $criteria = (new Paginator($criteria))->getCriteriaForPage($paginationFilters);
+        }
         return $this->matching($criteria)->toArray();
     }
 
-    public function filterAllForUser(User $user, ?array $findFilters, ?array $orderByFilters, ?array $paginationFilters): array
+    public function filterForUser(User $user, ?array $findFilters, ?array $orderByFilters = null, ?array $paginationFilters = null): array
     {
         $criteria = $this->getAllForUserCrit($user);
         $criteria = (new Filter($criteria))->getFilterCriteria($findFilters);
         $criteria = (new Orderer($criteria))->getOrderCriteria($orderByFilters);
-        $criteria = (new Paginator($criteria))->getCriteriaForPage($paginationFilters);
+        if ($paginationFilters) {
+            $criteria = (new Paginator($criteria))->getCriteriaForPage($paginationFilters);
+        }
         return $this->matching($criteria)->toArray();
     }
 
     public function getCollisionReservations(Reservation $reservation): array
     {
         $criteria = Criteria::create()
-            ->where( Criteria::expr()->andX(
+            ->where(Criteria::expr()->andX(
                 Criteria::expr()->gte('timeFrom', new \DateTime($reservation->getTimeFrom())),
                 Criteria::expr()->lt('timeFrom', new \DateTime($reservation->getTimeTo()))))
             ->orWhere(Criteria::expr()->andX(
