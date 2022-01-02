@@ -103,12 +103,12 @@ class Room
     /**
      * @ORM\Column(type="boolean")
      */
-    private bool $locked;
+    private bool $locked = false;
 
     /**
      * @ORM\Column(type="integer")
      */
-    private int $accessCounter;
+    private int $accessCounter = 0;
 
     public function __construct()
     {
