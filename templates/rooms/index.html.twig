@@ -33,6 +33,7 @@
     <table>
         <thead>
             <tr>
+                <th>ID</th>
                 <th>Room name</th>
                 <th>Building</th>
                 <th>Floor</th>
@@ -45,6 +46,7 @@
         <tbody>
             {% for room in rooms %}
             <tr>
+                <td data-label="ID">{{ room.id }}</td>
                 <td data-label="Room name">{{ room.name }}</td>
                 <td data-label="Building">{{ room.building }}</td>
                 <td data-label="Floor">{{ room.floor }}</td>

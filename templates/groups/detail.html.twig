@@ -21,6 +21,8 @@
             <h1>{{ group.name }}</h1>
         </header>
         <dl>
+            <dd>ID</dd>
+            <dt data-label="ID">{{ group.id }}</dt>
             <dd>Group Manager</dd>
             <dt data-label="Group Manager">
                 {% if group.groupManager is empty %}

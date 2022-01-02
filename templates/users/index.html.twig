@@ -34,6 +34,7 @@
     <table>
         <thead>
         <tr>
+            <th>ID</th>
             <th>Name</th>
             <th>Email</th>
             <th>Role</th>
@@ -44,6 +45,7 @@
         <tbody>
         {% for user in users %}
             <tr data-user-id="{{ user.id }}" class="user-row">
+                <td data-lable="ID">{{ user.id }}</td>
                 <td data-label="Name">{{ user.firstName }} {{ user.lastName }}</td>
                 <td data-label="Email">{{ user.email }}</td>
                 <td data-label="Role">

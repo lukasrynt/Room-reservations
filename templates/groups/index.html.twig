@@ -32,6 +32,7 @@
     <table>
         <thead>
         <tr>
+            <th>ID</th>
             <th>Name</th>
             <th>Group Manager</th>
             <th>Rooms</th>
@@ -40,6 +41,7 @@
         <tbody>
         {% for group in groups %}
             <tr>
+                <td data-label="ID">{{ group.id }}</td>
                 <td data-label="Name">{{ group.name }}</td>
 
                 <td data-label="Group Manager">

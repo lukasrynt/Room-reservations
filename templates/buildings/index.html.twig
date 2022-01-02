@@ -34,6 +34,7 @@
     <table>
         <thead>
         <tr>
+            <th>ID</th>
             <th>Name</th>
             <th>Address</th>
         </tr>
@@ -41,6 +42,7 @@
         <tbody>
         {% for building in buildings %}
             <tr>
+                <td data-label="ID">{{ building.id }}</td>
                 <td data-label="Name">{{ building.name }}</td>
                 <td data-label="Address">{{ building.address }}</td>
                 <td class="table-buttons">
