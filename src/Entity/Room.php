@@ -23,7 +23,7 @@ class Room
      * @ORM\Column(type="integer")
      * @Expose
      */
-    private int $id;
+    private ?int $id = null;
 
     /**
      * @ORM\Column(type="integer")
@@ -88,12 +88,12 @@ class Room
      * @ORM\ManyToOne(targetEntity=RoomManager::class, inversedBy="managedRooms", fetch="EAGER")
      * @Expose
      */
-    private ?RoomManager $roomManager;
+    private ?RoomManager $roomManager = null;
 
     /**
      * @ORM\ManyToOne(targetEntity="Group", inversedBy="rooms")
      */
-    private ?Group $group;
+    private ?Group $group = null;
 
     /**
      * @ORM\Column(type="integer", nullable=true)
@@ -103,12 +103,12 @@ class Room
     /**
      * @ORM\Column(type="boolean")
      */
-    private bool $locked;
+    private bool $locked = false;
 
     /**
      * @ORM\Column(type="integer")
      */
-    private int $accessCounter;
+    private int $accessCounter = 0;
 
     public function __construct()
     {
@@ -327,5 +327,10 @@ class Room
     {
         $this->accessCounter = $accessCounter;
         return $this;
+    }
+
+    public function __sleep()
+    {
+        return [];
     }
 }

@@ -75,7 +75,8 @@ class ReservationsVoter extends Voter
             return true;
         }
         if (in_array($room, $account->getRooms()->getValues())
-            || ($room->getGroup() && $account->getGroup() === $room->getGroup())) {
+            || ($account->isGroupAdmin() && $account->getGroup() === $room->getGroup())
+            || ($account->isRoomAdmin() && $room->getRoomManager() === $account)) {
             return true;
         }
         return false;

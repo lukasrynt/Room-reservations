@@ -7,9 +7,12 @@ use App\Form\Type\UserSearchType;
 use App\Form\Type\UserType;
 use App\Services\ParamsParser;
 use App\Services\UserService;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\ButtonType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
@@ -66,6 +69,13 @@ class UserController extends AbstractController
                 'attr' => ['class' => 'button-base button-success'],
                 'label' => 'Save'
             ]);
+
+        if (in_array(User::ROOM_ADMIN, $this->getUser()->getRoles())){
+            $form->add('roles', ChoiceType::class, [
+                'choices' => User::getAllRoles(),
+                'multiple' => true
+            ]);
+        }
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()){
