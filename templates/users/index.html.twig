@@ -48,7 +48,7 @@
                 <td data-label="Email">{{ user.email }}</td>
                 <td data-label="Role">
                     {% for role in user.roles %}
-                        {{ role }}
+                        {{ getRoleText(role) }}
                     {% endfor %}
                 </td>
                 <td data-label="Phone number">{{ user.phoneNumber }}</td>
