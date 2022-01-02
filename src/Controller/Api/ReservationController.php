@@ -128,6 +128,9 @@ class ReservationController extends AbstractFOSRestController
         if (!$reservation->isPending()) {
             return $this->handleView($this->view('Reservation must be pending to be approved', Response::HTTP_FORBIDDEN));
         }
+        if (!$this->reservationService->checkCollisionReservations($reservation)) {
+            return $this->handleView($this->view("Reservation at this time already exists", Response::HTTP_BAD_REQUEST));
+        }
         $reservation->setState(new States(States::APPROVED));
         $this->reservationService->save($reservation);
         return $this->handleView($this->view($reservation, Response::HTTP_OK));
@@ -201,9 +204,10 @@ class ReservationController extends AbstractFOSRestController
         if (!$form->isValid()) {
             return $this->view($form->getData(), Response::HTTP_BAD_REQUEST);
         }
-
+        if (!$this->reservationService->checkCollisionReservations($form->getData())){
+            return $this->view("Reservation at this time already exists", Response::HTTP_BAD_REQUEST);
+        }
         $reservation = $form->getData();
-        $reservation->setState(new States(States::APPROVED));
         $this->reservationService->save($reservation);
         return $this->view($reservation, $statusOk);
     }
