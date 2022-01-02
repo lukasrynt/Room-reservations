@@ -203,13 +203,19 @@ class ReservationController extends AbstractController
 
     /**
      * @Route("/{id}/approve", name="approve")
+     * @param Request $request
      * @param int $id
      * @return Response
      */
-    public function approve(int $id): Response
+    public function approve(Request $request,int $id): Response
     {
         $reservation = $this->reservationService->find($id);
         $this->denyAccessUnlessGranted('approve_reservation', $reservation);
+        if (!$this->reservationService->checkCollisionReservations($reservation))
+        {
+            $this->addFlash('danger', "Reservation at this time already exists! Edit time of the reservation or reject it!");
+            return $this->redirect($request->headers->get('referer'));
+        }
         $reservation->setState(new States(States::APPROVED));
         $this->reservationService->save($reservation);
         $this->addFlash('success', "Reservation for room {$reservation->getRoom()->getName()} was successfully approved.");
