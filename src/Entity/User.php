@@ -17,10 +17,6 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Entity(repositoryClass=UserRepository::class)
  * @ORM\Table(name="`user`")
  * @method string getUserIdentifier()
- * @ORM\InheritanceType("SINGLE_TABLE")
- * @ORM\DiscriminatorColumn(name="discr", type="string")
- * @ORM\DiscriminatorMap({"user" = "User", "admin" = "Admin", "roomManager" = "RoomManager",
- *                          "groupManager" = "GroupManager"})
  * @ExclusionPolicy("all")
  */
 class User implements UserInterface, PasswordAuthenticatedUserInterface
@@ -111,11 +107,80 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     private Collection $reservationsToAttend;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Room::class, mappedBy="roomManager")
+     */
+    private ?Collection $managedRooms = null;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Group::class, mappedBy="groupManager")
+     */
+    private Collection $managedGroups;
+
     public function __construct()
     {
         $this->rooms = new ArrayCollection();
         $this->reservations = new ArrayCollection();
         $this->reservationsToAttend = new ArrayCollection();
+        $this->managedGroups = new ArrayCollection();
+        $this->managedRooms = new ArrayCollection();
+    }
+
+    /**
+     * @return Collection|Room[]
+     */
+    public function getManagedRooms(): Collection
+    {
+        return $this->managedRooms;
+    }
+
+    public function addManagedRoom(Room $room): self
+    {
+        if (!$this->managedRooms->contains($room)) {
+            $this->managedRooms[] = $room;
+            $room->setRoomManager($this);
+        }
+
+        return $this;
+    }
+
+    public function removeManagedRoom(Room $room): self
+    {
+        if ($this->managedRooms->removeElement($room) && $room->getRoomManager() === $this) {
+            $room->setRoomManager(null);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Group[]
+     */
+    public function getManagedGroups(): Collection
+    {
+        return $this->managedGroups;
+    }
+
+    public function addManagedGroup(Group $group): self
+    {
+        if (!$this->managedGroups->contains($group)) {
+            $this->managedGroups[] = $group;
+            $group->setGroupManager($this);
+        }
+
+        return $this;
+    }
+
+    public function removeManagedGroup(Group $group): self
+    {
+        if ($this->managedGroups->removeElement($group)) {
+            // set the owning side to null (unless already changed)
+            if ($group->getGroupManager() === $this) {
+                $group->setGroupManager(null);
+            }
+        }
+
+        return $this;
     }
 
     /**

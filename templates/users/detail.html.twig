@@ -29,8 +29,8 @@
                 {% endfor %}
             </dt>
             <dt data-label="Note">{{ user.note }}</dt>
-            <dd>Rooms</dd>
-            <dt data-label="Rooms">
+            <dd>Used rooms</dd>
+            <dt data-label="Used rooms">
                 <ul class="detail-list">
                     {% for room in user.rooms %}
                         <li>{{ room.name }}</li>
@@ -41,7 +41,7 @@
                 <dd>Groups</dd>
                 <dt data-label="Groups">
                     <ul class="detail-list">
-                        {% for group in user.groups %}
+                        {% for group in user.managedGroups %}
                             <li>{{ group.name }}</li>
                         {% endfor %}
                     </ul>

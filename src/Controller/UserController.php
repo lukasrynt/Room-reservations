@@ -66,12 +66,12 @@ class UserController extends AbstractController
 
         $form = $this->createForm(UserType::class, $user);
 
-        /*if ($this->getUser()->isAdmin()){
+        if ($this->getUser()->isAdmin()){
             $form->add('roles', ChoiceType::class, [
                 'choices' => User::getAllRoles(),
                 'multiple' => true
             ]);
-        }*/
+        }
 
         $form->add('edit', SubmitType::class, [
                 'attr' => ['class' => 'button-base button-success'],

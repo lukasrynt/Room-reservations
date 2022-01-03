@@ -85,10 +85,10 @@ class Room
     private Collection $reservations;
 
     /**
-     * @ORM\ManyToOne(targetEntity=RoomManager::class, inversedBy="managedRooms", fetch="EAGER")
+     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="managedRooms", fetch="EAGER")
      * @Expose
      */
-    private ?RoomManager $roomManager = null;
+    private ?User $roomManager = null;
 
     /**
      * @ORM\ManyToOne(targetEntity="Group", inversedBy="rooms")
@@ -258,12 +258,12 @@ class Room
         return $this;
     }
 
-    public function getRoomManager(): ?RoomManager
+    public function getRoomManager(): ?User
     {
         return $this->roomManager;
     }
 
-    public function setRoomManager(?RoomManager $roomManager): self
+    public function setRoomManager(?User $roomManager): self
     {
         $this->roomManager = $roomManager;
 
