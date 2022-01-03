@@ -330,3 +330,11 @@ li.ajax-list-item {
 .column-with-icon svg {
     margin-left: 0.5em;
 }
+
+.close-button {
+    color: var(--red)
+}
+
+.close-button:hover {
+    color: var(--red-dark)
+}
