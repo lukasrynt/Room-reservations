@@ -89,6 +89,9 @@ class RoomsVoter extends Voter
 
     private function canNameManager(?User $account, ?Room $room): bool
     {
+        if (!$account) {
+            return false;
+        }
         if ($account->isAdmin()) {
             return true;
         }
