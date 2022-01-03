@@ -64,11 +64,7 @@ class UserController extends AbstractController
         }
         $this->denyAccessUnlessGranted('edit_user', $user);
 
-        $form = $this->createForm(UserType::class, $user)
-            ->add('edit', SubmitType::class, [
-                'attr' => ['class' => 'button-base button-success'],
-                'label' => 'Save'
-            ]);
+        $form = $this->createForm(UserType::class, $user);
 
         if ($this->getUser()->isAdmin()){
             $form->add('roles', ChoiceType::class, [
@@ -76,6 +72,11 @@ class UserController extends AbstractController
                 'multiple' => true
             ]);
         }
+
+        $form->add('edit', SubmitType::class, [
+                'attr' => ['class' => 'button-base button-success'],
+                'label' => 'Save'
+            ]);
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()){
