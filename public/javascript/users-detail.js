@@ -19,6 +19,7 @@ document.addEventListener("DOMContentLoaded", function() {
                userDetail.getElementsByClassName('user-first-name')[0].innerText = user['first_name'];
                userDetail.getElementsByClassName('user-last-name')[0].innerText = user['last_name'];
                userDetail.getElementsByClassName('user-username')[0].innerText = user['username'];
+               userDetail.getElementsByClassName('user-note')[0].innerText = user['note'];
                el.append(userDetail);
            })
        });
