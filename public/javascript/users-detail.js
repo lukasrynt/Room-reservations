@@ -23,7 +23,6 @@ document.addEventListener("DOMContentLoaded", function() {
 
                let closeButton = template.querySelector('.close-button');
                closeButton.addEventListener('click', () => {
-                   console.log('close');
                    template.style.display = 'none';
                });
            })
