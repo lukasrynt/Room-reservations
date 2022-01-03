@@ -5,10 +5,13 @@ namespace App\Controller;
 
 
 use App\Entity\Room;
+use App\Entity\User;
+use App\Form\Type\NameRoomManagerType;
 use App\Form\Type\RoomSearchType;
 use App\Services\ParamsParser;
 use App\Services\RoomService;
 use App\Form\Type\RoomType;
+use App\Services\UserService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\ButtonType;
 use Symfony\Component\HttpFoundation\Request;
@@ -21,14 +24,17 @@ use Symfony\Component\Routing\Annotation\Route;
 class RoomController extends AbstractController
 {
     private RoomService $roomService;
+    private UserService $userService;
 
     /**
      * RoomController constructor.
      * @param RoomService $roomService
+     * @param UserService $userService
      */
-    public function __construct(RoomService $roomService)
+    public function __construct(RoomService $roomService, UserService $userService)
     {
         $this->roomService = $roomService;
+        $this->userService = $userService;
     }
 
 
@@ -101,11 +107,7 @@ class RoomController extends AbstractController
         }
 
         $this->denyAccessUnlessGranted('edit_room', $room);
-        $form = $this->createForm(RoomType::class, $room)
-            ->add('delete', ButtonType::class, [
-                'attr' => ['class' => 'button-base button-danger-outline'],
-                'label' => 'Delete'
-            ]);
+        $form = $this->createForm(RoomType::class, $room);
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()){
@@ -154,6 +156,42 @@ class RoomController extends AbstractController
         }
 
         return $this->render('rooms/create.html.twig', [
+            'form' => $form->createView()
+        ]);
+    }
+
+    /**
+     * @Route("/{id}/name_manager", name="name_manager", requirements={"id": "\d+"})
+     * @param Request $request
+     * @param int $id
+     * @return Response
+     */
+    public function nameManager(Request $request, int $id): Response
+    {
+        $this->denyAccessUnlessGranted('name_room_manager');
+
+        $room = $this->roomService->find($id);
+
+        if (!$room) {
+            return $this->render('errors/404.html.twig');
+        }
+
+        $form = $this->createForm(NameRoomManagerType::class, $room);
+
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()){
+            $this->roomService->save($form->getData());
+            $user = $room->getRoomManager();
+            if ($user->isCommonUser()) {
+                $user->setRoles([User::ROOM_ADMIN]);
+            }
+            $this->userService->save($user);
+            $this->roomService->save($room);
+            $this->addFlash('success', "User {$user->getUsername()} was successfully appointed as room manager for room {$room->getName()}.");
+            return $this->redirectToRoute('rooms_detail', ['id' => $room->getId()]);
+        }
+
+        return $this->render('rooms/nameRoomManager.html.twig', [
             'form' => $form->createView()
         ]);
     }

@@ -111,7 +111,9 @@ class GroupController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $this->groupService->save($form->getData());
             $user = $group->getGroupManager();
-            $user->setRoles([User::GROUP_ADMIN]);
+            if (!$user->isAdmin()) {
+                $user->setRoles([User::GROUP_ADMIN]);
+            }
             $this->userService->save($user);
             $this->addFlash('success', "Group {$group->getName()} was successfully edited.");
             return $this->redirectToRoute('groups_detail', ['id' => $group->getId()]);
@@ -137,7 +139,9 @@ class GroupController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $this->groupService->save($form->getData());
             $user = $group->getGroupManager();
-            $user->setRoles([User::GROUP_ADMIN]);
+            if (!$user->isAdmin()) {
+                $user->setRoles([User::GROUP_ADMIN]);
+            }
             $this->userService->save($user);
             $this->addFlash('success', "Group {$group->getName()} was successfully created.");
             return $this->redirectToRoute('groups_detail', ['id' => $group->getId()]);

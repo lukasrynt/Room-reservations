@@ -40,6 +40,7 @@
                 <th>Capacity</th>
                 <th>Opened from - to</th>
                 <th>Private</th>
+                <th>Room manager</th>
             </tr>
         </thead>
 
@@ -57,6 +58,13 @@
                         Private
                     {% else %}
                         Public
+                    {% endif %}
+                </td>
+                <td data-label="Room manager">
+                    {% if room.roomManager %}
+                        {{ room.roomManager }}
+                    {% else %}
+                        -
                     {% endif %}
                 </td>
                 <td class="table-buttons">

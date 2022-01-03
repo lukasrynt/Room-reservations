@@ -14,10 +14,11 @@ class RoomsVoter extends Voter
     const EDIT = 'edit_room';
     const CREATE = 'create_room';
     const DELETE = 'delete_room';
+    const NAME_MANAGER = 'name_room_manager';
 
     protected function supports(string $attribute, $subject): bool
     {
-        if (!in_array($attribute, [self::VIEW, self::EDIT, self::CREATE, self::VIEW_ALL, self::DELETE])) {
+        if (!in_array($attribute, [self::VIEW, self::EDIT, self::CREATE, self::VIEW_ALL, self::DELETE, self::NAME_MANAGER])) {
             return false;
         }
         if (!($subject instanceof Room || !$subject)) {
@@ -44,6 +45,8 @@ class RoomsVoter extends Voter
                 return $this->canCreate($user);
             case self::DELETE:
                 return $this->canDelete($user);
+            case self::NAME_MANAGER:
+                return $this->canNameManager($user, $subject);
             default:
                 return false;
         }
@@ -82,5 +85,21 @@ class RoomsVoter extends Voter
     private function canDelete(?User $account): bool
     {
         return $this->canCreate($account);
+    }
+
+    private function canNameManager(?User $account, ?Room $room): bool
+    {
+        if ($account->isAdmin()) {
+            return true;
+        }
+        if ($account->isGroupAdmin()) {
+            $managedGroups = $account->getManagedGroups();
+            foreach ($managedGroups as $group) {
+                if (in_array($room, $group->getRooms())) {
+                    return true;
+                }
+            }
+        }
+        return true;
     }
 }
