@@ -17,10 +17,3 @@ values (
        (
            nextval('group_id_seq'), 'Subkatedra softwarového inženýrství - webové inženýrství', null, 2
        );
-
-update "group" set group_manager_id = 5 where id = 1;
-update "group" set group_manager_id = 6 where id = 2;
-update "group" set group_manager_id = 7 where id = 3;
-update "group" set group_manager_id = 8 where id = 4;
-update "group" set group_manager_id = 9 where id = 5;
-update "group" set group_manager_id = 10 where id = 6;
