@@ -31,9 +31,9 @@ class Group
     private ?string $name;
 
     /**
-     * @ORM\ManyToOne(targetEntity=GroupManager::class, inversedBy="managedGroups")
+     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="managedGroups")
      */
-    private ?GroupManager $groupManager = null;
+    private ?User $groupManager = null;
 
     /**
      * @ORM\OneToMany(targetEntity="User", mappedBy="group")
@@ -90,12 +90,12 @@ class Group
         return $this;
     }
 
-    public function getGroupManager(): ?GroupManager
+    public function getGroupManager(): ?User
     {
         return $this->groupManager;
     }
 
-    public function setGroupManager(?GroupManager $groupManager): self
+    public function setGroupManager(?User $groupManager): self
     {
         $this->groupManager = $groupManager;
 
