@@ -103,6 +103,6 @@ class RoomsVoter extends Voter
                 }
             }
         }
-        return true;
+        return false;
     }
 }
