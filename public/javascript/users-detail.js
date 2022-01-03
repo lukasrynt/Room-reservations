@@ -10,21 +10,23 @@ async function getUser(element) {
 
 document.addEventListener("DOMContentLoaded", function() {
     Array.prototype.forEach.call(document.getElementsByClassName('user-row'), (el) => {
-       el.addEventListener('mouseenter', () => {
+       el.addEventListener('click', () => {
            let template = document.getElementById('detail-modal-template');
-           let userDetail = template.cloneNode(true);
-           userDetail.removeAttribute('id');
+
            getUser(el).then((user) => {
-               userDetail.getElementsByClassName('user-name')[0].innerText = user['first_name'] + " " + user["last_name"];
-               userDetail.getElementsByClassName('user-first-name')[0].innerText = user['first_name'];
-               userDetail.getElementsByClassName('user-last-name')[0].innerText = user['last_name'];
-               userDetail.getElementsByClassName('user-username')[0].innerText = user['username'];
-               userDetail.getElementsByClassName('user-note')[0].innerText = user['note'];
-               el.append(userDetail);
+               template.getElementsByClassName('user-name')[0].innerText = user['first_name'] + " " + user["last_name"];
+               template.getElementsByClassName('user-first-name')[0].innerText = user['first_name'];
+               template.getElementsByClassName('user-last-name')[0].innerText = user['last_name'];
+               template.getElementsByClassName('user-username')[0].innerText = user['username'];
+               template.getElementsByClassName('user-note')[0].innerText = user['note'];
+               template.style.display = 'block';
+
+               let closeButton = template.querySelector('.close-button');
+               closeButton.addEventListener('click', () => {
+                   console.log('close');
+                   template.style.display = 'none';
+               });
            })
-       });
-       el.addEventListener('mouseleave', () => {
-           el.getElementsByClassName('detail-modal')[0].remove();
        });
     });
 });
