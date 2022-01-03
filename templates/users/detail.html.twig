@@ -29,6 +29,10 @@
                 {% endfor %}
             </dt>
             <dt data-label="Note">{{ user.note }}</dt>
+            {% if user.group %}
+                <dd>Group</dd>
+                <dt data-label="Group">{{ user.group.name }}</dt>
+            {% endif %}
             <dd>Used rooms</dd>
             <dt data-label="Used rooms">
                 <ul class="detail-list">
@@ -38,8 +42,8 @@
                 </ul>
             </dt>
             {% if user.isGroupAdmin %}
-                <dd>Groups</dd>
-                <dt data-label="Groups">
+                <dd>Managed groups</dd>
+                <dt data-label="Managed groups">
                     <ul class="detail-list">
                         {% for group in user.managedGroups %}
                             <li>{{ group.name }}</li>
