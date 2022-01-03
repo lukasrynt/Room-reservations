@@ -82,23 +82,31 @@ class ReservationsVoter extends Voter
         return false;
     }
 
-    private function canApprove(User $account, Reservation $reservation): bool
-    {
-        return $this->canBookRoom($account, $reservation->getRoom());
-    }
-
     private function canReject(User $account, Reservation $reservation): bool
     {
-        return $this->canBookRoom($account, $reservation->getRoom());
+        $room = $reservation->getRoom();
+        if ($account->isAdmin()) {
+            return true;
+        }
+        if (($account->isGroupAdmin() && $account->getGroup() === $room->getGroup())
+            || ($account->isRoomAdmin() && $room->getRoomManager() === $account)) {
+            return true;
+        }
+        return false;
+    }
+
+    private function canApprove(User $account, Reservation $reservation): bool
+    {
+        return $this->canReject($account, $reservation);
     }
 
     private function canDelete(User $account, Reservation $reservation): bool
     {
-        return $this->canReject($account, $reservation) && $reservation->isRejected();
+        return $this->canReject($account, $reservation) && !$reservation->isPending();
     }
 
     private function canEdit(User $account, Reservation $reservation): bool
     {
-        return $this->canReject($account, $reservation) && $reservation->isPending();
+        return $this->canBookRoom($account, $reservation->getRoom()) && $reservation->isPending();
     }
 }

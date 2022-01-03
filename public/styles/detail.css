@@ -101,13 +101,8 @@
     margin-bottom: .5rem;
 }
 
-#detail-modal-template {
-    display: none;
-}
-
 .detail-modal {
     position: fixed;
-    display: flex;
     align-items: center;
     flex-flow: column;
     background-color: var(--white);
@@ -115,6 +110,11 @@
     box-shadow: 0 2px 8px 0 rgba(0,0,0,0.1);
     padding: 3rem;
     flex-grow: 1;
+    display: none;
+}
+
+.show {
+    display: block;
 }
 
 .detail-modal header {
