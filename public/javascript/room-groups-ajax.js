@@ -42,7 +42,7 @@ function addGroup(element, room) {
         })
 }
 
-async function fetchTakenIds(groupId) {
+async function fetchRoomTakenIds(groupId) {
     let response = await fetch('/api/groups/' + groupId);
     if (!response.ok) {
         return [];
@@ -60,7 +60,7 @@ async function fetchAllRooms() {
 }
 
 async function fetchAvailableRooms(groupId) {
-    let takenIds = await fetchTakenIds(groupId);
+    let takenIds = await fetchRoomTakenIds(groupId);
     let allRooms = await fetchAllRooms();
     return allRooms.filter((room) => !takenIds.includes(room.id))
 }

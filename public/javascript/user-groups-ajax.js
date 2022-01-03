@@ -42,7 +42,7 @@ function addUser(element, user) {
         })
 }
 
-async function fetchTakenIds(groupId) {
+async function fetchTakenUserIds(groupId) {
     let response = await fetch('/api/groups/' + groupId);
     if (!response.ok) {
         return [];
@@ -60,7 +60,7 @@ async function fetchAllUsers() {
 }
 
 async function fetchAvailableMembers(groupId) {
-    let takenIds = await fetchTakenIds(groupId);
+    let takenIds = await fetchTakenUserIds(groupId);
     let allUsers = await fetchAllUsers();
     return allUsers.filter((user) => !takenIds.includes(user.id))
 }
