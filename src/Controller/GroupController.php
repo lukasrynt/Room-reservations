@@ -3,10 +3,12 @@
 namespace App\Controller;
 
 use App\Entity\Group;
+use App\Entity\User;
 use App\Form\Type\GroupSearchType;
 use App\Form\Type\GroupType;
 use App\Services\GroupService;
 use App\Services\ParamsParser;
+use App\Services\UserService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\ButtonType;
 use Symfony\Component\HttpFoundation\Request;
@@ -19,14 +21,17 @@ use Symfony\Component\Routing\Annotation\Route;
 class GroupController extends AbstractController
 {
     private GroupService $groupService;
+    private UserService $userService;
 
     /**
      * GroupController constructor
      * @param GroupService $groupService
+     * @param UserService $userService
      */
-    public function __construct(GroupService $groupService)
+    public function __construct(GroupService $groupService, UserService $userService)
     {
         $this->groupService = $groupService;
+        $this->userService = $userService;
     }
 
     /**
@@ -105,6 +110,9 @@ class GroupController extends AbstractController
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $this->groupService->save($form->getData());
+            $user = $group->getGroupManager();
+            $user->setRoles([User::GROUP_ADMIN]);
+            $this->userService->save($user);
             $this->addFlash('success', "Group {$group->getName()} was successfully edited.");
             return $this->redirectToRoute('groups_detail', ['id' => $group->getId()]);
         }
@@ -126,8 +134,11 @@ class GroupController extends AbstractController
         $group = new Group;
         $form = $this->createForm(GroupType::class, $group);
         $form->handleRequest($request);
-        if ($form->isSubmitted() && $form->isValid()){
+        if ($form->isSubmitted() && $form->isValid()) {
             $this->groupService->save($form->getData());
+            $user = $group->getGroupManager();
+            $user->setRoles([User::GROUP_ADMIN]);
+            $this->userService->save($user);
             $this->addFlash('success', "Group {$group->getName()} was successfully created.");
             return $this->redirectToRoute('groups_detail', ['id' => $group->getId()]);
         }

@@ -38,25 +38,25 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      * @ORM\Column(type="string", length=255)
      * @Expose
      */
-    protected string $firstName;
+    protected ?string $firstName = null;
 
     /**
      * @ORM\Column(type="string", length=255)
      * @Expose
      */
-    protected string $lastName;
+    protected ?string $lastName = null;
 
     /**
      * @ORM\Column(type="string", length=255)
      * @Expose
      */
-    protected string $email;
+    protected ?string $email = null;
 
     /**
      * @ORM\Column(type="integer", nullable=true)
      * @Expose
      */
-    protected int $phoneNumber;
+    protected ?int $phoneNumber = null;
 
     /**
      * @ORM\Column(type="json")
@@ -72,40 +72,40 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      * @ORM\Column(type="string", length=255, nullable=true)
      * @Expose
      */
-    protected string $note;
+    protected ?string $note = null;
 
     /**
-     * @var string The hashed password
+     * @var string|null The hashed password
      * @ORM\Column(type="string")
      */
-    protected string $password;
+    protected ?string $password = null;
 
 
     /**
      * @ORM\Column(type="string", length=100, nullable=false)
      * @Expose
      */
-    protected string $username;
+    protected ?string $username = null;
 
     /**
      * @ORM\ManyToMany(targetEntity=Room::class, mappedBy="users")
      */
-    protected Collection $rooms;
+    protected ?Collection $rooms = null;
 
     /**
      * @ORM\OneToMany(targetEntity=Reservation::class, mappedBy="user")
      */
-    protected Collection $reservations;
+    protected ?Collection $reservations = null;
 
     /**
      * @ORM\ManyToOne(targetEntity=Group::class, inversedBy="members", fetch="EAGER")
      */
-    private ?Group $group;
+    private ?Group $group = null;
 
     /**
      * @ORM\ManyToMany(targetEntity=Reservation::class, mappedBy="attendees")
      */
-    private Collection $reservationsToAttend;
+    private ?Collection $reservationsToAttend = null;
 
     /**
      * @ORM\OneToMany(targetEntity=Room::class, mappedBy="roomManager")
@@ -115,7 +115,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     /**
      * @ORM\OneToMany(targetEntity=Group::class, mappedBy="groupManager")
      */
-    private Collection $managedGroups;
+    private ?Collection $managedGroups = null;
 
     public function __construct()
     {

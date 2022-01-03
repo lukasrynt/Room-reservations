@@ -4,17 +4,12 @@
 namespace App\Services;
 
 
-use App\Entity\Request;
 use App\Entity\Reservation;
 use App\Entity\Room;
 use App\Entity\States;
 use App\Entity\User;
 use App\Repository\ReservationRepository;
-use Doctrine\Common\Collections\Criteria;
 use Doctrine\ORM\EntityManagerInterface;
-use Doctrine\ORM\LazyCriteriaCollection;
-use Exception;
-use Symfony\Component\Validator\Constraints\Date;
 
 class ReservationService
 {
