@@ -11,6 +11,7 @@ use App\Services\ParamsParser;
 use App\Services\ReservationService;
 use App\Services\RoomService;
 use App\Services\UserService;
+use Doctrine\Migrations\Version\State;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\Request;
@@ -108,21 +109,29 @@ class ReservationController extends AbstractController
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            if (!$this->reservationService->checkCollisionReservations($form->getData()))
-            {
+            if (!$this->reservationService->checkCollisionReservations($form->getData())) {
                 $this->addFlash('danger', "Reservation in this time already exists!");
             } else {
                 $reservation = $form->getData();
-                $reservation->setState(new States("PENDING"));
+                $reservation->setState(new States(States::PENDING));
                 $this->reservationService->save($form->getData());
                 $this->addFlash('success', "Reservation for room {$reservation->getRoom()->getName()} was successfully created.");
                 return $this->redirectToRoute('reservations_detail', ['id' => $reservation->getId()]);
             }
+        } else {
+            $this->displayErrorMessages($form->getErrors());
         }
 
         return $this->render('reservations/create.html.twig', [
             'form' => $form->createView()
         ]);
+    }
+
+    private function displayErrorMessages($errors)
+    {
+        foreach ($errors as $key => $error) {
+            $this->addFlash('danger', $error->getMessage());
+        }
     }
 
 
@@ -151,6 +160,8 @@ class ReservationController extends AbstractController
             $this->reservationService->save($form->getData());
             $this->addFlash('success', "Reservation #{$reservation->getId()} was successfully edited.");
             return $this->redirectToRoute('reservations_detail', ['id' => $reservation->getId()]);
+        } else {
+            $this->displayErrorMessages($form->getErrors());
         }
 
         return $this->render('reservations/bookRoom.html.twig', [
@@ -184,14 +195,15 @@ class ReservationController extends AbstractController
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            if (!$this->reservationService->checkCollisionReservations($form->getData()))
-            {
+            if (!$this->reservationService->checkCollisionReservations($form->getData())) {
                 $this->addFlash('danger', "Reservation at this time already exists!");
             } else {
                 $this->reservationService->save($form->getData());
                 $this->addFlash('success', "Booking request for room {$room->getName()} was successfully created. Please wait for administrator to submit it.");
                 return $this->redirectToRoute('reservations_detail', ['id' => $reservation->getId()]);
             }
+        } else {
+            $this->displayErrorMessages($form->getErrors());
         }
 
         return $this->render('reservations/bookRoom.html.twig', [
