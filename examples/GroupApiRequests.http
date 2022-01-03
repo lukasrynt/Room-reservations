@@ -1,13 +1,13 @@
 # Remove user from group
-DELETE localhost:8080/api/groups/1/users/1
+DELETE http://46.101.181.115:8000/api/groups/1/users/17
 
 ###
 # Add user to group
-PUT localhost:8080/api/groups/2/users/1
+PUT http://46.101.181.115:8000/api/groups/1/users/17
 
 ###
 # Remove room from group
-DELETE localhost:8080/api/groups/2/rooms/1
+DELETE localhost:8080/api/groups/1/rooms/36
 
 ###
 # Add room to group

@@ -191,9 +191,4 @@ class Group
 
         return $this;
     }
-
-    public function __sleep()
-    {
-        return [];
-    }
 }
