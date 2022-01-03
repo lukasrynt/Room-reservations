@@ -39,13 +39,13 @@ class Group
      * @ORM\OneToMany(targetEntity="User", mappedBy="group")
      * @Expose
      */
-    private Collection $members;
+    private ?Collection $members = null;
 
     /**
      * @ORM\OneToMany(targetEntity="Room", mappedBy="group")
      * @Expose
      */
-    private Collection $rooms;
+    private ?Collection $rooms = null;
 
     /**
      * One Group has Many SubGroups.
@@ -187,5 +187,8 @@ class Group
         return $this;
     }
 
-
+    public function __sleep()
+    {
+        return [];
+    }
 }
