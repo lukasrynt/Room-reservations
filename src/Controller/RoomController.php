@@ -182,7 +182,7 @@ class RoomController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()){
             $this->roomService->save($form->getData());
             $user = $room->getRoomManager();
-            if ($user->isCommonUser()) {
+            if (!$user->isGroupAdmin() && !$user->isAdmin()) {
                 $user->setRoles([User::ROOM_ADMIN]);
             }
             $this->userService->save($user);
