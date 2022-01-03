@@ -70,7 +70,7 @@ class UserController extends AbstractController
                 'label' => 'Save'
             ]);
 
-        if (in_array(User::ROOM_ADMIN, $this->getUser()->getRoles())){
+        if ($this->getUser()->isAdmin()){
             $form->add('roles', ChoiceType::class, [
                 'choices' => User::getAllRoles(),
                 'multiple' => true
