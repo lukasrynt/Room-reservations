@@ -67,6 +67,11 @@ class Group
         $this->children = new ArrayCollection();
     }
 
+    public function __sleep()
+    {
+        return [];
+    }
+
 
     public function getId(): ?int
     {
