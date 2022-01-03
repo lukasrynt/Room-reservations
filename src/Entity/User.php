@@ -358,19 +358,19 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return in_array(self::ADMIN, $this->roles);
     }
 
-    public function isRoomAdmin(): Bool
-    {
-        return in_array(self::ROOM_ADMIN, $this->roles);
-    }
-
     public function isGroupAdmin(): Bool
     {
-        return in_array(self::GROUP_ADMIN, $this->roles);
+        return in_array(self::GROUP_ADMIN, $this->roles) || $this->isAdmin();
+    }
+
+    public function isRoomAdmin(): Bool
+    {
+        return in_array(self::ROOM_ADMIN, $this->roles) || $this->isGroupAdmin();
     }
 
     public function isCommonUser(): Bool
     {
-        return in_array(self::COMMON_USER, $this->roles);
+        return in_array(self::COMMON_USER, $this->roles) || $this->isRoomAdmin();
     }
 
     /**

@@ -33,30 +33,32 @@
                 <dd>Group</dd>
                 <dt data-label="Group">{{ user.group.name }}</dt>
             {% endif %}
-            <dd>Used rooms</dd>
-            <dt data-label="Used rooms">
-                <ul class="detail-list">
-                    {% for room in user.rooms %}
-                        <li>{{ room.name }}</li>
-                    {% endfor %}
-                </ul>
-            </dt>
-            {% if user.isGroupAdmin %}
-                <dd>Managed groups</dd>
-                <dt data-label="Managed groups">
+            {% if user.rooms is not empty %}
+                <dd>Used rooms</dd>
+                <dt data-label="Used rooms">
                     <ul class="detail-list">
-                        {% for group in user.managedGroups %}
-                            <li>{{ group.name }}</li>
+                        {% for room in user.rooms %}
+                            <li>{{ room.name }}</li>
                         {% endfor %}
                     </ul>
                 </dt>
             {% endif %}
-            {% if user.isRoomAdmin %}
+            {% if user.isRoomAdmin and user.managedRooms is not empty %}
                 <dd>Managed rooms</dd>
                 <dt data-label="Managed rooms">
                     <ul class="detail-list">
                         {% for room in user.managedRooms %}
                             <li>{{ room.name }}</li>
+                        {% endfor %}
+                    </ul>
+                </dt>
+            {% endif %}
+            {% if user.isGroupAdmin and user.managedGroups is not empty %}
+                <dd>Managed groups</dd>
+                <dt data-label="Managed groups">
+                    <ul class="detail-list">
+                        {% for group in user.managedGroups %}
+                            <li>{{ group.name }}</li>
                         {% endfor %}
                     </ul>
                 </dt>
