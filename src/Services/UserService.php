@@ -83,12 +83,12 @@ class UserService
         return $this->userRepository->search($searchParams);
     }
 
-    public function getManagedRoomsByRoomAdmin(RoomManager $user): array
+    public function getManagedRoomsByRoomAdmin(User $user): array
     {
         return $user->getManagedRooms();
     }
 
-    public function getManagedRoomsByGroupAdmin(GroupManager $user): array
+    public function getManagedRoomsByGroupAdmin(User $user): array
     {
         $groups = $user->getGroups();
         return $this->roomService->findByGroups($groups);
