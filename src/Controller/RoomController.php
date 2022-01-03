@@ -157,4 +157,15 @@ class RoomController extends AbstractController
             'form' => $form->createView()
         ]);
     }
+
+    /**
+     * @Route("/{id}/name_manager", name="name_manager", requirements={"id": "\d+"})
+     * @param Request $request
+     * @return Response
+     */
+    public function nameManager(Request $request): Response
+    {
+        $this->denyAccessUnlessGranted('name_room_manager');
+        return $this->redirect($request->headers->get('referer'));
+    }
 }
