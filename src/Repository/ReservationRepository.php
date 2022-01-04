@@ -91,10 +91,10 @@ class ReservationRepository extends ServiceEntityRepository
         $criteria = Criteria::create();
         if ($user->isAdmin()) {
             $criteria = $this->getPendingCrit($criteria);
-        }  elseif ($user->isRoomAdmin()) {
-            $criteria = $this->getPendingByRoomsCrit($user, $criteria);
         } elseif ($user->isGroupAdmin()) {
             $criteria = $this->getPendingByGroupsCrit($user, $criteria);
+        } elseif ($user->isRoomAdmin()) {
+            $criteria = $this->getPendingByRoomsCrit($user, $criteria);
         }
         return $this->getForUserCrit($user, $criteria);
     }
@@ -110,8 +110,11 @@ class ReservationRepository extends ServiceEntityRepository
     {
         $criteria ??= Criteria::create();
         $criteria = $this->getPendingCrit($criteria);
-        $managedGroups = $groupManager->getManagedGroups();
+        $managedGroups = clone $groupManager->getAllManagedGroups();
         $requestedRooms = $this->roomRepository->filterByGroups($managedGroups);
+        foreach ($groupManager->getManagedRooms() as $room){
+            $requestedRooms->add($room);
+        }
         return $this->getByRoomsCrit($requestedRooms->getValues(), $criteria);
     }
 
@@ -120,14 +123,15 @@ class ReservationRepository extends ServiceEntityRepository
         $criteria ??= Criteria::create();
         $criteria = $this->getPendingCrit($criteria);
         $requestedRooms = $roomManager->getManagedRooms();
-        return $this->getByRoomsCrit($requestedRooms->toArray(), $criteria);
+        return $this->getByRoomsCrit($requestedRooms->getValues(), $criteria);
     }
 
     private function getByRoomsCrit(array $rooms, Criteria $criteria = null): Criteria
     {
         $criteria ??= Criteria::create();
         if (empty($rooms)) {
-            return $criteria;
+            return $criteria
+                ->andWhere(Criteria::expr()->in('room', []));
         }
         return $criteria
             ->andWhere(Criteria::expr()->in('room', array_map(fn($obj) => $obj->getId(), $rooms)));
