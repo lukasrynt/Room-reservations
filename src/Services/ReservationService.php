@@ -106,4 +106,13 @@ class ReservationService
         return empty($reservations);
     }
 
+    public function getActiveForUser(User $user): array
+    {
+        return $this->reservationRepository->getActiveForUser($user);
+    }
+
+    public function getActiveForRoom(Room $room): array
+    {
+        return $this->reservationRepository->getActiveForRoom($room);
+    }
 }

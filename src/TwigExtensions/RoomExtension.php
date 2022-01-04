@@ -41,7 +41,7 @@ class RoomExtension extends AbstractExtension
 
     public function activeRoomReservations(Environment $environment, Room $room): string
     {
-        $reservations = $room->getReservations();
+        $reservations = $this->reservationService->getActiveForRoom($room);
         return $environment->render('reservations/roomReservations.html.twig', ['reservations' => $reservations]);
     }
 }

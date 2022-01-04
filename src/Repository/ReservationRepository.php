@@ -163,4 +163,22 @@ class ReservationRepository extends ServiceEntityRepository
         return $criteria
             ->andWhere(Criteria::expr()->eq('state', States::APPROVED));
     }
+
+    public function getActiveForUser(User $user): array
+    {
+        return $this->matching(
+            Criteria::create()
+                ->andWhere(Criteria::expr()->eq('user', $user))
+                ->andWhere(Criteria::expr()->eq('state', States::APPROVED))
+        )->toArray();
+    }
+
+    public function getActiveForRoom(Room $room): array
+    {
+        return $this->matching(
+            Criteria::create()
+                ->andWhere(Criteria::expr()->eq('room', $room))
+                ->andWhere(Criteria::expr()->eq('state', States::APPROVED))
+        )->toArray();
+    }
 }

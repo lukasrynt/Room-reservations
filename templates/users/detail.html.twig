@@ -63,10 +63,7 @@
                     </ul>
                 </dt>
             {% endif %}
-            <dd>Active reservations</dd>
-            <dt data-label="Active reservations">
-                {{ activeUserReservations(user)|raw }}
-            </dt>
+            {{ activeUserReservations(user)|raw }}
         </dl>
         <footer>
             {% include 'users/buttons.html.twig' %}

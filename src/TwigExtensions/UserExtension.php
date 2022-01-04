@@ -12,6 +12,16 @@ use Twig\TwigFunction;
 
 class UserExtension extends AbstractExtension
 {
+    private ReservationService $reservationService;
+
+    /**
+     * @param ReservationService $reservationService
+     */
+    public function __construct(ReservationService $reservationService)
+    {
+        $this->reservationService = $reservationService;
+    }
+
     public function getFunctions(): array
     {
         return [
@@ -38,7 +48,7 @@ class UserExtension extends AbstractExtension
 
     public function activeUserReservations(Environment $environment, User $user): string
     {
-        $reservations = $user->getReservations();
+        $reservations = $this->reservationService->getActiveForUser($user);
         return $environment->render('reservations/userReservations.html.twig', ['reservations' => $reservations]);
     }
 }

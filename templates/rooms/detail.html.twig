@@ -54,10 +54,7 @@
             {% endif %}
             <dd>Last accessed user</dd>
             <dt data-label="Last accessed user">{{ room.lastAccess }}</dt>
-            <dd>Active reservations</dd>
-            <dt data-label="Active reservations">
-                {{ activeRoomReservations(room)|raw }}
-            </dt>
+            {{ activeRoomReservations(room)|raw }}
         </dl>
         <footer>
             {% include 'rooms/buttons.html.twig' %}
