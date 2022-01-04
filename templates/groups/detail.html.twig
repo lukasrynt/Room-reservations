@@ -34,7 +34,18 @@
 
             {% if group.parent is not empty %}
                 <dd>Subgroup of</dd>
-                <dt data-label="Subgroup of">{{ group.parent.name }}</dt>
+                <dt data-label="Subgroup of"><a class="table-link" href="{{ path('groups_detail', { id: group.parent.id }) }}">{{ group.parent.name }}</a></dt>
+            {% endif %}
+
+            {% if group.children is not empty %}
+                <dd>Subgroups</dd>
+                <dt data-label="Subgroups">
+                    <ul class="detail-list">
+                        {% for subgroup in group.children %}
+                            <li><a class="table-link" href="{{ path('groups_detail', { id: subgroup.id }) }}">{{ subgroup.name }}</a></li>
+                        {% endfor %}
+                    </ul>
+                </dt>
             {% endif %}
 
             <dd>Members</dd>
