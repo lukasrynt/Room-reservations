@@ -20,9 +20,9 @@
         </header>
         <dl>
             <dd>Requester</dd>
-            <dt data-label="Requester">{{ reservation.user.username }}</dt>
+            <dt data-label="Requester"><a class="table-link" href="{{ path('users_detail', { id: reservation.user.id }) }}">{{ reservation.user }}</a></dt>
             <dd>Room</dd>
-            <dt data-label="Last name">{{ reservation.room.name }}</dt>
+            <dt data-label="Last name"><a class="table-link" href="{{ path('rooms_detail', { id: reservation.room.id }) }}">{{ reservation.room.name }}</a></dt>
             <dd>State</dd>
             <dt data-label="State">
                 {% if reservation.state == 'PENDING' %}

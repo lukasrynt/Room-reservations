@@ -23,7 +23,7 @@
                     {% for room in building.rooms %}
                         {% if is_granted('view_room', room) %}
                             <li>
-                                <a href="{{ path('rooms_detail', { id: room.id }) }}">{{ room.name }}</a>
+                                <a class="table-link" href="{{ path('rooms_detail', { id: room.id }) }}">{{ room.name }}</a>
                             </li>
                         {% endif %}
                     {% endfor %}

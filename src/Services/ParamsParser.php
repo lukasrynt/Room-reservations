@@ -20,21 +20,27 @@ class ParamsParser
         return $res;
     }
 
-    public static function getParamsFromUrl(array $queryParams, array $searchParams = null, bool $autoPaginate = true): array
+    public static function getParamsFromUrl(array $queryParams, array $searchParams = null, bool $autoParams = true): array
     {
         $res = [];
         $paginateParams = self::getFilters($queryParams, Paginator::URL_KEY);
-        if ($autoPaginate && !array_key_exists('page_size', $paginateParams)) {
+        if ($autoParams && !array_key_exists('page_size', $paginateParams)) {
             $paginateParams['page_size'] = Paginator::DEFAULT_PAGE_SIZE;
         }
         $res[Paginator::URL_KEY] = $paginateParams;
+
+        $orderParams = self::getFilters($queryParams, Orderer::URL_KEY);
+        if ($autoParams && empty($orderParams)) {
+            $orderParams['id'] = 'ASC';
+        }
+        $res[Orderer::URL_KEY] = $orderParams;
+
         if ($searchParams) {
             $filters = array_filter($searchParams, fn($val) => $val !== null);
         } else {
             $filters = array_filter(self::getFilters($queryParams, Filter::URL_KEY), fn($val) => $val !== null);
         }
         $res[Filter::URL_KEY] = $filters;
-        $res[Orderer::URL_KEY] = self::getFilters($queryParams, Orderer::URL_KEY);
         return $res;
     }
 

@@ -31,8 +31,8 @@
             {% for reservation in reservations %}
             <tr>
                 <td data-label="ID">{{ reservation.id }}</td>
-                <td data-label="Room name">{{ reservation.room.name }}</td>
-                <td data-label="Requester">{{ reservation.user.username }}</td>
+                <td data-label="Room name"><a class="table-link" href="{{ path('rooms_detail', { id: reservation.room.id }) }}">{{ reservation.room.name }}</a></td>
+                <td data-label="Requester"><a class="table-link" href="{{ path('users_detail', { id: reservation.user.id }) }}">{{ reservation.user }}</a></td>
                 <td data-label="State" class="column-with-icon">
                     {% if reservation.state == 'PENDING' %}
                         Pending
@@ -48,7 +48,7 @@
                 <td data-label="Attendees">
                     <ul>
                         {% for attendee in reservation.attendees %}
-                            <li>{{ attendee.username }}</li>
+                            <li><a class="table-link" href="{{ path('users_detail', { id: attendee.id }) }}">{{ attendee }}</a></li>
                         {% endfor %}
                     </ul>
                 </td>
