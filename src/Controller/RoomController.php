@@ -134,7 +134,7 @@ class RoomController extends AbstractController
             return $this->render('errors/404.html.twig');
         } else {
             $this->roomService->delete($room);
-            $this->addFlash('success', "Room {$room->getName()} was successfully deleted.");
+            $this->addFlash('success', "Room {$room->getName()} was successfully deleted along with all reservations for it.");
             return $this->redirectToRoute('rooms_index');
         }
     }

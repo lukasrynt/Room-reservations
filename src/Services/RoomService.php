@@ -11,17 +11,20 @@ use Doctrine\Common\Collections\Collection;
 class RoomService
 {
     private RoomRepository $roomRepository;
+    private ReservationService $reservationService;
     private EntityManagerInterface $entityManager;
 
     /**
      * RoomService constructor.
      * @param RoomRepository $roomRepository
      * @param EntityManagerInterface $entityManager
+     * @param ReservationService $reservationService
      */
-    public function __construct(RoomRepository $roomRepository, EntityManagerInterface $entityManager)
+    public function __construct(RoomRepository $roomRepository, EntityManagerInterface $entityManager, ReservationService $reservationService)
     {
         $this->roomRepository = $roomRepository;
         $this->entityManager = $entityManager;
+        $this->reservationService = $reservationService;
     }
 
     public function find(int $id): ?Room
@@ -45,6 +48,9 @@ class RoomService
 
     public function delete(Room $room): void
     {
+        foreach ($room->getReservations() as $reservation) {
+            $this->reservationService->delete($reservation);
+        }
         $this->entityManager->remove($room);
         $this->entityManager->flush();
     }
