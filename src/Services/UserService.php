@@ -112,4 +112,20 @@ class UserService
             return [];
         }
     }
+
+    public function deleteRoomsOrGroups(User $user){
+        if (!$user->isGroupAdmin()) {
+            foreach ($user->getManagedGroups() as $managedGroup) {
+                $user->removeManagedGroup($managedGroup);
+            }
+        }
+
+        if (!$user->isRoomAdmin()) {
+            foreach ($user->getManagedRooms() as $managedRoom) {
+                $user->removeManagedRoom($managedRoom);
+            }
+        }
+
+        $this->save($user);
+    }
 }

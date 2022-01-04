@@ -83,6 +83,7 @@ class UserController extends AbstractController
             $user = $form->getData();
             $password = $passwordEncoder->hashPassword($user, $form->get('password')->getData());
             $user->setPassword($password);
+            $this->userService->deleteRoomsOrGroups($user);
             $user->setRoles([$user->getRoles()[0]]);
             $this->userService->save($user);
             return $this->redirectToRoute('users_detail', ['id' => $user->getId()]);
