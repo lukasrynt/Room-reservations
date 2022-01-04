@@ -90,18 +90,31 @@ class UserService
 
     public function getManagedRoomsByGroupAdmin(User $user): array
     {
-        $groups = $user->getManagedGroups();
-        return $this->roomService->findByGroups($groups)->toArray();
+        $managedGroups = clone $user->getManagedGroups();
+        foreach ($managedGroups as $managedGroup){
+            $allSubGroups = $managedGroup->getAllSubGroups();
+            foreach ($allSubGroups as $subGroup){
+                if (!$managedGroups->contains($subGroup))
+                $managedGroups->add($subGroup);
+            }
+        }
+        $rooms = $this->roomService->findByGroups($managedGroups);
+
+        foreach ($user->getManagedRooms() as $room){
+            $rooms->add($room);
+        }
+
+        return array_unique($rooms->toArray());
     }
 
     public function getRoomsForUser(User $user): array
     {
         if ($user->isAdmin()) {
             return $this->roomService->findAll();
-        } elseif ($user->isRoomAdmin()) {
-            return $this->getManagedRoomsByRoomAdmin($user);
         } else if ($user->isGroupAdmin()) {
             return $this->getManagedRoomsByGroupAdmin($user);
+        } else if ($user->isRoomAdmin()) {
+            return $this->getManagedRoomsByRoomAdmin($user);
         } else {
             return [];
         }
