@@ -90,14 +90,7 @@ class UserService
 
     public function getManagedRoomsByGroupAdmin(User $user): array
     {
-        $managedGroups = clone $user->getManagedGroups();
-        foreach ($managedGroups as $managedGroup){
-            $allSubGroups = $managedGroup->getAllSubGroups();
-            foreach ($allSubGroups as $subGroup){
-                if (!$managedGroups->contains($subGroup))
-                $managedGroups->add($subGroup);
-            }
-        }
+        $managedGroups = clone $user->getAllManagedGroups();
         $rooms = $this->roomService->findByGroups($managedGroups);
 
         foreach ($user->getManagedRooms() as $room){
