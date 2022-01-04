@@ -5,6 +5,7 @@ namespace App\TwigExtensions;
 
 use App\Entity\Room;
 use App\Services\ReservationService;
+use Twig\Environment;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFunction;
 
@@ -25,7 +26,8 @@ class RoomExtension extends AbstractExtension
     {
         return [
             new TwigFunction('isCurrentlyReserved', array($this, 'isCurrentlyReserved')),
-            new TwigFunction('reservedUntil', array($this, 'reservedUntil'))
+            new TwigFunction('reservedUntil', array($this, 'reservedUntil')),
+            new TwigFunction('activeRoomReservations', array($this, 'activeRoomReservations'), array('needs_environment' => true))
         ];
     }
 
@@ -35,5 +37,11 @@ class RoomExtension extends AbstractExtension
         if (!$reservation)
             return "";
         return $reservation->getTimeTo();
+    }
+
+    public function activeRoomReservations(Environment $environment, Room $room): string
+    {
+        $reservations = $room->getReservations();
+        return $environment->render('reservations/roomReservations.html.twig', ['reservations' => $reservations]);
     }
 }

@@ -4,7 +4,9 @@
 namespace App\TwigExtensions;
 
 use App\Entity\Room;
+use App\Entity\User;
 use App\Services\ReservationService;
+use Twig\Environment;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFunction;
 
@@ -13,7 +15,8 @@ class UserExtension extends AbstractExtension
     public function getFunctions(): array
     {
         return [
-            new TwigFunction('getRoleText', array($this, 'getRoleText'))
+            new TwigFunction('getRoleText', array($this, 'getRoleText')),
+            new TwigFunction('activeUserReservations', array($this, 'activeUserReservations'), array('needs_environment' => true))
         ];
     }
 
@@ -31,5 +34,11 @@ class UserExtension extends AbstractExtension
             default:
                 return $role;
         }
+    }
+
+    public function activeUserReservations(Environment $environment, User $user): string
+    {
+        $reservations = $user->getReservations();
+        return $environment->render('reservations/userReservations.html.twig', ['reservations' => $reservations]);
     }
 }
