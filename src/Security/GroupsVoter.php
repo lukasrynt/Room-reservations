@@ -56,6 +56,11 @@ class GroupsVoter extends Voter
 
     private function canView(User $account, ?Group $group): bool
     {
+        return true;
+    }
+
+    private function canEdit(User $account, ?Group $group): bool
+    {
         if (!$group) {
             return true;
         }
@@ -71,11 +76,6 @@ class GroupsVoter extends Voter
         }
 
         return $account === $group->getGroupManager();
-    }
-
-    private function canEdit(User $account, Group $group): bool
-    {
-        return $this->canView($account, $group);
     }
 
     private function canCreate(User $account): bool

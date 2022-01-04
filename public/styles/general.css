@@ -338,3 +338,11 @@ li.ajax-list-item {
 .close-button:hover {
     color: var(--red-dark)
 }
+
+.table-link {
+    text-decoration: underline;
+}
+
+.table-link:hover {
+    color: var(--gray-light);
+}

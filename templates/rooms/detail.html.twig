@@ -17,7 +17,7 @@
             <dt data-label="ID">{{ room.id }}</dt>
             <dd>Building</dd>
             <dt data-label="Building">
-                <a href="{{ path('buildings_detail', { id: room.building.id }) }}">{{ room.building }}</a>
+                <a class="table-link" href="{{ path('buildings_detail', { id: room.building.id }) }}">{{ room.building }}</a>
             </dt>
             <dd>Floor</dd>
             <dt data-label="Floor">{{ room.floor }}</dt>
@@ -43,7 +43,7 @@
                 {% endif %}
             </dt>
             <dd>Room manager</dd>
-            <dt data-label="Room manager">{{ room.roomManager }}</dt>
+            <dt data-label="Room manager"><a class="table-link" href="{{ path('users_detail', { id: room.roomManager.id }) }}">{{ room.roomManager }}</a></dt>
             <dd>Status</dd>
             {% if room.locked %}
                 <dt data-label="Status">Locked</dt>

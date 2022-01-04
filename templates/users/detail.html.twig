@@ -31,14 +31,14 @@
             <dt data-label="Note">{{ user.note }}</dt>
             {% if user.group %}
                 <dd>Group</dd>
-                <dt data-label="Group">{{ user.group.name }}</dt>
+                <dt data-label="Group"><a class="table-link" href="{{ path('groups_detail', { id: user.group.id }) }}">{{ user.group.name }}</a></dt>
             {% endif %}
             {% if user.rooms is not empty %}
                 <dd>Used rooms</dd>
                 <dt data-label="Used rooms">
                     <ul class="detail-list">
                         {% for room in user.rooms %}
-                            <li>{{ room.name }}</li>
+                            <li><a class="table-link" href="{{ path('rooms_detail', { id: room.id }) }}">{{ room.name }}</a></li>
                         {% endfor %}
                     </ul>
                 </dt>
@@ -48,7 +48,7 @@
                 <dt data-label="Managed rooms">
                     <ul class="detail-list">
                         {% for room in user.managedRooms %}
-                            <li>{{ room.name }}</li>
+                            <li><a class="table-link" href="{{ path('rooms_detail', { id: room.id }) }}">{{ room.name }}</a></li>
                         {% endfor %}
                     </ul>
                 </dt>
@@ -58,7 +58,7 @@
                 <dt data-label="Managed groups">
                     <ul class="detail-list">
                         {% for group in user.managedGroups %}
-                            <li>{{ group.name }}</li>
+                            <a class="table-link" href="{{ path('groups_detail', { id: group.id }) }}">{{ group.name }}</a>
                         {% endfor %}
                     </ul>
                 </dt>

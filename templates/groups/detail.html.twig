@@ -28,7 +28,7 @@
                 {% if group.groupManager is empty %}
                     none
                 {% else %}
-                    {{ group.groupManager }}
+                    <a class="table-link" href="{{ path('users_detail', { id: group.groupManager.id }) }}">{{ group.groupManager }}</a>
                 {% endif %}
             </dt>
 
