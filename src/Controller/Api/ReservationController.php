@@ -126,7 +126,7 @@ class ReservationController extends AbstractFOSRestController
             return $this->handleView($this->view([], Response::HTTP_NOT_FOUND));
         }
         if (!$reservation->isPending()) {
-            return $this->handleView($this->view('Reservation must be pending to be approved', Response::HTTP_FORBIDDEN));
+            return $this->handleView($this->view('Reservation must be pending to be approved', Response::HTTP_BAD_REQUEST));
         }
         if (!$this->reservationService->checkCollisionReservations($reservation)) {
             return $this->handleView($this->view("Reservation at this time already exists", Response::HTTP_BAD_REQUEST));
@@ -169,7 +169,7 @@ class ReservationController extends AbstractFOSRestController
             return $this->handleView($this->view([], Response::HTTP_NOT_FOUND));
         }
         if (!$reservation->isPending()) {
-            return $this->handleView($this->view('Reservation must be pending to accept any more attendees', Response::HTTP_FORBIDDEN));
+            return $this->handleView($this->view('Reservation must be pending to accept any more attendees', Response::HTTP_BAD_REQUEST));
         }
         $reservation->addAttendee($user);
         $this->reservationService->save($reservation);
@@ -190,7 +190,7 @@ class ReservationController extends AbstractFOSRestController
             return $this->handleView($this->view([], Response::HTTP_NOT_FOUND));
         }
         if (!$reservation->isPending()) {
-            return $this->handleView($this->view('Reservation must be pending to remove any attendees', Response::HTTP_FORBIDDEN));
+            return $this->handleView($this->view('Reservation must be pending to remove any attendees', Response::HTTP_BAD_REQUEST));
         }
         $reservation->removeAttendee($user);
         $this->reservationService->save($reservation);
