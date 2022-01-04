@@ -96,7 +96,7 @@ class RoomsVoter extends Voter
             return true;
         }
         if ($account->isGroupAdmin()) {
-            $managedGroups = $account->getManagedGroups();
+            $managedGroups = $account->getAllManagedGroups();
             foreach ($managedGroups as $group) {
                 if (in_array($room, $group->getRooms()->toArray())) {
                     return true;
