@@ -168,13 +168,12 @@ class RoomController extends AbstractController
      */
     public function nameManager(Request $request, int $id): Response
     {
-        $this->denyAccessUnlessGranted('name_room_manager');
-
         $room = $this->roomService->find($id);
 
         if (!$room) {
             return $this->render('errors/404.html.twig');
         }
+        $this->denyAccessUnlessGranted('name_room_manager', $room);
 
         $form = $this->createForm(NameRoomManagerType::class, $room);
 
