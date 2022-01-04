@@ -90,20 +90,20 @@ values (
            nextval('room_id_seq'), 20, 'E 325', 3, '10:00:00', '19:00:00', 5, 15, 6, FALSE
        ),
        (
-           nextval('room_id_seq'), 20, 'F 320', 3, '10:00:00', '19:00:00', 6, 15, 1, FALSE
+           nextval('room_id_seq'), 20, 'F 320', 3, '10:00:00', '19:00:00', 6, 4, 1, FALSE
        ),
        (
-           nextval('room_id_seq'), 20, 'F 321', 7, '10:00:00', '19:00:00', 6, 15, 1, TRUE
+           nextval('room_id_seq'), 20, 'F 321', 7, '10:00:00', '19:00:00', 6, 4, 1, TRUE
        ),
        (
-           nextval('room_id_seq'), 20, 'F 322', 3, '10:00:00', '19:00:00', 6, 15, 1, FALSE
+           nextval('room_id_seq'), 20, 'F 322', 3, '10:00:00', '19:00:00', 6, 4, 1, FALSE
        ),
        (
-           nextval('room_id_seq'), 20, 'F 323', 7, '10:00:00', '19:00:00', 6, 15, 1, FALSE
+           nextval('room_id_seq'), 20, 'F 323', 7, '10:00:00', '19:00:00', 6, 4, 1, FALSE
        ),
        (
-           nextval('room_id_seq'), 20, 'F 324', 3, '10:00:00', '19:00:00', 6, 15, 1, TRUE
+           nextval('room_id_seq'), 20, 'F 324', 3, '10:00:00', '19:00:00', 6, 4, 1, TRUE
        ),
        (
-           nextval('room_id_seq'), 20, 'F 325', 3, '10:00:00', '19:00:00', 6, 15, 1, FALSE
+           nextval('room_id_seq'), 20, 'F 325', 3, '10:00:00', '19:00:00', 6, 4, 1, FALSE
        );
