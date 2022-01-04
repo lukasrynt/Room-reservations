@@ -74,7 +74,7 @@ class ReservationsVoter extends Voter
             return true;
         }
         if (in_array($room, $account->getRooms()->getValues())
-            || ($account->isGroupAdmin() && $room->getGroup()->isSubGroupOfParentGroups($account->getAllManagedRooms()))
+            || ($account->isGroupAdmin() && $room->getGroup()->isSubGroupOfParentGroups($account->getAllManagedGroups()))
             || ($account->isRoomAdmin() && $room->getRoomManager() === $account)
             || ($account->getGroup() === $room->getGroup())) {
             return true;
@@ -89,7 +89,7 @@ class ReservationsVoter extends Voter
             return true;
         }
 
-        if (($account->isGroupAdmin() && $room->getGroup()->isSubGroupOfParentGroups($account->getAllManagedRooms()))
+        if (($account->isGroupAdmin() && $room->getGroup()->isSubGroupOfParentGroups($account->getAllManagedGroups()))
             || ($account->isRoomAdmin() && $room->getRoomManager() === $account)) {
             return true;
         }
