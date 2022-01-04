@@ -154,15 +154,20 @@ class GroupController extends AbstractController
 
     /**
      * @Route("/{id}", name="delete", methods="DELETE", requirements={"id": "\d+"})
+     * @param Request $request
      * @param int $id
      * @return Response
      */
-    public function delete(int $id): Response
+    public function delete(Request $request, int $id): Response
     {
         $group = $this->groupService->find($id);
         $this->denyAccessUnlessGranted('delete_group');
         if (!$group) {
             return $this->render('errors/404.html.twig');
+        } else if (!$group->getChildren()->isEmpty()){
+            $this->addFlash('danger', "Group {$group->getName()} has subgroups, thus it can not be deleted. Delete the subgroups first.");
+            $referer = $request->headers->get('referer');
+            return $this->redirect($referer);
         } else {
             $this->groupService->delete($group);
             $this->addFlash('success', "Group {$group->getName()} was successfully deleted.");

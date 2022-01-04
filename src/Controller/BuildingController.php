@@ -154,7 +154,7 @@ class BuildingController extends AbstractController
         if (!$building) {
             return $this->render('errors/404.html.twig');
         } else if (!$building->getRooms()->isEmpty()){
-            $this->addFlash('danger', "Building {$building->getName()} has existing rooms, thus it can not be deleted.\n Firstly delete existing rooms.");
+            $this->addFlash('danger', "Building {$building->getName()} has existing rooms, thus it can not be deleted. Firstly delete existing rooms.");
             $referer = $request->headers->get('referer');
             return $this->redirect($referer);
         } else {
