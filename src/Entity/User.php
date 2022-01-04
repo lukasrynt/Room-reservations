@@ -439,6 +439,19 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
+    public function getAllManagedGroups(): Collection
+    {
+        $managedGroups = clone $this->getManagedGroups();
+        foreach ($managedGroups as $managedGroup){
+            $allSubGroups = $managedGroup->getAllSubGroups();
+            foreach ($allSubGroups as $subGroup){
+                if (!$managedGroups->contains($subGroup))
+                    $managedGroups->add($subGroup);
+            }
+        }
+        return $managedGroups;
+    }
+
     /**
      * @return string[]
      */

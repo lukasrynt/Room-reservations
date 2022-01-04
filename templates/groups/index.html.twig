@@ -48,7 +48,7 @@
                     {% if group.groupManager is empty %}
                         -
                     {% else %}
-                        {{ group.groupManager }}
+                        <a class="table-link" href="{{ path('users_detail', { id: group.groupManager.id }) }}">{{ group.groupManager }}</a>
                     {% endif %}
                 </td>
 
@@ -57,7 +57,7 @@
                         -
                     {% else %}
                         {% for room in group.rooms %}
-                            {{ room }}
+                            <a class="table-link" href="{{ path('rooms_detail', { id: room.id }) }}">{{ room }}</a>
                             {% if not loop.last %}
                                 ,
                             {% endif %}

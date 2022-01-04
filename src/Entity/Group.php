@@ -194,12 +194,18 @@ class Group
 
     public function containsSubGroup(Group $group)
     {
-        $tmpGroup = $this;
-        while (!$tmpGroup){
-            if ($tmpGroup === $group)
+        foreach ($this->getChildren() as $subGroup){
+            if ($subGroup->containsSubGroup($group))
                 return true;
-            $tmpGroup = $group->getChildren();
         }
+        return $this === $group;
+    }
+
+    public function isSubGroupOfParentGroups(Collection $parentGroups)
+    {
+        foreach ($parentGroups as $parentGroup)
+            if ($parentGroup->containsSubGroup($this))
+                return true;
         return false;
     }
 
