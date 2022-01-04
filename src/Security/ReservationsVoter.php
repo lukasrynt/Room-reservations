@@ -2,7 +2,6 @@
 
 namespace App\Security;
 
-use App\Entity\Request;
 use App\Entity\Reservation;
 use App\Entity\Room;
 use App\Entity\User;
@@ -75,7 +74,7 @@ class ReservationsVoter extends Voter
             return true;
         }
         if (in_array($room, $account->getRooms()->getValues())
-            || ($account->isGroupAdmin() && $room->getGroup()->containsSubGroup($account->getGroup()))
+            || ($account->isGroupAdmin() && $room->getGroup()->isSubGroupOfParentGroups($account->getAllManagedRooms()))
             || ($account->isRoomAdmin() && $room->getRoomManager() === $account)
             || ($account->getGroup() === $room->getGroup())) {
             return true;
@@ -89,7 +88,8 @@ class ReservationsVoter extends Voter
         if ($account->isAdmin()) {
             return true;
         }
-        if (($account->isGroupAdmin() && $account->getGroup() === $room->getGroup())
+
+        if (($account->isGroupAdmin() && $room->getGroup()->isSubGroupOfParentGroups($account->getAllManagedRooms()))
             || ($account->isRoomAdmin() && $room->getRoomManager() === $account)) {
             return true;
         }
