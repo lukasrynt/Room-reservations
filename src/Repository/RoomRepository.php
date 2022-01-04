@@ -69,7 +69,7 @@ class RoomRepository extends ServiceEntityRepository
     public function filterByGroups(Collection $groups): Collection
     {
         $criteria = Criteria::create()
-            ->andWhere(Criteria::expr()->in('id', $groups->map(function($obj){return $obj->getId();})->getValues()));
+            ->andWhere(Criteria::expr()->in('group', $groups->map(function($obj){return $obj->getId();})->getValues()));
         return $this->matching($criteria);
     }
 
