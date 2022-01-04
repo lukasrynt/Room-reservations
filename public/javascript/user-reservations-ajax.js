@@ -26,7 +26,9 @@ function createUserElement(user, reservationId) {
     link.addEventListener('click', () => removeUser(link))
     link.setAttribute('data-reservation-id', reservationId);
     link.setAttribute('data-user-id', user.id);
-    userElement.append(user['username']);
+    let userNameLink = userElement.getElementsByTagName('a')[1];
+    userNameLink.setAttribute('href', '/users/' + user['id']);
+    userNameLink.innerText = user['first_name'] + ' ' + user['last_name'];
     return userElement;
 }
 
@@ -99,7 +101,7 @@ document.addEventListener("DOMContentLoaded", function() {
             usersList.innerHTML = "";
             users.forEach((user) => {
                 let userLink = document.createElement('a');
-                userLink.innerText = user['username'];
+                userLink.innerText = user['first_name'] + ' ' + user['last_name'];
                 userLink.addEventListener('click', () => {
                     addUser(addBtn, user);
                     if (users.length === 1)

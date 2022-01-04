@@ -47,7 +47,7 @@
                                     {{ source('@icons/user-minus-icon.svg') }}
                                 </a>
                             {% endif %}
-                            {{ attendee.username }}
+                            <a class="table-link" href="{{ path('users_detail', { id: attendee.id }) }}">{{ attendee }}</a>
                         </li>
                     {% endfor %}
                     {% if is_granted('edit_reservation', reservation) %}

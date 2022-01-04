@@ -26,7 +26,9 @@ function createRoomElement(room, groupId) {
     link.addEventListener('click', () => removeRoom(link))
     link.setAttribute('data-group-id', groupId);
     link.setAttribute('data-room-id', room.id);
-    roomElement.append(room['name']);
+    let roomNameLink = roomElement.getElementsByTagName('a')[1];
+    roomNameLink.setAttribute('href', '/rooms/' + room['id']);
+    roomNameLink.innerText = room['name'];
     return roomElement;
 }
 
