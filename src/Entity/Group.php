@@ -191,4 +191,24 @@ class Group
     {
         return [];
     }
+
+    public function containsSubGroup(Group $group)
+    {
+        $tmpGroup = $this;
+        while (!$tmpGroup){
+            if ($tmpGroup === $group)
+                return true;
+            $tmpGroup = $group->getChildren();
+        }
+        return false;
+    }
+
+    public function getAllSubGroups(): array
+    {
+        $subGroups = array();
+        foreach ($this->getChildren() as $subGroup){
+            $subGroups = array_merge($subGroups, $subGroup->getAllSubGroups());
+        }
+        return array_merge($subGroups, array($this));
+    }
 }
