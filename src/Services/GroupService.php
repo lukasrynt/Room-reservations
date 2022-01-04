@@ -156,7 +156,6 @@ class GroupService
 
     public function delete(Group $group)
     {
-        # TODO subgroups
         $this->entityManager->remove($group);
         $this->entityManager->flush();
     }
