@@ -192,11 +192,6 @@ class Group
         return $this;
     }
 
-    public function __sleep()
-    {
-        return [];
-    }
-
     public function containsSubGroup(Group $group)
     {
         $tmpGroup = $this;

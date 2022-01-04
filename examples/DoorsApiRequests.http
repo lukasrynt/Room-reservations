@@ -1,7 +1,7 @@
 ###
-PUT localhost:8080/api/rooms/1/door
+PUT http://46.101.181.115:8000/api/rooms/1/door
 Content-Type: application/json
 
 {
-  "user_id": "3"
+  "user_id": "16"
 }
