@@ -17,10 +17,6 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Entity(repositoryClass=UserRepository::class)
  * @ORM\Table(name="`user`")
  * @method string getUserIdentifier()
- * @ORM\InheritanceType("SINGLE_TABLE")
- * @ORM\DiscriminatorColumn(name="discr", type="string")
- * @ORM\DiscriminatorMap({"user" = "User", "admin" = "Admin", "roomManager" = "RoomManager",
- *                          "groupManager" = "GroupManager"})
  * @ExclusionPolicy("all")
  */
 class User implements UserInterface, PasswordAuthenticatedUserInterface
@@ -42,25 +38,25 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      * @ORM\Column(type="string", length=255)
      * @Expose
      */
-    protected string $firstName;
+    protected ?string $firstName = null;
 
     /**
      * @ORM\Column(type="string", length=255)
      * @Expose
      */
-    protected string $lastName;
+    protected ?string $lastName = null;
 
     /**
      * @ORM\Column(type="string", length=255)
      * @Expose
      */
-    protected string $email;
+    protected ?string $email = null;
 
     /**
      * @ORM\Column(type="integer", nullable=true)
      * @Expose
      */
-    protected int $phoneNumber;
+    protected ?int $phoneNumber = null;
 
     /**
      * @ORM\Column(type="json")
@@ -76,46 +72,115 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      * @ORM\Column(type="string", length=255, nullable=true)
      * @Expose
      */
-    protected string $note;
+    protected ?string $note = null;
 
     /**
-     * @var string The hashed password
+     * @var string|null The hashed password
      * @ORM\Column(type="string")
      */
-    protected string $password;
+    protected ?string $password = null;
 
 
     /**
      * @ORM\Column(type="string", length=100, nullable=false)
      * @Expose
      */
-    protected string $username;
+    protected ?string $username = null;
 
     /**
      * @ORM\ManyToMany(targetEntity=Room::class, mappedBy="users")
      */
-    protected Collection $rooms;
+    protected ?Collection $rooms = null;
 
     /**
      * @ORM\OneToMany(targetEntity=Reservation::class, mappedBy="user")
      */
-    protected Collection $reservations;
+    protected ?Collection $reservations = null;
 
     /**
      * @ORM\ManyToOne(targetEntity=Group::class, inversedBy="members", fetch="EAGER")
      */
-    private ?Group $group;
+    private ?Group $group = null;
 
     /**
      * @ORM\ManyToMany(targetEntity=Reservation::class, mappedBy="attendees")
      */
-    private Collection $reservationsToAttend;
+    private ?Collection $reservationsToAttend = null;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Room::class, mappedBy="roomManager")
+     */
+    private ?Collection $managedRooms = null;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Group::class, mappedBy="groupManager")
+     */
+    private ?Collection $managedGroups = null;
 
     public function __construct()
     {
         $this->rooms = new ArrayCollection();
         $this->reservations = new ArrayCollection();
         $this->reservationsToAttend = new ArrayCollection();
+        $this->managedGroups = new ArrayCollection();
+        $this->managedRooms = new ArrayCollection();
+    }
+
+    /**
+     * @return Collection|Room[]
+     */
+    public function getManagedRooms(): Collection
+    {
+        return $this->managedRooms;
+    }
+
+    public function addManagedRoom(Room $room): self
+    {
+        if (!$this->managedRooms->contains($room)) {
+            $this->managedRooms[] = $room;
+            $room->setRoomManager($this);
+        }
+
+        return $this;
+    }
+
+    public function removeManagedRoom(Room $room): self
+    {
+        if ($this->managedRooms->removeElement($room) && $room->getRoomManager() === $this) {
+            $room->setRoomManager(null);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Group[]
+     */
+    public function getManagedGroups(): Collection
+    {
+        return $this->managedGroups;
+    }
+
+    public function addManagedGroup(Group $group): self
+    {
+        if (!$this->managedGroups->contains($group)) {
+            $this->managedGroups[] = $group;
+            $group->setGroupManager($this);
+        }
+
+        return $this;
+    }
+
+    public function removeManagedGroup(Group $group): self
+    {
+        if ($this->managedGroups->removeElement($group)) {
+            // set the owning side to null (unless already changed)
+            if ($group->getGroupManager() === $this) {
+                $group->setGroupManager(null);
+            }
+        }
+
+        return $this;
     }
 
     /**
@@ -293,19 +358,19 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return in_array(self::ADMIN, $this->roles);
     }
 
-    public function isRoomAdmin(): Bool
-    {
-        return in_array(self::ROOM_ADMIN, $this->roles);
-    }
-
     public function isGroupAdmin(): Bool
     {
-        return in_array(self::GROUP_ADMIN, $this->roles);
+        return in_array(self::GROUP_ADMIN, $this->roles) || $this->isAdmin();
+    }
+
+    public function isRoomAdmin(): Bool
+    {
+        return in_array(self::ROOM_ADMIN, $this->roles) || $this->isGroupAdmin();
     }
 
     public function isCommonUser(): Bool
     {
-        return in_array(self::COMMON_USER, $this->roles);
+        return in_array(self::COMMON_USER, $this->roles) || $this->isRoomAdmin();
     }
 
     /**

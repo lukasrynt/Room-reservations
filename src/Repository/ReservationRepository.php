@@ -2,10 +2,8 @@
 
 namespace App\Repository;
 
-use App\Entity\GroupManager;
 use App\Entity\Reservation;
 use App\Entity\Room;
-use App\Entity\RoomManager;
 use App\Entity\States;
 use App\Entity\User;
 use App\Services\Filter;
@@ -15,6 +13,7 @@ use DateTime;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Collections\Criteria;
 use Doctrine\Persistence\ManagerRegistry;
+use Exception;
 
 /**
  * @method Reservation|null find($id, $lockMode = null, $lockVersion = null)
@@ -60,11 +59,11 @@ class ReservationRepository extends ServiceEntityRepository
                 Criteria::expr()->gte('timeFrom', new \DateTime($reservation->getTimeFrom())),
                 Criteria::expr()->lt('timeFrom', new \DateTime($reservation->getTimeTo()))))
             ->orWhere(Criteria::expr()->andX(
-                Criteria::expr()->gt('timeTo', new \DateTime($reservation->getTimeFrom())),
-                Criteria::expr()->lte('timeTo', new \DateTime($reservation->getTimeTo()))))
+                Criteria::expr()->gt('timeTo', new DateTime($reservation->getTimeFrom())),
+                Criteria::expr()->lte('timeTo', new DateTime($reservation->getTimeTo()))))
             ->orWhere(Criteria::expr()->andX(
-                Criteria::expr()->lte('timeFrom', new \DateTime($reservation->getTimeFrom())),
-                Criteria::expr()->gte('timeTo', new \DateTime($reservation->getTimeTo()))));
+                Criteria::expr()->lte('timeFrom', new DateTime($reservation->getTimeFrom())),
+                Criteria::expr()->gte('timeTo', new DateTime($reservation->getTimeTo()))));
 
         $criteria = $this->getApprovedCrit($criteria);
         $criteria = $this->getByRoomCrit($reservation->getRoom(), $criteria);
@@ -75,14 +74,14 @@ class ReservationRepository extends ServiceEntityRepository
 
     public function getCurrentRoomReservation(Room $room): ?Reservation
     {
-        $today = new \DateTime();
+        $today = new DateTime();
         $criteria = $this->getByDateCrit($today->format("Y-m-d"));
         $criteria = $this->getByRoomCrit($room, $criteria);
         $criteria = $this->getApprovedCrit($criteria);
 
         $criteria
-            ->andWhere(Criteria::expr()->lte('timeFrom', new \DateTime($today->format("H:i:s"))))
-            ->andWhere(Criteria::expr()->gte('timeTo', new \DateTime($today->format("H:i:s"))));
+            ->andWhere(Criteria::expr()->lte('timeFrom', new DateTime($today->format("H:i:s"))))
+            ->andWhere(Criteria::expr()->gte('timeTo', new DateTime($today->format("H:i:s"))));
 
         return $this->matching($criteria)->toArray()[0] ?? null;
     }
@@ -107,16 +106,16 @@ class ReservationRepository extends ServiceEntityRepository
             ->orWhere(Criteria::expr()->eq('user', $user));
     }
 
-    private function getPendingByGroupsCrit(GroupManager $groupManager, Criteria $criteria = null): Criteria
+    private function getPendingByGroupsCrit(User $groupManager, Criteria $criteria = null): Criteria
     {
         $criteria ??= Criteria::create();
         $criteria = $this->getPendingCrit($criteria);
-        $managedGroups = $groupManager->getGroups();
+        $managedGroups = $groupManager->getManagedGroups();
         $requestedRooms = $this->roomRepository->filterByGroups($managedGroups);
         return $this->getByRoomsCrit($requestedRooms->getValues(), $criteria);
     }
 
-    private function getPendingByRoomsCrit(RoomManager $roomManager, Criteria $criteria = null): Criteria
+    private function getPendingByRoomsCrit(User $roomManager, Criteria $criteria = null): Criteria
     {
         $criteria ??= Criteria::create();
         $criteria = $this->getPendingCrit($criteria);
@@ -144,7 +143,7 @@ class ReservationRepository extends ServiceEntityRepository
     {
         $criteria ??= Criteria::create();
         return $criteria
-            ->andWhere(Criteria::expr()->eq('date', new \DateTime($date)));
+            ->andWhere(Criteria::expr()->eq('date', new DateTime($date)));
     }
 
     private function getByRoomCrit(Room $room,  Criteria $criteria = null): Criteria

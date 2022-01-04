@@ -8,6 +8,11 @@
         {{ source('@icons/edit-icon.svg') }}
         Edit</a>
 {% endif %}
+{% if is_granted('name_room_manager', room) %}
+    <a class="button-base button-with-icon button-main-outline" href={{ path('rooms_name_manager', {'id': room.id}) }}>
+        {{ source('@icons/account-key.svg') }}
+        Name manager</a>
+{% endif %}
 {% if is_granted('delete_room', room) %}
     <a class="button-base button-with-icon button-danger-outline delete-link" data-confirm="delete" data-name="{{ room.name }}">
         {{ source('@icons/delete-icon.svg') }}

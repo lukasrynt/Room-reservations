@@ -3,9 +3,9 @@
 namespace App\Form\Type;
 
 use App\Entity\Group;
-use App\Entity\GroupManager;
-use App\Entity\Room;
 use App\Entity\User;
+use App\Repository\GroupRepository;
+use App\Repository\UserRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
@@ -21,8 +21,7 @@ class GroupType extends AbstractType
                 'label' => 'Group name :',
             ])
             ->add('groupManager', EntityType::class, [
-                # TODO change GroupManager to User so that anyone can become GroupManager - somehow cast User to GroupManager in GroupController
-                "class" => GroupManager::class,
+                "class" => User::class,
                 'label' => 'Group Manager :',
                 'placeholder' => 'Choose an option',
                 'required' => false,

@@ -31,21 +31,21 @@ class Group
     private ?string $name;
 
     /**
-     * @ORM\ManyToOne(targetEntity=GroupManager::class, inversedBy="managedGroups")
+     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="managedGroups")
      */
-    private ?GroupManager $groupManager = null;
+    private ?User $groupManager = null;
 
     /**
      * @ORM\OneToMany(targetEntity="User", mappedBy="group")
      * @Expose
      */
-    private Collection $members;
+    private ?Collection $members = null;
 
     /**
      * @ORM\OneToMany(targetEntity="Room", mappedBy="group")
      * @Expose
      */
-    private Collection $rooms;
+    private ?Collection $rooms = null;
 
     /**
      * One Group has Many SubGroups.
@@ -90,12 +90,12 @@ class Group
         return $this;
     }
 
-    public function getGroupManager(): ?GroupManager
+    public function getGroupManager(): ?User
     {
         return $this->groupManager;
     }
 
-    public function setGroupManager(?GroupManager $groupManager): self
+    public function setGroupManager(?User $groupManager): self
     {
         $this->groupManager = $groupManager;
 
@@ -192,5 +192,28 @@ class Group
         return $this;
     }
 
+    public function __sleep()
+    {
+        return [];
+    }
 
+    public function containsSubGroup(Group $group)
+    {
+        $tmpGroup = $this;
+        while (!$tmpGroup){
+            if ($tmpGroup === $group)
+                return true;
+            $tmpGroup = $group->getChildren();
+        }
+        return false;
+    }
+
+    public function getAllSubGroups(): array
+    {
+        $subGroups = array();
+        foreach ($this->getChildren() as $subGroup){
+            $subGroups = array_merge($subGroups, $subGroup->getAllSubGroups());
+        }
+        return array_merge($subGroups, array($this));
+    }
 }
