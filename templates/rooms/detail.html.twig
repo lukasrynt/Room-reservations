@@ -24,7 +24,7 @@
             <dd>Capacity</dd>
             <dt data-label="Capacity">{{ room.capacity }}</dt>
             <dd>Opened from - to</dd>
-            <dt data-label="Opened from - to">{{ room.openedFrom }} - {{ room.openedTo }}</dt>
+            <dt data-label="Opened from - to">{{ room.openedFrom|date('H:i') }} - {{ room.openedTo|date('H:i') }}</dt>
             <dd>Private</dd>
             <dt data-label="Private">
                 {% if room.private %}
@@ -37,7 +37,7 @@
             <dt data-label="State">
                 {% set reservedUntil = reservedUntil(room) %}
                 {% if reservedUntil %}
-                    Currently reserved - until {{ reservedUntil }}
+                    Currently reserved - until {{ reservedUntil|date('H:i') }}
                 {% else %}
                     Currently not reserved
                 {% endif %}

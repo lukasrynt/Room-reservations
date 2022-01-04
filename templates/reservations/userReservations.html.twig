@@ -4,7 +4,7 @@
         <ul class="detail-list">
             {% for reservation in reservations %}
                 <li>
-                    <a href="{{ path('reservations_detail', { id: reservation.id }) }}" class="table-link">Reservation #{{ reservation.id }} from user {{ reservation.user }}</a> on date {{ reservation.date|date('d.m.Y') }} ({{ reservation.timeFrom|date('h:i') }} - {{ reservation.timeTo|date('h:i') }})
+                    <a href="{{ path('reservations_detail', { id: reservation.id }) }}" class="table-link">Reservation #{{ reservation.id }} from user {{ reservation.user }}</a> on date {{ reservation.date|date('d.m.Y') }} ({{ reservation.timeFrom|date('H:i') }} - {{ reservation.timeTo|date('H:i') }})
                 </li>
             {% endfor %}
         </ul>

@@ -52,8 +52,8 @@
                         {% endfor %}
                     </ul>
                 </td>
-                <td data-label="Date">{{ reservation.date }}</td>
-                <td data-label="Reserved from - to">{{ reservation.timeFrom }} - {{ reservation.timeTo }}</td>
+                <td data-label="Date">{{ reservation.date|date('d.m.Y') }}</td>
+                <td data-label="Reserved from - to">{{ reservation.timeFrom|date('H:i') }} - {{ reservation.timeTo|date('H:i') }}</td>
                 <td class="table-buttons">
                     <a class="button-base button-main" href={{ path('reservations_detail', { id: reservation.id }) }}>Detail</a>
                     {% include 'reservations/buttons.html.twig' %}

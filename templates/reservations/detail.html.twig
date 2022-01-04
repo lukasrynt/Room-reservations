@@ -61,9 +61,9 @@
                 </ul>
             </dt>
             <dd>Date</dd>
-            <dt data-label="Date">{{ reservation.date }}</dt>
+            <dt data-label="Date">{{ reservation.date|date('d.m.Y') }}</dt>
             <dd>Reserved from - to</dd>
-            <dt data-label="Reserved from - to">{{ reservation.timeFrom }} - {{ reservation.timeTo }}</dt>
+            <dt data-label="Reserved from - to">{{ reservation.timeFrom|date('H:i') }} - {{ reservation.timeTo|date('H:i') }}</dt>
         </dl>
         <footer>
             {% include 'reservations/buttons.html.twig' %}
