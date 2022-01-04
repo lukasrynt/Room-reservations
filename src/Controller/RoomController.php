@@ -114,11 +114,20 @@ class RoomController extends AbstractController
             $this->roomService->save($form->getData());
             $this->addFlash('success', "Room {$room->getName()} was successfully edited.");
             return $this->redirectToRoute('rooms_detail', ['id' => $room->getId()]);
+        } else {
+            $this->displayErrorMessages($form->getErrors());
         }
 
         return $this->render('rooms/edit.html.twig', [
             'form' => $form->createView()
         ]);
+    }
+
+    private function displayErrorMessages($errors)
+    {
+        foreach ($errors as $key => $error) {
+            $this->addFlash('danger', $error->getMessage());
+        }
     }
 
     /**
@@ -153,6 +162,8 @@ class RoomController extends AbstractController
             $this->roomService->save($form->getData());
             $this->addFlash('success', "Room {$room->getName()} was successfully created.");
             return $this->redirectToRoute('rooms_detail', ['id' => $room->getId()]);
+        } else {
+            $this->displayErrorMessages($form->getErrors());
         }
 
         return $this->render('rooms/create.html.twig', [

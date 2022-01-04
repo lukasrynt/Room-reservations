@@ -28,6 +28,7 @@ class Room
     /**
      * @ORM\Column(type="integer")
      * @Expose
+     * @Assert\Positive
      */
     private int $capacity;
 
@@ -40,6 +41,7 @@ class Room
     /**
      * @ORM\Column(type="integer")
      * @Expose
+     * @Assert\Positive
      */
     private int $floor;
 
